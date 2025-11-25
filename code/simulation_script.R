@@ -71,29 +71,12 @@ design.matrix <- expand.grid(lapply(design, seq_along))
 # vector of length 60 that includes each condition number (1-6) ten times.
 
 # set number of replications
-R <- 2
+R <- 10
 
 # make a vector of "runs" (row indices of the design matrix)
 runs <- rep(1:nrow(design.matrix), times = R)
 
 # *** START SIMULATION *** #
-
-# NOTE: The following code in enclosed in "{...}" is the actual code for the
-# simulation. The code can roughly be divided into X sections, which do the
-# following:
-#
-# 1) read the levels of the design factors for the current run ("r", here: n, b_mis)
-# 2) generate the data (here: incomplete data with missing values)
-# 3) apply statistical methods to the data (here: missing data treatments,
-#    followed by an analysis)
-# 4) extract the required results in a tabular (here: estimates and standard errors for the
-#    regression coefficients b0 and b1)
-# 5) format and write the results into a file
-#
-# The contents of the code naturally differ depending on the research question,
-# but the main ingredients are often very similar to this recipe. The resulting
-# file can the be analyzed independently to evaluate and compare the different
-# methods.
 
 set.seed(6174)
 
