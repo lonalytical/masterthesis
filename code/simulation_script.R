@@ -24,6 +24,7 @@ library(lme4)
 library(mitml)
 library(jomo)
 library(mdmb)
+library(miceadds)
 
 
 # load functions
@@ -106,6 +107,7 @@ dat1 <- dat0
 mis <- simulate_missings(w = dat1$w, p = 0.30, beta = beta)
 dat1$x[mis] <- NA
 dat1$x_c <- NA
+dat1$x_a[mis] <- NA
 
 
 # * Analyses 
@@ -148,42 +150,47 @@ fit.mi <- with(impList, lmer(Y ~ 1 + x_c + x_a + (1|group), REML=TRUE))
 
 
 # Fully Bayesian approach -------------------
-# define models (factored regression specification)
+# mdmb hack: add empty group
+dummy <- dat1[1,]
+dummy[] <- NA
+dummy$group <- N2 + 1
+dummy <- dummy[rep(1, each = Nj),]
+dat2 <- rbind(dat1[1:nrow(dat1), ], dummy)
+
+# define models (factored regression specification) ---------------
 # w conditioned on Y and X
-cov_w <- list("model"="linreg", 
-              "formula"= w ~ gm(Y, group) + gm(x, group),
-              "variable_level" = "group")
+mod_w <- list(model = "linreg", 
+              formula = w ~ 1 + gm(Y, group) + gm(x, group),
+              variable_level = "group")
 
 # outcome (focal analysis model)
-dep <- list("model"="mlreg", 
-            "formula"= Y ~ cwc(x, group) + gm(x, group) + (1|group),
-            sampling_level = "group")
+mod_y <- list(model = "mlreg", 
+              formula = Y ~ 1 + cwc(x, group) + gm(x, group) + (1|group),
+              sampling_level = "group")
 
 # x marginal model
-ind_x <- list("model"="mlreg", 
-              "formula" = x ~ (1|group),
+mod_x <- list(model = "mlreg", 
+              formula = x ~ 1 + (1|group),
               sampling_level = "group")
 
 # sampling level is group because x means are involved in the outcome model
 
-# specifying which variables will be imputed
-ind <- list("x" = ind_x,
-            "y" = dep)
+# specifying which variables will be imputed (combine smaller models in a list)
+mod_ind <- list(y = mod_y, x = mod_x)
 
-# imputation and analysis
-# fit.bayes <- mdmb::frm_fb(dat = dat1, 
-#                           dep = cov_w, 
-#                           ind = ind, 
-#                           burnin = 5000, 
-#                           iter = 2000, 
-#                           aggregation=TRUE)
-
+# imputation
+fit.bayes <- mdmb::frm_fb(dat2, 
+                     dep = mod_w,
+                     ind = mod_ind,
+                     burnin = 5000,
+                     iter = 2000,
+                     aggregation = TRUE)
 
 
 # * Prepare results
 
 # set parameter names
-par.names <- c("gamma01", "gamma10")
+par.names <- c("gamma10", "gamma01") # gamma10 = cwc, gamma01 = gm
 
 # summarize results of complete data analysis
 res.cd <- data.frame(
@@ -227,7 +234,14 @@ res.mia <- data.frame(
 )
 
 # summarize results of Bayes
-# res.bayes <- 
+res.bayes <- data.frame(
+  method = "bayes",
+  parameter = par.names,
+  est = coef(fit.bayes)[c(9,10)],
+  se = sqrt(diag(vcov(fit.bayes))[c(9,10)]),
+  ci_l = confint(fit.bayes)[c(9,10),1],
+  ci_u = confint(fit.bayes)[c(9,10),2]
+)
 
 # summarize conditions
 res.condition <- data.frame(
@@ -238,7 +252,7 @@ res.condition <- data.frame(
 # bind conditions and results together
 res <- cbind(
   res.condition,                           # conditions
-  rbind(res.cd, res.ld, res.miR, res.mia)  # results
+  rbind(res.cd, res.ld, res.miR, res.mia, res.bayes)  # results
 )
 rownames(res) <- NULL
 
