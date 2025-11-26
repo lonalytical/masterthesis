@@ -72,7 +72,7 @@ design.matrix <- expand.grid(lapply(design, seq_along))
 # vector of length 60 that includes each condition number (1-6) ten times.
 
 # set number of replications
-R <- 10
+R <- 5
 
 # make a vector of "runs" (row indices of the design matrix)
 runs <- rep(1:nrow(design.matrix), times = R)
