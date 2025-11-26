@@ -10,7 +10,7 @@ here::i_am("code/summary_script.R")
 library(here)
 
 # read in results file
-filename <- "simulation_results_2025-11-2524684.csv"
+filename <- "simulation_results_2025-11-267544.csv"
 res <- read.csv(file = here("results", filename), 
                 sep = "", 
                 header = TRUE,
@@ -37,6 +37,11 @@ res.agg <- aggregate(
 )
 
 View(res.agg)
+
+# calculate relative bias for non-zero effect
+res.agg$rbias <- NA
+res.agg$rbias[res.agg$parameter == "gamma10"] <- res.agg$bias[res.agg$parameter == "gamma10"] / 0.3
+res.agg$rbias[(res.agg$parameter == "gamma01") & (res.agg$gamma01 == 0.3)] <- res.agg$bias[(res.agg$parameter == "gamma01") & (res.agg$gamma01 == 0.3)] / 0.3
 
 # save results file
 filename_agg <- paste0("aggregated_", filename)
