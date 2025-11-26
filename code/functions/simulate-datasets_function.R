@@ -39,10 +39,9 @@ simulate_data <- function(N2, gamma01, ICC) {
   e_x <- rnorm(N2*Nj, mean = 0, sd = sqrt(sigmaxqu))
   x <- u_x + e_x
   # apply group-mean centering
-  ## create grouping factor and averages of X
-  group <- factor(rep(1:N2, each = Nj))
-  x_a <- tapply(x, group, mean)
-  x_a <- rep(x_a, each = Nj)
+  ## create group numbers and averages of X
+  group <- rep(1:N2, each = Nj)
+  x_a <- ave(x, group, FUN = mean)
   ## center X values
   x_c <- x - x_a
   
