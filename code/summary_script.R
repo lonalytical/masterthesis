@@ -8,6 +8,7 @@ here::i_am("code/summary_script.R")
 
 # packages
 library(here)
+library(dplyr) # for data grouping
 
 # read in results file
 filename <- "simulation_results_2025-11-267544.csv"
@@ -15,7 +16,7 @@ res <- read.csv(file = here("results", filename),
                 sep = "", 
                 header = TRUE,
                 stringsAsFactors = TRUE)
-View(res)
+#View(res)
 
 # calculate coverage (yes/no) per run
 ## setting true value per run
@@ -25,23 +26,53 @@ res$true[res$parameter == "gamma01"] <- res$gamma01[res$parameter == "gamma01"]
 ## look up if CI contains true value
 res$cov <- (res$ci_l <= res$true) & (res$ci_u >= res$true)
 
-# calculate bias per run
-res$bias <- (res$true - res$est)
+# calculate bias per run (not needed anymore)
+# res$bias <- (res$true - res$est)
 
-# average results across repetitions
-res.agg <- aggregate(
-  cbind(est, se, cov, bias) ~ ID + gamma01 + N2 + ICC + beta + method + parameter, 
-  # results of repetitions of the same condition/method/parameter will be put together
-  data = res,
-  FUN = mean # by calculating the mean
-)
+# calculate empirical variance of estimates per condition for MCSE
+res_grouped <- res %>%
+  group_by(ID, method, parameter, gamma01, ICC) %>% # group replications of same conditions together
+  summarise(
+    R = n(), # number of rows per group (= number of replications)
+    
+    # estimates
+    estimate = mean(est), # mean of estimates as global estimate for condition
+    stand_err = mean(se), # mean of se as global estimate for se
+    
+    # performance measures
+    bias = mean(est) - unique(true), # bias for condition
+    rel_bias = ifelse(unique(true) != 0, bias / unique(true), NA), # relative bias for conditions with non-zero effect
+    coverage = mean(cov), # mean coverage across repetitions
+    rms_se = sqrt(mean(se^2)), # root mean square of model SEs
+    
+    # MCSEs
+    mcse_bias = sd(est) / sqrt(R), # empirical sd of estimates divided by sqrt of replication number
+    mcse_cov = sqrt(coverage*(1-coverage)/R), 
+    mcse_rms_se = sqrt(var(se^2)/(4 * R * mean(se^2))), # Morris formula for MCSE of average modSE
+    
+    .groups = "drop" # erase grouping at the end
+    ) 
 
-View(res.agg)
+  
+  
+
+# average results across repetitions -> not needed anymore
+# res.agg <- aggregate(
+#   cbind(est, se, cov, bias) ~ ID + gamma01 + N2 + ICC + beta + method + parameter, 
+#   # results of repetitions of the same condition/method/parameter will be put together
+#   data = res,
+#   FUN = mean # by calculating the mean
+# )
+
+#View(res.agg)
 
 # calculate relative bias for non-zero effect
-res.agg$rbias <- NA
-res.agg$rbias[res.agg$parameter == "gamma10"] <- res.agg$bias[res.agg$parameter == "gamma10"] / 0.3
-res.agg$rbias[(res.agg$parameter == "gamma01") & (res.agg$gamma01 == 0.3)] <- res.agg$bias[(res.agg$parameter == "gamma01") & (res.agg$gamma01 == 0.3)] / 0.3
+# res.agg$rbias <- NA
+# res.agg$rbias[res.agg$parameter == "gamma10"] <- 
+#   res.agg$bias[res.agg$parameter == "gamma10"] / 0.3
+# res.agg$rbias[(res.agg$parameter == "gamma01") & (res.agg$gamma01 == 0.3)] <- 
+#   res.agg$bias[(res.agg$parameter == "gamma01") & (res.agg$gamma01 == 0.3)] / 0.3
+
 
 # save results file
 filename_agg <- paste0("aggregated_", filename)
