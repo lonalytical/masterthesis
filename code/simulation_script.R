@@ -3,22 +3,14 @@
 #               Simulation                #
 #                                         #
 # # # # # # # # # # # # # # # # # # # # # #
+options(warn = 2) # turn warnings into errors for debugging
 
-# *** .....................................
-# Setup
-#
-
-# * Packages and Files
-
-# NOTE: Here, packages and file paths are set up. In addition, all user-defined
-# functions are loaded here. In this example, we use the packages "lavaan" and
-# "mice" and load two additional functions for simulating the data and inducing
-# missing values in the simulated data.
-
-# set path and file name
+# set path
 here::i_am("code/simulation_script.R")
 
 # load packages
+library(parallel) # for parallel processing
+library(rlecuyer) # for random number generator
 library(here)
 library(lme4)
 library(mitml)
@@ -64,15 +56,9 @@ design.matrix <- expand.grid(lapply(design, seq_along))
 # Simulation
 #
 
-# NOTE: Here, we define how many times each condition will be replicated (R).
-# Then, we start the simulation. There are many ways to do this, but one way
-# is to (a) create a vector ("runs") of indices that correspond to the rows in
-# the design matrix being replicated and then (b) loop over this vector.
-# In this example, we set the number of replications to R=10, resulting in a
-# vector of length 60 that includes each condition number (1-6) ten times.
 
 # set number of replications
-R <- 5
+R <- 2
 
 # make a vector of "runs" (row indices of the design matrix)
 runs <- rep(1:nrow(design.matrix), times = R)
@@ -100,30 +86,24 @@ Nj = 10
 # * Data generation 
 
 # simulate data
-dat0 <- simulate_data(N2 = N2, gamma01 = gamma01, ICC = ICC)
+dat0 <- simulate_data(
+  N2 = N2, 
+  gamma01 = gamma01, 
+  ICC = ICC)[,c("x", "Y", "w", "group")]
 
 # simulate missing values
 dat1 <- dat0
 mis <- simulate_missings(w = dat1$w, p = 0.30, beta = beta)
 dat1$x[mis] <- NA
-dat1$x_c <- NA
-dat1$x_a[mis] <- NA
 
 
 # * Analyses 
 
 # fit multilevel model (complete data) --------------------
-fit.cd <- lmer(Y ~ x_c + x_a + (1|group), data = dat0, REML = TRUE)
+fit.cd <- lmer(Y ~ cwc(x, group) + gm(x, group) + (1|group), data = dat0, REML = TRUE)
 
 # fit multilevel model (listwise deletion) ----------------
-# NOTE: First, centered x values and group means are calculated with only complete rows.
-x_a <- tapply(dat1$x, dat1$group, mean, na.rm = TRUE)
-dat1$x_a <- rep(x_a, each = Nj)
-dat1$x_a[mis] <- NA
-
-dat1$x_c <- dat1$x - dat1$x_a
-
-fit.ld <- lmer(Y ~ x_c + x_a + (1|group), data = dat1, REML = TRUE)
+fit.ld <- lmer(Y ~ cwc(x, group) + gm(x, group) + (1|group), data = dat1, REML = TRUE)
 
 # fit multilevel model using MI -------------------------
 # specify imputation model
@@ -132,22 +112,10 @@ fml <- list(Y + x ~ 1 + (1|group),
 
 # impute data 
 imp <- mitml::jomoImpute(data=dat1, formula=fml, n.burn=5000, n.iter=200, m=10)
-# calculate X_a again for each dataset and append to datasets
+
+# fit multilevel model to each dataset
 impList <- mitmlComplete(imp)
-cm <- with(impList, clusterMeans(x, group))
-
-for (i in seq_along(impList)) {
-  impList[[i]]$x_a <- cm[[i]]
-}
-
-# group-mean-center x
-for (i in seq_along(impList)) {
-  impList[[i]]$x_c <- impList[[i]]$x - impList[[i]]$x_a
-}
-
-# fit analysis model to each imputed dataset
-fit.mi <- with(impList, lmer(Y ~ 1 + x_c + x_a + (1|group), REML=TRUE))
-
+fit.mi <- with(impList, lmer(Y ~ 1 + cwc(x, group) + gm(x, group) + (1|group), REML=TRUE))
 
 # Fully Bayesian approach -------------------
 # mdmb hack: add empty group
@@ -182,8 +150,8 @@ mod_ind <- list(y = mod_y, x = mod_x)
 fit.bayes <- mdmb::frm_fb(dat2, 
                      dep = mod_w,
                      ind = mod_ind,
-                     burnin = 5000,
-                     iter = 2000,
+                     burnin = 1000,
+                     iter = 3000,
                      aggregation = TRUE)
 
 
@@ -192,14 +160,23 @@ fit.bayes <- mdmb::frm_fb(dat2,
 # set parameter names
 par.names <- c("gamma10", "gamma01") # gamma10 = cwc, gamma01 = gm
 
+# prepare function for manually calculating CIs (used for small sample CIs in lmer with Snijders&Bosker-dfs)
+ci_lmer <- function(x, df, level = 0.95) {
+  est <- fixef(x)
+  se <- sqrt(diag(vcov(x)))
+  tval <- qt(1 - (1-level) / 2, df = df)
+  cbind(lower = est - tval * se, upper = est + tval * se)
+}
+
 # summarize results of complete data analysis
 res.cd <- data.frame(
   method = "CD",
   parameter = par.names,
   est = fixef(fit.cd)[c(2, 3)],
   se = sqrt(diag(vcov(fit.cd)))[c(2, 3)],
-  ci_l = confint(fit.cd)[c(4, 5), 1],
-  ci_u = confint(fit.cd)[c(4, 5), 2]
+  # small sample CIs with Snijders&Bosker-dfs
+  ci_l = ci_lmer(fit.cd, df = c(rep(nobs(fit.cd) - 3, 2), ngrps(fit.cd) - 2))[c(2, 3), 1], 
+  ci_u = ci_lmer(fit.cd, df = c(rep(nobs(fit.cd) - 3, 2), ngrps(fit.cd) - 2))[c(2, 3), 2]
 )
 
 # summarize results of listwise deletion
@@ -208,8 +185,8 @@ res.ld <- data.frame(
   parameter = par.names,
   est = fixef(fit.ld)[c(2,3)],
   se = sqrt(diag(vcov(fit.ld)))[c(2,3)],
-  ci_l = confint(fit.ld)[c(4,5), 1],
-  ci_u = confint(fit.ld)[c(4,5), 2]
+  ci_l = ci_lmer(fit.ld, df = c(rep(nobs(fit.ld) - 3, 2), ngrps(fit.ld) - 2))[c(2,3), 1],
+  ci_u = ci_lmer(fit.ld, df = c(rep(nobs(fit.ld) - 3, 2), ngrps(fit.ld) - 2))[c(2,3), 2]
 )
 
 # summarize results of MI - Rubins rules for dfs
@@ -223,7 +200,7 @@ res.miR <- data.frame(
   ci_u = confint(pool.miR)[c(2,3),2]
 )
 # summarize results of MI - adjusted dfs
-pool.mia <- testEstimates(fit.mi, df = nlevels(impList[[1]]$group)-2) # pool with adjusted df
+pool.mia <- testEstimates(fit.mi, df = c(rep(nobs(fit.mi[[1]]), 2), N2-2)) # pool with adjusted dfs
 res.mia <- data.frame(
   method = "MI-a",
   parameter = par.names,
