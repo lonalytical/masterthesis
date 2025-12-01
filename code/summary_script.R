@@ -26,7 +26,7 @@ res$true[res$parameter == "gamma01"] <- res$gamma01[res$parameter == "gamma01"]
 ## look up if CI contains true value
 res$cov <- (res$ci_l <= res$true) & (res$ci_u >= res$true)
 
-# calculate empirical variance of estimates per condition for MCSE
+# calculate aggregated measures over replications
 res_grouped <- res %>%
   group_by(ID, method, parameter, gamma01, ICC) %>% # group replications of same conditions together
   summarise(

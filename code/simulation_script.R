@@ -261,5 +261,8 @@ write.table(
 
 })
 
+# stop cluster after simulation
+parallel::stopCluster(.cl)
+
 # *** END SIMULATION *** #
 

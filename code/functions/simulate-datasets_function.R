@@ -1,4 +1,5 @@
 # DATA SIMULATION FUNCTION --------------------------------------
+
 # This function simulates data from a two-level random intercept model
 # with a group-mean centered variable X and the group-mean of X as predictors
 # as well as a group-level W as predictor.
