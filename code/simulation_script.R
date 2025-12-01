@@ -27,7 +27,6 @@ source(file = here("code", "functions", "generate-missings_function.R"))
 
 # NOTE: The simulation design is specified here.
 
-
 design <- list(
   
   # effect size of gamma01
@@ -44,18 +43,35 @@ design <- list(
 
 )
 
-# NOTE: Here, we create a "design matrix" that lists all possible conditions by
-# combining all levels of the factors above (via expand.grid). The matrix has
-# six rows, one for each condition, and consists of numeric values that match the
-# levels of each factor in the "design".
-
 # create design matrix
 design.matrix <- expand.grid(lapply(design, seq_along))
+
+# * Parallel processing
+
+# create a cluster
+.cl <- parallel::makeCluster(4, type = "PSOCK")  # NOTE: Number of instances is specified here.
+
+# initiate parallel random number generator across instances
+RNGkind("L'Ecuyer-CMRG")
+parallel::clusterSetRNGStream(.cl, iseed = 6174) # setting a seed for reproducibility
+
+# load required packages on all instances
+parallel::clusterEvalQ(.cl, {
+  library(here)
+  library(lme4)
+  library(mitml)
+  library(jomo)
+  library(mdmb)
+  library(miceadds)
+})
+
+# export objects to instances
+parallel::clusterExport(.cl, varlist = ls())
+
 
 # *** .....................................
 # Simulation
 #
-
 
 # set number of replications
 R <- 2
@@ -65,9 +81,7 @@ runs <- rep(1:nrow(design.matrix), times = R)
 
 # *** START SIMULATION *** #
 
-set.seed(6174)
-
-for (r in runs) {
+.result <- parallel::clusterApplyLB(.cl, x = runs, fun = function(r) {
 
 # * Conditions
 
@@ -245,7 +259,7 @@ write.table(
   row.names = FALSE, col.names = new.file, append = !new.file
 )
 
-}
+})
 
 # *** END SIMULATION *** #
 
