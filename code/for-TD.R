@@ -23,7 +23,32 @@ res$cov <- (res$ci_l <= res$true) & (res$ci_u >= res$true)
 res$bias <- res$true - res$est
 
 res <- res[res$ID == 1 & res$parameter == "gamma01",]
-res$method <- as.numeric(factor(res$method, 
-                                      levels = c("CD", "LD", "MI-R", "MI-a", "bayes")))
+res <- res %>%
+  mutate(
+    R = recode(method,
+               "CD"   = 0.2,
+               "LD"   = 1.0,
+               "MI-R" = 0.0,
+               "MI-a" = 0.0,
+               "bayes"= 0.2,
+               .default = 0.5),
+    G = recode(method,
+               "CD"   = 0.2,
+               "LD"   = 0.0,
+               "MI-R" = 1.0,
+               "MI-a" = 1.0,
+               "bayes"= 0.5,
+               .default = 0.5),
+    B = recode(method,
+               "CD"   = 1.0,
+               "LD"   = 0.0,
+               "MI-R" = 0.5,
+               "MI-a" = 1.0,
+               "bayes"= 0.5,
+               .default = 0.5)
+  )
+res$method <- as.numeric(factor(res$method, levels = c("CD", "LD", "MI-R", "MI-a", "bayes")))
+
+
 write.csv(res, 
             file = here("results", "TD_test.csv"))
