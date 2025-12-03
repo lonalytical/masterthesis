@@ -1,0 +1,44 @@
+---
+title: "Methods"
+---
+
+## Data generation
+A simulation study was conducted to compare the methods of missing data handling. (erklären, was eine Simulationsstudie ist)
+
+Data was generated from a parametric model with known parameters.
+
+## Data-generating model
+
+The data-generating model was a two-level random intercept model:
+
+$$
+Y_ij =
+$$ {#eq-dgm}
+
+First, 
+
+## Missing data generation
+
+## Factors and simulation conditions
+### Constants
+### Level-2 sample size
+As the small-sample performance of the methods is of interest, three different group sizes are used:
+- N2 = 15
+- N2 = 30
+- N2 = 60
+These sizes are chosen to reflect McNeish´s (2017) summary, that group sizes below 25 almost certainly face issues and below 50 there is a susceptibility to small sample biases. These ranges should therefore cover problematic, likely problematic and not problematic level-2 sample sizes.
+### Effect size of the group-level effect {\gamma01}
+The effect size of the group-level effect of X is varied between 0.0 and 0.30. This is to investigate the performance both with a null effect of the parameter of interest as well as a substantive effect.
+
+### ICC of X and residual Y
+### Missing data mechanism
+Missing data mechanism is set to either MCAR or MAR. For MAR, the strength of relationship between W and missing of X is set to 0.4, which corresponds to 0.4^2 % 100% explanation of variance in missingness through W.
+
+# Methods
+
+## Estimands
+
+## Performance measures
+
+
+## Execution of simulation
