@@ -3,7 +3,6 @@
 #               Simulation                #
 #                                         #
 # # # # # # # # # # # # # # # # # # # # # #
-options(warn = 2) # turn warnings into errors for debugging
 
 # set path
 here::i_am("code/simulation_script.R")
@@ -109,6 +108,9 @@ dat1 <- dat0
 mis <- simulate_missings(w = dat1$w, p = 0.30, beta = beta)
 dat1$x[mis] <- NA
 
+# listwise deletion of missings
+dat1_ld <- na.omit(dat1)
+
 
 # * Analyses 
 
@@ -116,7 +118,7 @@ dat1$x[mis] <- NA
 fit.cd <- lmer(Y ~ cwc(x, group) + gm(x, group) + (1|group), data = dat0, REML = TRUE)
 
 # fit multilevel model (listwise deletion) ----------------
-fit.ld <- lmer(Y ~ cwc(x, group) + gm(x, group) + (1|group), data = dat1, REML = TRUE)
+fit.ld <- lmer(Y ~ cwc(x, group) + gm(x, group) + (1|group), data = dat1_ld, REML = TRUE)
 
 # fit multilevel model using MI -------------------------
 # specify imputation model
@@ -124,7 +126,7 @@ fml <- list(Y + x ~ 1 + (1|group),
             w ~ 1)
 
 # impute data 
-imp <- mitml::jomoImpute(data=dat1, formula=fml, n.burn=5000, n.iter=200, m=10)
+imp <- mitml::jomoImpute(data=dat1, formula=fml, n.burn=2000, n.iter=200, m=10)
 
 # fit multilevel model to each dataset
 impList <- mitmlComplete(imp)
@@ -213,7 +215,7 @@ res.miR <- data.frame(
   ci_u = confint(pool.miR)[c(2,3),2]
 )
 # summarize results of MI - adjusted dfs
-pool.mia <- testEstimates(fit.mi, df = c(rep(nobs(fit.mi[[1]]), 2), N2-2)) # pool with adjusted dfs
+pool.mia <- testEstimates(fit.mi, df.com = c(rep(nobs(fit.mi[[1]])-3 , 2), N2-2)) # pool with adjusted dfs
 res.mia <- data.frame(
   method = "MI-a",
   parameter = par.names,

@@ -9,7 +9,7 @@ here::i_am("code/summary_script.R")
 # packages
 library(here)
 library(dplyr) # for data grouping
-
+ 
 # find results filenames by naming pattern ("^" = "starts with")
 # NOTE: if you have generated data more than once, put the older data sets in a different folder
 fn <- list.files(path = here("results"), pattern = "^simulation-results")
@@ -30,7 +30,7 @@ res$cov <- (res$ci_l <= res$true) & (res$ci_u >= res$true)
 
 # calculate aggregated measures over replications
 res_grouped <- res %>%
-  group_by(ID, method, parameter, gamma01, ICC) %>% # group replications of same conditions together
+  group_by(ID, method, parameter, gamma01, ICC, beta, N2) %>% # group replications of same conditions together
   summarise(
     R = n(), # number of rows per group (= number of replications)
     
