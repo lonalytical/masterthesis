@@ -28,7 +28,7 @@ source(file = here("code", "functions", "generate-missings_function.R"))
 design <- list(
   
   # effect size of gamma01
-  gamma01 = list(0, .30),
+  gamma01 = list(0, .40),
 
   # level-2 sample size
   N2 = list(15, 30, 60),

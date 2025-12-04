@@ -27,7 +27,7 @@ simulate_data <- function(N2, gamma01, ICC) {
   
   # set constants
   Nj = 10
-  gamma10 = 0.3
+  gamma10 = 0.2
   gamma02 = 0.0
   corrX_aW = 0.3
   tauxqu = ICC
