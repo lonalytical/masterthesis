@@ -48,7 +48,7 @@ design.matrix <- expand.grid(lapply(design, seq_along))
 # * Parallel processing
 
 # create a cluster
-.cl <- parallel::makeCluster(4, type = "PSOCK")  # NOTE: Number of instances is specified here.
+.cl <- parallel::makeCluster(8, type = "PSOCK")  # NOTE: Number of instances is specified here.
 
 # initiate parallel random number generator across instances
 RNGkind("L'Ecuyer-CMRG")
@@ -73,7 +73,7 @@ parallel::clusterExport(.cl, varlist = ls())
 #
 
 # set number of replications
-R <- 2
+R <- 5
 
 # make a vector of "runs" (row indices of the design matrix)
 runs <- rep(1:nrow(design.matrix), times = R)
@@ -247,7 +247,7 @@ res <- cbind(
 rownames(res) <- NULL
 
 # create file name for output
-res.filename <- paste("simulation_results_", Sys.getpid(), ".csv", sep = "")
+res.filename <- paste("simulation-results_", Sys.getpid(), ".csv", sep = "")
 
 # check if it already exists
 new.file <- !file.exists(here("results", res.filename))

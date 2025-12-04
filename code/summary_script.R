@@ -10,12 +10,14 @@ here::i_am("code/summary_script.R")
 library(here)
 library(dplyr) # for data grouping
 
-# read in results file
-filename <- "simulation_results_2025-11-267544.csv"
-res <- read.csv(file = here("results", filename), 
-                sep = "", 
-                header = TRUE,
-                stringsAsFactors = TRUE)
+# find results filenames by naming pattern ("^" = "starts with")
+# NOTE: if you have generated data more than once, put the older data sets in a different folder
+fn <- list.files(path = here("results"), pattern = "^simulation-results")
+
+# read results from files
+res.list <- lapply(here("results", fn), read.table, header = TRUE, stringsAsFactors = TRUE)
+res <- do.call(rbind, res.list)
+
 #View(res)
 
 # calculate coverage (yes/no) per run
@@ -54,7 +56,6 @@ res_grouped <- res %>%
 
 
 # save results file
-filename_agg <- paste0("summarized_", filename)
 write.table(res_grouped, 
-            file = here("results", filename_agg))
+            file = here("results", "summarized_simulation-results.csv"))
 
