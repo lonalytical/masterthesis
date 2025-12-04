@@ -26,16 +26,16 @@ source(file = here("code", "functions", "generate-missings_function.R"))
 # NOTE: The simulation design is specified here.
 
 design <- list(
-  
+
   # effect size of gamma01
   gamma01 = list(0, .40),
 
   # level-2 sample size
   N2 = list(15, 30, 60),
-  
+
   # ICC
   ICC = list(.10, .30),
-  
+
   # relationship of missings to other variable (strength of MAR)
   beta = list(0, .30)
 
@@ -47,11 +47,13 @@ design.matrix <- expand.grid(lapply(design, seq_along))
 # * Parallel processing
 
 # create a cluster
-.cl <- parallel::makeCluster(8, type = "PSOCK")  # NOTE: Number of instances is specified here.
+.cl <- parallel::makeCluster(8, type = "PSOCK")  
+# NOTE: Number of instances is specified here.
 
 # initiate parallel random number generator across instances
 RNGkind("L'Ecuyer-CMRG")
-parallel::clusterSetRNGStream(.cl, iseed = 6174) # setting a seed for reproducibility
+parallel::clusterSetRNGStream(.cl, iseed = 6174) 
+# setting a seed for reproducibility
 
 # load required packages on all instances
 parallel::clusterEvalQ(.cl, {
@@ -215,7 +217,7 @@ res.miR <- data.frame(
   ci_u = confint(pool.miR)[c(2,3),2]
 )
 # summarize results of MI - adjusted dfs
-pool.mia <- testEstimates(fit.mi, df.com = c(rep(nobs(fit.mi[[1]])-3 , 2), N2-2)) # pool with adjusted dfs
+pool.mia <- testEstimates(fit.mi, df.com = c(rep(nobs(fit.mi[[1]])-3, 2), N2-2)) # pool with adjusted dfs
 res.mia <- data.frame(
   method = "MI-a",
   parameter = par.names,
