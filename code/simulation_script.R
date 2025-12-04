@@ -247,7 +247,7 @@ res <- cbind(
 rownames(res) <- NULL
 
 # create file name for output
-res.filename <- paste("simulation_results_", as.Date(Sys.time()), Sys.getpid(), ".csv", sep = "")
+res.filename <- paste("simulation_results_", Sys.getpid(), ".csv", sep = "")
 
 # check if it already exists
 new.file <- !file.exists(here("results", res.filename))
