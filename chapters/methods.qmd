@@ -10,11 +10,13 @@ Data was generated from a parametric model with known parameters.
 ## Data-generating model
 
 The data-generating model was a two-level random intercept model:
-
 $$
-Y_ij =
+Y_{ij}\ =\gamma_{10}\ (X_{ij}\ -\ {\bar{X.}}_{j})\ +\gamma_{01}\ {\bar{X.}}_j\ +\ \gamma_{02}\ W_j\ +\ u_{0j}\ +\ e_{ij}\ 
 $$ {#eq-dgm}
-
+The random effects are normally distributed with
+$u_{0j}\sim\ N\left(0,\ \psi^2\right)$ and $e_{ij}\sim\ N(0,\ \sigma^2)$
+and independent of each other.<br>
+$Y_{ij}$, $X_{ij}$ and $W_{j}$ are created as z-standardized variables, which means that they have a mean of zero and a variance of 1.<br>
 First, 
 
 ## Missing data generation
@@ -26,7 +28,7 @@ As the small-sample performance of the methods is of interest, three different g
 - N2 = 15
 - N2 = 30
 - N2 = 60
-These sizes are chosen to reflect McNeish´s (2017) summary, that group sizes below 25 almost certainly face issues and below 50 there is a susceptibility to small sample biases. These ranges should therefore cover problematic, likely problematic and not problematic level-2 sample sizes.
+These sizes are chosen to reflect McNeish´s [-@mcneishSmallSampleMethods2017] summary that group sizes below 25 almost certainly face issues and below 50 there is a susceptibility to small sample biases. These sample sizes should therefore cover problematic, likely problematic and not problematic magnitudes.
 ### Effect size of the group-level effect {\gamma01}
 The effect size of the group-level effect of X is varied between 0.0 and 0.30. This is to investigate the performance both with a null effect of the parameter of interest as well as a substantive effect.
 
@@ -34,11 +36,11 @@ The effect size of the group-level effect of X is varied between 0.0 and 0.30. T
 ### Missing data mechanism
 Missing data mechanism is set to either MCAR or MAR. For MAR, the strength of relationship between W and missing of X is set to 0.4, which corresponds to 0.4^2 % 100% explanation of variance in missingness through W.
 
-# Methods
+## Methods of missing data handling
 
-## Estimands
+### Estimands
 
-## Performance measures
+### Performance measures
 
 
 ## Execution of simulation
