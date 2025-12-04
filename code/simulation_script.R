@@ -128,7 +128,7 @@ fml <- list(Y + x ~ 1 + (1|group),
             w ~ 1)
 
 # impute data 
-imp <- mitml::jomoImpute(data=dat1, formula=fml, n.burn=2000, n.iter=200, m=10)
+imp <- mitml::jomoImpute(data=dat1, formula=fml, n.burn=2000, n.iter=300, m=10)
 
 # fit multilevel model to each dataset
 impList <- mitmlComplete(imp)
@@ -157,8 +157,7 @@ mod_y <- list(model = "mlreg",
 mod_x <- list(model = "mlreg", 
               formula = x ~ 1 + (1|group),
               sampling_level = "group")
-
-# sampling level is group because x means are involved in the outcome model
+# NOTE: sampling level is group because x means are involved in the outcome model
 
 # specifying which variables will be imputed (combine smaller models in a list)
 mod_ind <- list(y = mod_y, x = mod_x)
@@ -177,7 +176,8 @@ fit.bayes <- mdmb::frm_fb(dat2,
 # set parameter names
 par.names <- c("gamma10", "gamma01") # gamma10 = cwc, gamma01 = gm
 
-# prepare function for manually calculating CIs (used for small sample CIs in lmer with Snijders&Bosker-dfs)
+# prepare function for manually calculating CIs 
+# (used for small sample CIs in lmer with Snijders&Bosker-dfs)
 ci_lmer <- function(x, df, level = 0.95) {
   est <- fixef(x)
   se <- sqrt(diag(vcov(x)))
@@ -189,21 +189,21 @@ ci_lmer <- function(x, df, level = 0.95) {
 res.cd <- data.frame(
   method = "CD",
   parameter = par.names,
-  est = fixef(fit.cd)[c(2, 3)],
-  se = sqrt(diag(vcov(fit.cd)))[c(2, 3)],
+  est = fixef(fit.cd)[c("cwc(x, group)", "gm(x, group)")],
+  se = sqrt(diag(vcov(fit.cd)))[c("cwc(x, group)", "gm(x, group)")],
   # small sample CIs with Snijders&Bosker-dfs
-  ci_l = ci_lmer(fit.cd, df = c(rep(nobs(fit.cd) - 3, 2), ngrps(fit.cd) - 2))[c(2, 3), 1], 
-  ci_u = ci_lmer(fit.cd, df = c(rep(nobs(fit.cd) - 3, 2), ngrps(fit.cd) - 2))[c(2, 3), 2]
+  ci_l = ci_lmer(fit.cd, df = c(rep(nobs(fit.cd) - 3, 2), ngrps(fit.cd) - 2))[c("cwc(x, group)", "gm(x, group)"), "lower"], 
+  ci_u = ci_lmer(fit.cd, df = c(rep(nobs(fit.cd) - 3, 2), ngrps(fit.cd) - 2))[c("cwc(x, group)", "gm(x, group)"), "upper"]
 )
 
 # summarize results of listwise deletion
 res.ld <- data.frame(
   method = "LD",
   parameter = par.names,
-  est = fixef(fit.ld)[c(2,3)],
-  se = sqrt(diag(vcov(fit.ld)))[c(2,3)],
-  ci_l = ci_lmer(fit.ld, df = c(rep(nobs(fit.ld) - 3, 2), ngrps(fit.ld) - 2))[c(2,3), 1],
-  ci_u = ci_lmer(fit.ld, df = c(rep(nobs(fit.ld) - 3, 2), ngrps(fit.ld) - 2))[c(2,3), 2]
+  est = fixef(fit.ld)[c("cwc(x, group)", "gm(x, group)")],
+  se = sqrt(diag(vcov(fit.ld)))[c("cwc(x, group)", "gm(x, group)")],
+  ci_l = ci_lmer(fit.ld, df = c(rep(nobs(fit.ld) - 3, 2), ngrps(fit.ld) - 2))[c("cwc(x, group)", "gm(x, group)"), "lower"],
+  ci_u = ci_lmer(fit.ld, df = c(rep(nobs(fit.ld) - 3, 2), ngrps(fit.ld) - 2))[c("cwc(x, group)", "gm(x, group)"), "upper"]
 )
 
 # summarize results of MI - Rubins rules for dfs
@@ -211,30 +211,30 @@ pool.miR <- testEstimates(fit.mi) # pool with Rubin´s rules
 res.miR <- data.frame(
   method = "MI-R",
   parameter = par.names,
-  est = coef(pool.miR)[c(2,3)], # same for Rubin and adjusted df
-  se = sqrt(diag(vcov(pool.miR)))[c(2, 3)], # same for Rubin and adjusted df
-  ci_l = confint(pool.miR)[c(2,3),1],
-  ci_u = confint(pool.miR)[c(2,3),2]
+  est = coef(pool.miR)[c("cwc(x, group)", "gm(x, group)")],
+  se = sqrt(diag(vcov(pool.miR)))[c("cwc(x, group)", "gm(x, group)")],
+  ci_l = confint(pool.miR)[c("cwc(x, group)", "gm(x, group)"), "2.5 %"],
+  ci_u = confint(pool.miR)[c("cwc(x, group)", "gm(x, group)"), "97.5 %"]
 )
 # summarize results of MI - adjusted dfs
 pool.mia <- testEstimates(fit.mi, df.com = c(rep(nobs(fit.mi[[1]])-3, 2), N2-2)) # pool with adjusted dfs
 res.mia <- data.frame(
   method = "MI-a",
   parameter = par.names,
-  est = coef(pool.mia)[c(2,3)], # same for Rubin and adjusted df
-  se = sqrt(diag(vcov(pool.mia)))[c(2, 3)], # same for Rubin and adjusted df
-  ci_l = confint(pool.mia)[c(2,3),1],
-  ci_u = confint(pool.mia)[c(2,3),2]
+  est = coef(pool.mia)[c("cwc(x, group)", "gm(x, group)")], # same for Rubin and adjusted df
+  se = sqrt(diag(vcov(pool.mia)))[c("cwc(x, group)", "gm(x, group)")], # same for Rubin and adjusted df
+  ci_l = confint(pool.mia)[c("cwc(x, group)", "gm(x, group)"), "2.5 %"],
+  ci_u = confint(pool.mia)[c("cwc(x, group)", "gm(x, group)"), "97.5 %"]
 )
 
 # summarize results of Bayes
 res.bayes <- data.frame(
   method = "bayes",
   parameter = par.names,
-  est = coef(fit.bayes)[c(9,10)],
-  se = sqrt(diag(vcov(fit.bayes))[c(9,10)]),
-  ci_l = confint(fit.bayes)[c(9,10),1],
-  ci_u = confint(fit.bayes)[c(9,10),2]
+  est = coef(fit.bayes)[c("Y_beta_cwc(x, group)", "Y_beta_gm(x, group)")],
+  se = sqrt(diag(vcov(fit.bayes)))[c("Y_beta_cwc(x, group)", "Y_beta_gm(x, group)")],
+  ci_l = confint(fit.bayes)[c("Y_beta_cwc(x, group)", "Y_beta_gm(x, group)"), "2.5 %"],
+  ci_u = confint(fit.bayes)[c("Y_beta_cwc(x, group)", "Y_beta_gm(x, group)"), "97.5 %"]
 )
 
 # summarize conditions
