@@ -1,0 +1,80 @@
+########### Data preparation for results table ###########
+
+
+here::i_am("code/table_script.R")
+
+# packages
+library(here)
+library(dplyr) # for data grouping
+library(tidyr)
+library(knitr)
+library(kableExtra) # for arranging the tables
+
+# read in results
+results <- read.table(file = here("results", "summarized_simulation-results.csv"))
+
+# greek letters for gammas
+results$parameter <- ifelse(
+  results$parameter == "gamma01", "$\\gamma_{01}$",
+  "$\\gamma_{10}$"
+)
+# prepare row information of conditions
+block_info <- results %>%
+  distinct(ID, parameter, gamma01, ICC, beta)
+
+# transform results to wide format
+make_wide_table <- function(data, methods_order = c("CD","LD","MI-R","MI-a","bayes")) {
+
+  stats <- c("bias","coverage","empSE")
+  new_order <- unlist(lapply(methods_order, function(m) paste0(m, "_", stats)))
+  
+  wide_table <- data %>%
+    pivot_wider(
+      id_cols = c(ID, parameter),
+      names_from = method,
+      values_from = c(bias, coverage, empSE),
+      names_glue = "{method}_{.value}"
+    ) %>%
+    select(ID, parameter, all_of(new_order))
+  
+  return(wide_table)
+}
+# create tables
+results15_00 <- results %>% filter(N2 == 15 & gamma01 == 0.0)
+results15_00 <- make_wide_table(results15_00)[,-1]
+
+results15_04 <- results %>% filter(N2 == 15 & gamma01 == 0.4)
+results15_04 <- make_wide_table(results15_04)
+
+results30_00 <- results %>% filter(N2 == 30 & gamma01 == 0.0 )
+results30_00 <- make_wide_table(results30_00)
+
+results30_04 <- results %>% filter(N2 == 30 & gamma01 == 0.4)
+results30_04 <- make_wide_table(results30_04)
+
+results60_00 <- results %>% filter(N2 == 60 & gamma01 == 0.0)
+results60_00 <- make_wide_table(results60_00)
+
+results60_04 <- results %>% filter(N2 == 60 & gamma01 == 0.4)
+results60_04 <- make_wide_table(results60_04)
+
+# results15_00 %>%
+#   kable(
+#     format = "html",
+#     caption = "Simulationsergebnisse",
+#     digits = 3,
+#     col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
+#   ) %>%
+#   add_header_above(c(
+#       " " = 1,          # ID + parameter bleiben leer
+#       "CD" = 3,
+#       "LD" = 3,
+#       "MI-R" = 3,
+#       "MI-a" = 3,
+#       "Bayes" = 3
+#     )) %>%
+#   pack_rows(
+#     index = c("ICC = 0.1" = 4, "ICC = 0.3" = 4), latex_align = "c") %>%
+#   pack_rows(
+#     index = c("MCAR" = 2, "MAR" = 2, "MCAR" = 2, "MAR" = 2)) %>%
+#   kable_styling(full_width = FALSE, position = "center")

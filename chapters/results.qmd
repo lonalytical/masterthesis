@@ -1,4 +1,28 @@
 ---
 title: "Results"
 ---
+options(kableExtra.latex.load_packages = FALSE)
 
+```{r}
+echo = FALSE
+source(here::here("code/table_script.R"))
+
+results15_00 %>%
+  kable(
+    format = "latex",
+    caption = "Simulation results (N2 = 15, $\\gamma_{01}$ = 0.0)",
+    escape = FALSE,
+    booktabs = TRUE,
+    digits = 3,
+    col.names = c("", rep(c("Bias","Cov","SD"), times = 5))
+  ) %>%
+  add_header_above(c(
+    " " = 1,
+    "CD" = 3, "LD" = 3, "MI-R" = 3, "MI-a" = 3, "Bayes" = 3
+  )) %>%
+  pack_rows(index = c("ICC = 0.1" = 4, "ICC = 0.3" = 4),
+            latex_align = "c") %>%
+  pack_rows(index = c("MCAR" = 2, "MAR" = 2, "MCAR" = 2, "MAR" = 2)) %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  landscape()
+```
