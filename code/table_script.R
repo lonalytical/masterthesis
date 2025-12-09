@@ -44,37 +44,16 @@ results15_00 <- results %>% filter(N2 == 15 & gamma01 == 0.0)
 results15_00 <- make_wide_table(results15_00)[,-1]
 
 results15_04 <- results %>% filter(N2 == 15 & gamma01 == 0.4)
-results15_04 <- make_wide_table(results15_04)
+results15_04 <- make_wide_table(results15_04)[,-1]
 
-results30_00 <- results %>% filter(N2 == 30 & gamma01 == 0.0 )
-results30_00 <- make_wide_table(results30_00)
+results30_00<- results %>% filter(N2 == 30 & gamma01 == 0.0 )
+results30_00 <- make_wide_table(results30_00)[,-1]
 
 results30_04 <- results %>% filter(N2 == 30 & gamma01 == 0.4)
-results30_04 <- make_wide_table(results30_04)
+results30_04 <- make_wide_table(results30_04)[,-1]
 
 results60_00 <- results %>% filter(N2 == 60 & gamma01 == 0.0)
-results60_00 <- make_wide_table(results60_00)
+results60_00 <- make_wide_table(results60_00)[,-1]
 
 results60_04 <- results %>% filter(N2 == 60 & gamma01 == 0.4)
-results60_04 <- make_wide_table(results60_04)
-
-# results15_00 %>%
-#   kable(
-#     format = "html",
-#     caption = "Simulationsergebnisse",
-#     digits = 3,
-#     col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
-#   ) %>%
-#   add_header_above(c(
-#       " " = 1,          # ID + parameter bleiben leer
-#       "CD" = 3,
-#       "LD" = 3,
-#       "MI-R" = 3,
-#       "MI-a" = 3,
-#       "Bayes" = 3
-#     )) %>%
-#   pack_rows(
-#     index = c("ICC = 0.1" = 4, "ICC = 0.3" = 4), latex_align = "c") %>%
-#   pack_rows(
-#     index = c("MCAR" = 2, "MAR" = 2, "MCAR" = 2, "MAR" = 2)) %>%
-#   kable_styling(full_width = FALSE, position = "center")
+results60_04 <- make_wide_table(results60_04)[,-1]
