@@ -10,36 +10,20 @@ library(tidyr)
 library(knitr)
 library(kableExtra) # for arranging the tables
 
+# read in function for wide tables
+source(file = here("code", "functions", "make-wide-table_function.R"))
+
 # read in results
 results <- read.table(file = here("results", "summarized_simulation-results.csv"))
+
 
 # greek letters for gammas
 results$parameter <- ifelse(
   results$parameter == "gamma01", "$\\gamma_{01}$",
   "$\\gamma_{10}$"
 )
-# prepare row information of conditions
-block_info <- results %>%
-  distinct(ID, parameter, gamma01, ICC, beta)
 
-# transform results to wide format
-make_wide_table <- function(data, methods_order = c("CD","LD","MI-R","MI-a","bayes")) {
-
-  stats <- c("bias","coverage","empSE")
-  new_order <- unlist(lapply(methods_order, function(m) paste0(m, "_", stats)))
-  
-  wide_table <- data %>%
-    pivot_wider(
-      id_cols = c(ID, parameter),
-      names_from = method,
-      values_from = c(bias, coverage, empSE),
-      names_glue = "{method}_{.value}"
-    ) %>%
-    select(ID, parameter, all_of(new_order))
-  
-  return(wide_table)
-}
-# create tables
+# create tables for tables
 results15_00 <- results %>% filter(N2 == 15 & gamma01 == 0.0)
 results15_00 <- make_wide_table(results15_00)[,-1]
 
@@ -57,3 +41,4 @@ results60_00 <- make_wide_table(results60_00)[,-1]
 
 results60_04 <- results %>% filter(N2 == 60 & gamma01 == 0.4)
 results60_04 <- make_wide_table(results60_04)[,-1]
+

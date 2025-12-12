@@ -23,7 +23,7 @@ res <- do.call(rbind, res.list)
 # calculate coverage (yes/no) per run
 ## setting true value per run
 res$true <- NA
-res$true[res$parameter == "gamma10"] <- 0.3
+res$true[res$parameter == "gamma10"] <- 0.2
 res$true[res$parameter == "gamma01"] <- res$gamma01[res$parameter == "gamma01"]
 ## look up if CI contains true value
 res$cov <- (res$ci_l <= res$true) & (res$ci_u >= res$true)
