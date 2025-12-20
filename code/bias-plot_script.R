@@ -104,3 +104,4 @@ ggplot(results_bias60, aes(x = ID, y = bias, fill = method)) +
     fill = "Methode"
   ) +
   theme_minimal(base_size = 14)
+

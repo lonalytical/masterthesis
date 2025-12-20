@@ -3,6 +3,13 @@ title: "Results"
 ---
 Results text
 ```{r, results='asis', echo=FALSE, message=FALSE}
+source(here::here("code/bias-plot_script.R"))
+ggplot
+
+
+```
+
+```{r, results='asis', echo=FALSE, message=FALSE}
 source(here::here("code/table_script.R"))
 
 # List of tables
