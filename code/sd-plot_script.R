@@ -1,6 +1,6 @@
 ########### Coverage plots for MI-R and MI-a ###########
 
-here::i_am("code/cov-plot_script.R")
+here::i_am("code/sd-plot_script.R")
 
 # packages
 library(here)
@@ -16,31 +16,21 @@ info15l <- make_condition_table(results, N2_filter = 15)
 info30l <- make_condition_table(results, N2_filter = 30)
 info60l <- make_condition_table(results, N2_filter = 60)
 
-source(file = here("code", "functions", "coverage-plot_function.R"))
+source(file = here("code", "functions", "plot-empSE_function.R"))
 
 # prepare row information of conditions for looking up
 block_info <- results %>%
   distinct(ID, parameter, gamma01, ICC, beta)
 
-# make plots with only MI-R and MI-a
-plot_cov15_MI <- plot_cov(results, info15l, N2_filter = 15,
-                          methods = c("MI-R", "MI-a"))
+# make plots
 
-plot_cov30_MI <- plot_cov(results, info30l, N2_filter = 30,
-                          methods = c("MI-R", "MI-a"))
-
-
-plot_cov60_MI <- plot_cov(results, info60l, N2_filter = 60,
-                          methods = c("MI-R", "MI-a"))
-
-
-plot_cov15_all <- plot_cov(results, info15l, N2_filter = 15,
+plot_se15 <- plot_sd(results, info15l, N2_filter = 15,
                            methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
 
-plot_cov30_all <- plot_cov(results, info30l, N2_filter = 30,
+plot_se30 <- plot_sd(results, info30l, N2_filter = 30,
                            methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
 
-plot_cov60_all <- plot_cov(results, info60l, N2_filter = 60,
+plot_se60 <- plot_sd(results, info60l, N2_filter = 60,
                            methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
 
 

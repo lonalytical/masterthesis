@@ -9,58 +9,26 @@ library(tidyr)
 library(knitr)
 library(ggplot2)
 
+# read in functions
+source(file = here("code", "functions", "condition-table_function.R"))
+source(file = here("code", "functions", "make-bias-data_function.R"))
 
-# read in function for wide tables
-source(file = here("code", "functions", "make-wide-table_function.R"))
-
-# read in results
+# read in results and create tables
 results <- read.table(file = here("results", "summarized_simulation-results.csv"))
+info15l <- make_condition_table(results, N2_filter = 15)
+info30l <- make_condition_table(results, N2_filter = 30)
+info60l <- make_condition_table(results, N2_filter = 60)
+
+results_bias15 <- make_bias_data(results, N2_filter = 15)
+results_bias30 <- make_bias_data(results, N2_filter = 30)
+results_bias60 <- make_bias_data(results, N2_filter = 60)
 
 # prepare row information of conditions for looking up
 block_info <- results %>%
-  distinct(ID, parameter, gamma01, ICC, beta)
-
-#create tables for bias plots N2= 15
-results_bias15 <- results %>% filter(N2 == 15, parameter == "gamma01")
-results_bias15 <- results_bias15[,c("ID", "method", "ICC", "beta", "gamma01", "bias", "mcse_bias")]
-
-results_bias15 <- results_bias15 %>% # add MCSE-intervals
-  mutate(
-    lower = bias - 2 * mcse_bias,
-    upper = bias + 2 * mcse_bias,
-    method = factor(method, 
-                    levels = c("CD", "LD", "MI-R", "MI-a", "bayes")),
-    ID = factor(ID)
-  )
-
-#create tables for bias plots N2= 30
-results_bias30 <- results %>% filter(N2 == 30, parameter == "gamma01")
-results_bias30 <- results_bias30[,c("ID", "method", "ICC", "beta", "gamma01", "bias", "mcse_bias")]
-
-results_bias30 <- results_bias30 %>% # add MCSE-intervals
-  mutate(
-    lower = bias - 2 * mcse_bias,
-    upper = bias + 2 * mcse_bias,
-    method = factor(method, 
-                    levels = c("CD", "LD", "MI-R", "MI-a", "bayes")),
-    ID = factor(ID)
-  )
-
-#create tables for bias plots N2= 60
-results_bias60 <- results %>% filter(N2 == 60, parameter == "gamma01")
-results_bias60 <- results_bias60[,c("ID", "method", "ICC", "beta", "gamma01", "bias", "mcse_bias")]
-
-results_bias60 <- results_bias60 %>% # add MCSE-intervals
-  mutate(
-    lower = bias - 2 * mcse_bias,
-    upper = bias + 2 * mcse_bias,
-    method = factor(method, 
-                    levels = c("CD", "LD", "MI-R", "MI-a", "bayes")),
-    ID = factor(ID)
-  )
+  distinct(ID, gamma01, ICC, beta)
 
 # Plot für N2 = 15
-ggplot(results_bias15, aes(x = ID, y = bias, fill = method)) +
+plotbias15 <- ggplot(results_bias15, aes(x = ID, y = bias, fill = method)) +
   geom_col(position = position_dodge(width = 0.8)) +
   geom_errorbar(
     aes(ymin = lower, ymax = upper),
@@ -68,15 +36,17 @@ ggplot(results_bias15, aes(x = ID, y = bias, fill = method)) +
     width = 0.2
   ) +
   labs(
+    title = "Bias bei N2 = 15",
     x = "Bedingung",
-    y = "Bias (mit MCSE ±2)",
+    y = "Bias (mit ±2*MCSE)",
     fill = "Methode"
   ) +
-  theme_minimal(base_size = 14)
+  scale_x_discrete(labels = apply(info15l, 2, function(x) paste(x, collapse = "\n"))) +
+  theme_minimal(base_size = 12)
 
 
 # Plot für N2 = 30
-ggplot(results_bias30, aes(x = ID, y = bias, fill = method)) +
+plotbias30 <- ggplot(results_bias30, aes(x = ID, y = bias, fill = method)) +
   geom_col(position = position_dodge(width = 0.8)) +
   geom_errorbar(
     aes(ymin = lower, ymax = upper),
@@ -84,14 +54,16 @@ ggplot(results_bias30, aes(x = ID, y = bias, fill = method)) +
     width = 0.2
   ) +
   labs(
+    title = "Bias bei N2 = 30",
     x = "Bedingung",
-    y = "Bias (mit MCSE ±2)",
+    y = "Bias (mit ±2*MCSE)",
     fill = "Methode"
   ) +
-  theme_minimal(base_size = 14)
+  scale_x_discrete(labels = apply(info30l, 2, function(x) paste(x, collapse = "\n"))) +
+  theme_minimal(base_size = 12)
 
 # Plot für N2 = 60
-ggplot(results_bias60, aes(x = ID, y = bias, fill = method)) +
+plotbias60 <- ggplot(results_bias60, aes(x = ID, y = bias, fill = method)) +
   geom_col(position = position_dodge(width = 0.8)) +
   geom_errorbar(
     aes(ymin = lower, ymax = upper),
@@ -99,9 +71,11 @@ ggplot(results_bias60, aes(x = ID, y = bias, fill = method)) +
     width = 0.2
   ) +
   labs(
+    title = "Bias bei N2 = 60",
     x = "Bedingung",
-    y = "Bias (mit MCSE ±2)",
+    y = "Bias (mit ±2*MCSE)",
     fill = "Methode"
   ) +
-  theme_minimal(base_size = 14)
+  scale_x_discrete(labels = apply(info60l, 2, function(x) paste(x, collapse = "\n"))) +
+  theme_minimal(base_size = 12)
 
