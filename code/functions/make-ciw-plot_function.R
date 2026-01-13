@@ -1,8 +1,8 @@
-### function to plot empirical SD ###
+### function to plot CI width ###
 
-plot_sd <- function(results, info_table, N2_filter,
-                    param = "gamma01",
-                    methods = c("CD", "LD", "MI-R", "MI-a", "bayes")) {
+plot_ci_width <- function(results, info_table, N2_filter,
+                          param = "gamma01",
+                          methods = c("CD", "LD", "MI-R", "MI-a", "bayes")) {
   
   library(dplyr)
   library(ggplot2)
@@ -12,10 +12,8 @@ plot_sd <- function(results, info_table, N2_filter,
     filter(parameter == param,
            N2 == N2_filter,
            method %in% methods) %>%
-    select(ID, method, ICC, beta, gamma01, empSE, mcse_empSE) %>%
+    select(ID, method, ICC, beta, gamma01, ciw) %>%
     mutate(
-      lower = empSE - 2 * mcse_empSE,
-      upper = empSE + 2 * mcse_empSE,
       method = factor(method, levels = methods),
       ID = factor(ID)
     ) %>%
@@ -25,25 +23,23 @@ plot_sd <- function(results, info_table, N2_filter,
   labels_vec <- apply(info_table, 2, function(x) paste(x, collapse = "\n"))
   
   # Plot
-  p <- ggplot(df, aes(x = ID, y = empSE, color = method, group = method)) +
+  p <- ggplot(df, aes(x = ID, y = ciw, color = method, group = method)) +
     geom_line(linewidth = 1) +
     geom_point(size = 2) +
-    geom_errorbar(aes(ymin = lower, ymax = upper),
-                  width = 0.1) +
     scale_x_discrete(labels = labels_vec) +
-    scale_y_continuous(limits=c(0, 0.35)) +
+    scale_y_continuous(limits = c(0, 1.6)) +
     labs(
       title = paste0(
-        "Emp. Standardabweichung der Schätzwerte für ",
+        "Breite der Konfidenzintervalle für ",
         param,
         ", N = ",
         N2_filter
       ),
       x = "Bedingung",
-      y = "empSE (± 2×MCSE)",
+      y = "Breite",
       color = "Methode"
     ) +
-    theme_minimal(base_size = 11) +
+    theme_minimal(base_size = 12) +
     theme(axis.text.x = element_text(vjust = 0.5, hjust = 0.5))
   
   return(p)

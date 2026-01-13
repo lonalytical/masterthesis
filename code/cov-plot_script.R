@@ -43,4 +43,14 @@ plot_cov30_all <- plot_cov(results, info30l, N2_filter = 30,
 plot_cov60_all <- plot_cov(results, info60l, N2_filter = 60,
                            methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
 
+###########################FÜR GAMMA10######################
 
+
+plot_cov15_all <- plot_cov(results, info15l, param = "gamma10", N2_filter = 15,
+                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
+
+plot_cov30_all <- plot_cov(results, info30l, param = "gamma10", N2_filter = 30,
+                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
+
+plot_cov60_all <- plot_cov(results, info60l, param = "gamma10", N2_filter = 60,
+                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))

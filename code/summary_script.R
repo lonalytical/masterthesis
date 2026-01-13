@@ -27,6 +27,7 @@ res$true[res$parameter == "gamma10"] <- 0.2
 res$true[res$parameter == "gamma01"] <- res$gamma01[res$parameter == "gamma01"]
 ## look up if CI contains true value
 res$cov <- (res$ci_l <= res$true) & (res$ci_u >= res$true)
+res$ci_w <- res$ci_u - res$ci_l
 
 # calculate aggregated measures over replications
 res_grouped <- res %>%
@@ -44,6 +45,7 @@ res_grouped <- res %>%
     coverage = mean(cov), # mean coverage across repetitions
     empSE = sd(est), # empirical standard deviation of estimations
     #rms_se = sqrt(mean(se^2)), # root mean square of model SEs
+    ciw = mean(ci_w),
     
     # MCSEs
     mcse_bias = sd(est) / sqrt(R), # empirical sd of estimates divided by sqrt of replication number
