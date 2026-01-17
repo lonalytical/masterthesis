@@ -2,3 +2,34 @@
 title: "Theory"
 ---
 
+# Multilevel models
+::: {.callout-tip icon=false}
+
+## Example
+
+Imagine that you are a researcher interested in the musical self-concept of young adults. You want to examine whether there is a connection to weekly duration of practice on their instrument.
+
+So you gather a sample. You manage to find 15 youth ensembles that contribute to your study. For simplicity, let's consider that there are 10 players in each ensemble.
+
+:::
+
+## The idea behind multilevel models
+The sampling strategy described in the example is called <em>multistage sampling</em> [snijdersMultilevelAnalysisIntroduction2012, p. 7]. It is a cost-efficient way to sample, as you can imagine how much more work it would be to sample only one person from one ensemble.  
+The resulting data is called <em>nested</em> or <em>nested</em>, which means that the units of interest (e.g., musicians) are grouped in units on a higher level (e.g., ensembles) [snijdersMultilevelAnalysisIntroduction2012, p. 7].  
+Statistically, you may not ignore this fact because it leads to dependent observations on the lower level.
+One possibility to account for this fact is the use of <em>multilevel models</em>.
+
+
+## The random intercept model with context effects
+
+
+# Small sample sizes in multilevel models
+
+# Missing data in multilevel models
+
+## Methods for handling missing data
+### Listwise Deletion
+### Full Information Maximum Likelihood
+### Bayesian Model Estimation
+### Multiple Imputation
+
