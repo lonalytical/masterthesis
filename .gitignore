@@ -41,3 +41,5 @@ vignettes/*.pdf
 # R package: bookdown caching files
 /*_files/
 /.quarto/
+
+**/*.quarto_ipynb

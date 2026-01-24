@@ -1,46 +1,153 @@
 ---
 title: "Methods"
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-## Data generation
-A simulation study was conducted to compare the methods of missing data handling. (erklären, was eine Simulationsstudie ist)
+A simulation study was conducted in order to compare the performance of
+methods for missing data handling in small-sample multilevel random
+intercept models.\
+The idea behind a simulation study is to carry out a computer experiment
+[@morrisUsingSimulationStudies2019], where data with known
+characteristics is simulated and subsequently analyzed with the methods
+of interest. The analysis results can be compared to the truth, allowing
+for assessment of the performance of the methods
+[@siepeSimulationStudiesMethodological2024].
 
-Data was generated from a parametric model with known parameters.
+Planning of the simulation study followed the ADEMP structure proposed
+by Siepe et al. [-@siepeSimulationStudiesMethodological2024] and will be
+reported based on their guidelines.
 
-## Data-generating model
+## Data generation mechanism
 
-The data-generating model was a two-level random intercept model:
-$$
-Y_{ij}\ =\gamma_{10}\ (X_{ij}\ -\ {\bar{X.}}_{j})\ +\gamma_{01}\ {\bar{X.}}_j\ +\ \gamma_{02}\ W_j\ +\ u_{0j}\ +\ e_{ij}\ 
+### Data-generating model
+
+The data-generating model is a two-level random intercept model: $$
+\begin{aligned}
+Y_{ij} =\gamma_{10} (X_{ij} - \bar{X.}_j) +\gamma_{01} \bar{X.}_j + \gamma_{02} W_j + u_{0j} + e_{ij} 
+\end{aligned}
 $$ {#eq-dgm}
-The random effects are normally distributed with
-$u_{0j}\sim\ N\left(0,\ \psi^2\right)$ and $e_{ij}\sim\ N(0,\ \sigma^2)$
-and independent of each other.<br>
-$Y_{ij}$, $X_{ij}$ and $W_{j}$ are created as z-standardized variables, which means that they have a mean of zero and a variance of 1.<br>
-First, 
 
-## Missing data generation
+$Y_{ij}$, $X_{ij}$ and $W_{j}$ are parameterized to have a mean of zero
+and a variance of 1 on the population level.\
+First, between- and within-components of $X_{ij}$ were simulated,
+independent of each other and with variances chosen to achieve a
+prespecified intraclass coefficient (see @sec-factors): $$ 
+X_{ij} = u_{Xj} + e_{Xij},
+$$ $$
+u_{X_j}\sim N(0,{\tau_x}^2), \qquad e_{X_{ij}}\sim N(0,{\sigma_x}^2) 
+$$ with ${\tau_x}^2 = ICC_x$ and ${\sigma_x}^2 = 1 - ICC_x$,
+respectively.\
+$X_{ij}$ was then group-mean-centered.\
+The group-level covariate $W_{j}$ was constructed with a linear
+regression equation to have a prespecified correlation with $\bar{X.}_j$
+($\rho_{\bar{X}W}$):
+$$ W_j=a\bar{X}_j + e_{Wj}, \qquad e_{Wj}\sim N(0,{\sigma_w}^2)  $$ The
+residual variance ${\sigma_w}^2$ and the regression coefficient $a$ are
+fully determined by the restriction that $Var(W_j) = 1$: $$
+\begin{aligned}
+{\sigma_w}^2 = 1- \rho_{\bar{X}W}^2, \\
+a =\frac{\rho_{\bar{X}W}}{\sqrt{\tau_x^2+ \frac{{\sigma_x}^2 }{n} }}
+\end{aligned}
+$$
 
-## Factors and simulation conditions
-### Constants
-### Level-2 sample size
-As the small-sample performance of the methods is of interest, three different group sizes are used:
-- N2 = 15
-- N2 = 30
-- N2 = 60
-These sizes are chosen to reflect McNeish´s [-@mcneishSmallSampleMethods2017] summary that group sizes below 25 almost certainly face issues and below 50 there is a susceptibility to small sample biases. These sample sizes should therefore cover problematic, likely problematic and not problematic magnitudes.
-### Effect size of the group-level effect {\gamma01}
-The effect size of the group-level effect of X is varied between 0.0 and 0.30. This is to investigate the performance both with a null effect of the parameter of interest as well as a substantive effect.
+Finally, the random effects on the group and the individual level were
+generated as $$u_{0j}\sim N(0,\psi^2), \qquad e_{ij}\sim N(0,\sigma^2)$$
+and independent of each other.\
+Individual and group residual variances of $Y_{ij}$ are determined by
+the constraints of a prespecified residual $ICC$ of $Y_{ij}$,
+$Var(Y_{ij}) = 1$ and $Var(X_{ij}) = 1$[^methods-1]:
+$$ \psi^2 = ICC_{Y|X,W} \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2}{n_j})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n_j}) } $$
+$$
+\begin{aligned}
+\sigma^2 = (1 - ICC_{Y|X,W}) \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2 }{n_j})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n_j}) }
+\end{aligned}
+$$ The full derivation of these equations is provided in @sec-appA.
 
-### ICC of X and residual Y
-### Missing data mechanism
-Missing data mechanism is set to either MCAR or MAR. For MAR, the strength of relationship between W and missing of X is set to 0.4, which corresponds to 0.4^2 % 100% explanation of variance in missingness through W.
+[^methods-1]: as well as setting $\gamma_{02}$ to be zero across all
+    conditions, see @sec-factors
 
-## Methods of missing data handling
+### Missing data generation
 
-### Estimands
+After simulation of the complete dataset, values of the $X$-variable
+have been deleted to simulate missingness. Following an approach by
+Grund (2023, unpublished HTML-Document), a 'missingness tendency' $r$
+was simulated for each $X$-value according to this equation: $$ 
+\begin{aligned}
+r_{ij}=\alpha+\beta W_j+e_{ij}, \qquad e_{ij}\sim N(0,1-\beta^2)
+\end{aligned}
+$$ $r_{ij}$ is a normally distributed, continuous variable. When
+$r_{ij} > 0$, the $ij$-person´s $X$-value was deleted.\
+The intercept $\alpha$ controls the proportion of missingness in $X$,
+whereas the slope $\beta$ determines the strength of the
+missing-at-random mechanism. When $\beta = 0$, missingness is completely
+at random (MCAR). With increasing $\beta$, the missingness mechanism
+becomes more dependent on the $W$-values; with $\beta = 1$, missingness
+would be completely deterministic.
+
+### Factors of the data-generating mechanism {#sec-factors}
+
+A summary of simulation conditions is provided in @tbl-sim-settings. 
+```{r, results='asis', echo=FALSE, message=FALSE}
+#| label: tbl-sim-settings
+#| tbl-cap: "Simulation conditions for the Data-Generating Model and the Generation of Missing Values"
+library(dplyr)
+library(knitr)
+library(kableExtra)
+tab.cond <- data.frame(
+  Parameter = c(
+    "$N_1$", "$N_2$", "ICC of $X$ and $Y$", "Correlation $\\bar{X}W$",
+    "Effect of $(X_{ij}-\\bar{X}_{.j})$", "Effect of $\\bar{X}_{.j}$", "Effect of $W_j$", "Pattern", "Mechanism", "Proportion"
+  ),
+  
+  Value = c(
+    "10",
+    "15 / 30 / 60",
+    ".1 / .3",
+    ".3",
+    ".2",
+    "0 / .4",
+    "0",
+    "$X \\sim W$",
+    "MCAR / MAR",
+    ".3"
+  )
+)
+
+kable(tab.cond, 
+      format = "latex",
+      escape = FALSE, 
+      booktabs = TRUE,
+      col.names = NULL, 
+      align = c("l","l")
+) %>%
+  kable_styling(
+    font_size = 8,
+    full_width = FALSE,
+    position = "center", 
+    latex_options = c("hold_position")) %>%
+  pack_rows(index = c("Data conditions" = 4, "Model parameters" = 3, "Missing values" = 3)
+)
+```
+The number of Level-2 units was manipulated across conditions ($N_2 = 15, 30, 60$), while the number of Level-1 observations was kept constant ($N_1 = 10$). 
+The between-cluster effect of $\bar{X}_{.j}$ was varied ($\gamma_{01} = 0, .40$), whereas the within-cluster effect of ($X_{ij}-\bar{X}_{.j}$) was held constant at $.20$ and the effect of $W_{j}$ was set to zero. This results in conditions with either a negative and a positive context effect (i.e., $\gamma_{10} - \gamma_{01}$) of $X$ in the population model.
+The ICC of $X$ and the residual ICC of $Y$ were varied ($\rho_X = \rho_{Y|X} = .10, .30$). Missing data were generated on X with a varying missingness mechanism (MCAR or MAR with a strength of $\beta = .30$), with a constant missingness rate of $30 \%$.
+The factors were combined fully factorial, creating $3 \times 2 \times 2 \times 2 = 24$ conditions.  
+All in all, these settings reflect a number of the typical applications in cross-sectional and longitudinal applied research (e.g., smaller and larger intraclass correlation coefficients (ICC) and level-two sample sizes). They also create sufficient methodological variation to evaluate the properties of the methods of interest (e.g., null versus substantial effects).
+
+### Methods of missing data handling
+
+### Estimands of the focal analysis model
+The focal analysis model is
+$$
+\begin{aligned}
+Y_{ij} =\gamma_{10} (X_{ij} - \bar{X.}_j) +\gamma_{01} \bar{X.}_j + u_{0j} + e_{ij} 
+\end{aligned}
+$$ {#eq-fam}
+
+The primary target is the Level-2-effect, $\gamma_{01}$. Additionally, the Level-1-effect $\gamma_{10}$ was evaluated.
 
 ### Performance measures
 
-
-## Execution of simulation
+### Execution of simulation

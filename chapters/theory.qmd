@@ -10,20 +10,24 @@ title: "Theory"
 Imagine that you are a researcher interested in the musical self-concept of young adults. You want to examine whether there is a connection to weekly duration of practice on their instrument.
 
 So you gather a sample. You manage to find 15 youth ensembles that contribute to your study. For simplicity, let's consider that there are 10 players in each ensemble.
+Each player gets a questionnaire with items about their musical self-concept and their weekly practice duration.
 
 :::
 
 ## The idea behind multilevel models
-The sampling strategy described in the example is called <em>multistage sampling</em> [snijdersMultilevelAnalysisIntroduction2012, p. 7]. It is a cost-efficient way to sample, as you can imagine how much more work it would be to sample only one person from one ensemble.  
-The resulting data is called <em>nested</em> or <em>nested</em>, which means that the units of interest (e.g., musicians) are grouped in units on a higher level (e.g., ensembles) [snijdersMultilevelAnalysisIntroduction2012, p. 7].  
-Statistically, you may not ignore this fact because it leads to dependent observations on the lower level.
-One possibility to account for this fact is the use of <em>multilevel models</em>.
+Populations like this, where units of interest (e.g., music players, students, employees) are grouped into higher-level units (e.g., ensembles, classes, firms), are common in the human social life and therefore in psychological studies.  
+The resulting data is called *nested* or *clustered* [@snijdersMultilevelAnalysisIntroduction2012, p. 7].  
+From a sampling perspective, a so-called *multistage sampling process* (sample groups first, then individuals inside these groups^[For simplicity, this thesis does not address three (or higher)-level designs.]) is not independent: After selecting a group, you will try to sample all of the members of this group, making it more likely to select one person in this group over others in non-selected groups [@snijdersMultilevelAnalysisIntroduction2012, p. 7].  Also, individuals inside the same group typically share contextual influences (e.g., the same ensemble teacher, the same class room) and thus will give more similar responses in surveys and behavior. As a consequence, the basic assumption of independence in traditional linear modeling is violated, because error terms will be correlated [@raudenbushHierarchicalLinearModels2010a, p. xx].  
+One well-suited and popular possibility to account for this fact is the use of *multilevel models* (also called *hierarchical linear models* or *mixed models*).  
+
+A multilevel model (MLM) extends regular linear regression by adding *random effects*
 
 
 ## The random intercept model with context effects
 
 
 # Small sample sizes in multilevel models
+Auch Bayesian, Raudenbush S. 399
 
 # Missing data in multilevel models
 
