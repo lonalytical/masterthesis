@@ -1,8 +1,27 @@
 ---
 title: "Results"
 ---
+The complete results for the parameters of interest are provided in tables in [@sec-appB].
 
 ## Bias of point estimation
+In line with expectations, no substantial bias was observed for the individual-level effect $\gamma_{10}$. 
+The findings for $\gamma_{01}$ are depicted in [@fig-bias]
+For $\gamma_{01}$, listwise deletion produced a substantial bias especially in low-ICC conditions, with positive bias on the null effect and negative bias on the positive between-group effect. With increasing sample size, this bias substantiates across all conditions and gets bigger in MAR conditions (see .  
+Surprisingly, bias in multiple imputation was even higher than LD-bias in conditions with low ICC and positive effect, while the Bayes method only led to bias in the toughest conditions (smallest sample size, low ICC and positive $\gamma_{01}$-effect}.
+
+```{r, results='asis', echo=FALSE, message=FALSE}
+#| label: fig-bias
+#| caption: "Figure caption"
+#| fig-asp: 1.3
+#| out-width: 100%
+library(here)
+library(ggtext)
+library(patchwork)
+source(here("code", "bias-plot_script.R"))
+wrap_plots(A = plotbias15, B = plotbias30, C = plotbias60, design = "AA\nBB\nCC")
+```
+
+
 
 ## Coverage of confidence/credible intervals
 

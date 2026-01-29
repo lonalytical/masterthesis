@@ -1,6 +1,6 @@
----
-title: "AppendixB"
----
+# Derivations of equations of data-generating model {#sec-appB}
+
+
 ```{r, results='asis', echo=FALSE, message=FALSE}
 source(here::here("code/table_script.R"))
 

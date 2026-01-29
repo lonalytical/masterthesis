@@ -2,3 +2,12 @@
 title: "Introduction"
 ---
 
+```{r}
+knitr::opts_chunk$set(
+  out.width = "70%",
+  fig.width = 6,
+  fig.asp = 0.618,
+  fig.align = "center"
+)
+
+```

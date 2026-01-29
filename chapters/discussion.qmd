@@ -2,3 +2,9 @@
 title: "Discussion"
 ---
 
+MI Diskussion Priors
+ICC .4 gewinnt doppelt:
+
+Prior passt besser
+
+mehr echte Information (weil weniger within-Varianz)

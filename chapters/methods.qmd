@@ -9,14 +9,14 @@ A simulation study was conducted in order to compare the performance of
 methods for missing data handling in small-sample multilevel random
 intercept models.\
 The idea behind a simulation study is to carry out a computer experiment
-[@morrisUsingSimulationStudies2019], where data with known
+[@morris], where data with known
 characteristics is simulated and subsequently analyzed with the methods
 of interest. The analysis results can be compared to the truth, allowing
 for assessment of the performance of the methods
-[@siepeSimulationStudiesMethodological2024].
+[@siepe].
 
 Planning of the simulation study followed the ADEMP structure proposed
-by Siepe et al. [-@siepeSimulationStudiesMethodological2024] and will be
+by Siepe et al. [-@siepe] and will be
 reported based on their guidelines.
 
 ## Data generation mechanism
@@ -136,9 +136,9 @@ The ICC of $X$ and the residual ICC of $Y$ were varied ($\rho_X = \rho_{Y|X} = .
 The factors were combined fully factorial, creating $3 \times 2 \times 2 \times 2 = 24$ conditions.  
 All in all, these settings reflect a number of the typical applications in cross-sectional and longitudinal applied research (e.g., smaller and larger intraclass correlation coefficients (ICC) and level-two sample sizes). They also create sufficient methodological variation to evaluate the properties of the methods of interest (e.g., null versus substantial effects).
 
-### Methods of missing data handling
 
-### Estimands of the focal analysis model
+
+## Estimands of the focal analysis model
 The focal analysis model is
 $$
 \begin{aligned}
@@ -148,6 +148,51 @@ $$ {#eq-fam}
 
 The primary target is the Level-2-effect, $\gamma_{01}$. Additionally, the Level-1-effect $\gamma_{10}$ was evaluated.
 
-### Performance measures
+## Methods of Missing Data Handling
+Four methods will be compared, alongside the benchmark analysis of Complete Data (CD).
 
-### Execution of simulation
+### Listwise Deletion (LD)
+Listwise Deletion was used as a standard reference method for missing data handling. Cases with missing $X$-values were excluded prior to analysis. The group means $\bar{X}_{.j}$ were then calculated only from the remaining observations. Then, group-mean centering was applied.
+
+### Multiple Imputation (MI) with standard (MI-R) and adjusted (MI-a) degrees of freedom
+For both multiple imputation methods, a joint modeling approach was employed. Although only values in $X$ were missing, the multivariate specification preserves the multilevel structure during imputation:
+$$
+\left(\begin{matrix}Y_{ij}\\X_{ij}\\W_j\\\end{matrix}\right)=\left(\begin{matrix}\beta_{0Y}\\\beta_{0X}\\\beta_{0W}\\\end{matrix}\right)+\left(\begin{matrix}u_{Yj}\\u_{Xj}\\u_{Wj}\\\end{matrix}\right)+\left(\begin{matrix}e_{Yij}\\e_{Xij}\\0\\\end{matrix}\right)
+$$
+The random effects $(u_{Yj}, u_{Xj}, u_{Wj})^{\top}$ and the residuals $(e_{Yij}, e_{Xij})^{\top}$ follow multivariate normal distributions with mean zero and covariance matrices $\Psi=\left[\ \begin{matrix}\psi_y^2&\psi_{yx}&\psi_{yw}\\\psi_{yx}&\psi_x^2&\psi_{xw}\\\psi_{yw}&\psi_{xw}&\psi_w^2\\\end{matrix}\right]$ and $\Sigma=\left[\ \begin{matrix}\sigma_y^2&\sigma_{yx}\\\sigma_{yx}&\sigma_x^2\\\end{matrix}\ \right]$
+
+$W_j$ serves as an auxiliary variable to explain missingness.  
+Imputation was executed with the R package `jomo` [@quartagnoJomoPackageMultilevel2023] with 2000 burn-in-iterations and 3000 post-burn-in iterations, saving every 300th imputation (10 imputations).  
+For MI-R, degrees of freedom for calculating the test statistic were calculated with the software standard (Rubin´s rules, assuming infinite degrees of freedom in complete data).  
+For MI-a, degrees of freedom were calculated with $df_{\gamma_{10}} = M - r - 1$ ($M$: total number of Level-1 units; $r$: total number of predictors, in the present case $2$) and $df_{\gamma_{01}} = N_2 - q - 1$ ($N_2$: number of Level-2 units; $q$: number of Level-2 predictors, here: $1$)
+
+### Fully Bayesian Analysis
+A factored regression specification was used within the Bayesian framework to allow the inclusion of the auxiliary variable $W$ while leaving the focal analysis model unchanged:
+$$ 
+g\left(y,\ x,w;\gamma\right)=g_w\left(w\middle| y,x;\gamma_w\right)\ \times\ g_y\left(y\middle| x;\gamma_y\right)\ \times\ g_x(x;\gamma_x)\ 
+$$ {#eq-frs}
+
+Here, $g_w$ is the conditional distribution of the auxiliary variable, while $g_y$ corresponds to the substantive analysis model.  
+The burn-in period was set to 1000 iterations, followed by 3000 post-burn-in iterations. The model was estimated using the package `mdmb` [@mdmb] with its default noninformative priors.
+
+### Extracted quantities
+
+For complete data, listwise deletion and both multiple imputation methods, point estimates of $\gamma_{10}$ and $\gamma_{01}$ as well as their standard errors and 95$\%$ - confidence intervals were extracted.  
+For the fully Bayesian method, the posterior means of $\gamma_{10}$ and $\gamma_{01}$ were used as point estimates along with posterior standard deviations and 95$\%$ credible intervals. For comparability with the frequentist approaches and in line with common simulation practice, these posterior summaries were treated analogously to frequentist estimates and intervals [@morris].
+
+## Performance measures
+
+Three performance measures were used for each parameter ($\gamma_{10}$ and $\gamma_{01}$):
+
+1. Bias of point estimates, defined as the difference between the parameter´s mean estimated and true value.
+1. Coverage of confidence/credible intervals, defined as the proportion of simulation repetitions that captured the true parameter value inside the CI.
+1. Standard deviation of the estimations across simulation repetitions.
+
+Monte Carlo uncertainty of the estimated performance measures was calculated using Monte Carlo Standard Errors (MCSE), using the formulas provided in Siepe et al. [-@siepe].  
+For each condition, 1000 simulation replications were used, based on comparable simulation studies [@grundMI18; @enders16] and ensuring a sufficiently small MCSE of < 1% for coverage [^methods-2: MCSE calculation for bias and standard deviation are based on the sample variance of the estimates and cannot be pre-calculated.].  
+
+The simulation was conducted in RStudio with the aim of full reproducibility, following guidelines of the repro book (ZITIEREN), e.g. by setting a seed for simulation and using reproducible package environments. The code and all relevant information for reproduction can be found in the digital version of the master thesis. (LINK ZU GITHUB)    
+
+
+
+INSGESAMT NOCH MEHR BESCHREIBEN? ALSO AUCH, WELCHE GEDANKEN ICH MIR ZUR AUSWERTUNG GEMACHT HATTE.
