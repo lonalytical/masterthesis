@@ -5,9 +5,9 @@ The complete results for the parameters of interest are provided in tables in [@
 
 ## Bias of point estimation
 In line with expectations, no substantial bias was observed for the individual-level effect $\gamma_{10}$. 
-The findings for $\gamma_{01}$ are depicted in [@fig-bias]
-For $\gamma_{01}$, listwise deletion produced a substantial bias especially in low-ICC conditions, with positive bias on the null effect and negative bias on the positive between-group effect. With increasing sample size, this bias substantiates across all conditions and gets bigger in MAR conditions (see .  
-Surprisingly, bias in multiple imputation was even higher than LD-bias in conditions with low ICC and positive effect, while the Bayes method only led to bias in the toughest conditions (smallest sample size, low ICC and positive $\gamma_{01}$-effect}.
+The findings for $\gamma_{01}$ are depicted in [@fig-bias].
+For $\gamma_{01}$, listwise deletion produced substantial bias, especially in low-ICC conditions, with positive bias for the null effect and negative bias for the positive between-group effect. With increasing sample size and under MAR condition, this bias was more pronounced.  
+Multiple imputation showed even larger bias than listwise deletion in conditions with low ICC and positive effect^[However, using alternative weakly informative priors in these conditions consistently reduced bias by roughly 30–60%.]In contrast, the Bayesian approach only led to noticeable bias in the most challenging conditions (smallest sample size, low ICC and positive $\gamma_{01}$-effect}.
 
 ```{r, results='asis', echo=FALSE, message=FALSE}
 #| label: fig-bias
@@ -15,14 +15,43 @@ Surprisingly, bias in multiple imputation was even higher than LD-bias in condit
 #| fig-asp: 1.3
 #| out-width: 100%
 library(here)
-library(ggtext)
 library(patchwork)
 source(here("code", "bias-plot_script.R"))
 wrap_plots(A = plotbias15, B = plotbias30, C = plotbias60, design = "AA\nBB\nCC")
 ```
 
-
-
 ## Coverage of confidence/credible intervals
+The coverage of the confidence and credible intervals for $\gamma_{01}$ is shown for $N_2 = 15$ in [@fig-cov], as coverage for larger sample sizes was largely within the acceptable range of 0.925–0.975.
+
+Listwise deletion yielded coverage rates close to the nominal 95% level across all conditions. For multiple imputation, the small-sample adjusted degrees of freedom resulted in increased overcoverage compared to the standard degrees of freedom, particularly when $N_2 = 15$, with a similar but weaker tendency at larger sample sizes. The Bayesian approach showed even stronger overcoverage in the smallest sample.
+
+Overall, MI with standard degrees of freedom (MI-R) and listwise deletion provided coverage closest to the nominal level, whereas noticeable deviations occurred mainly in the smallest sample for the other methods.
+
+HIER NOCH ANDERE PLOTS ODER REICHT EINER?
+ODER MAL NUR TABELLE?
+
+
+```{r, results='asis', echo=FALSE, message=FALSE}
+#| label: fig-cov
+#| caption: "Coverage"
+#| fig-asp: 0.5
+#| out-width: 80%
+# packages
+library(here)
+library(dplyr) 
+library(tidyr)
+library(knitr)
+library(ggplot2)
+
+# read in results and functions
+results <- read.table(file = here("results", "summarized_simulation-results.csv"))
+source(file = here("code", "functions", "condition-table_function.R"))
+source(file = here("code", "functions", "coverage-plot_function.R"))
+info15l <- make_condition_table(results, N2_filter = 15)
+
+plot_cov(results, info15l, N2_filter = 15,
+                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
+
+```
 
 ## Standard deviation of point estimates

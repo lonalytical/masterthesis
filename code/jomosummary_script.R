@@ -31,7 +31,7 @@ res$ci_w <- res$ci_u - res$ci_l
 
 # calculate aggregated measures over replications
 res_grouped <- res %>%
-  group_by(ID, method, parameter, ICC, N2) %>% # group replications of same conditions together
+  group_by(ID, method, parameter, ICC, N2, beta) %>% # group replications of same conditions together
   summarise(
     R = n(), # number of rows per group (= number of replications)
     

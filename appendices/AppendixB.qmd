@@ -1,4 +1,4 @@
-# Derivations of equations of data-generating model {#sec-appB}
+# Full summary of results for the performance measures {#sec-appB}
 
 
 ```{r, results='asis', echo=FALSE, message=FALSE}

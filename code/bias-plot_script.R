@@ -8,7 +8,7 @@ library(dplyr) # for data grouping
 library(tidyr)
 library(knitr)
 library(ggplot2)
-library(ggtext)
+library(latex2exp)
 
 # read in functions
 source(file = here("code", "functions", "condition-table_function.R"))
@@ -37,7 +37,7 @@ plotbias15 <- ggplot(results_bias15, aes(x = ID, y = bias, fill = method)) +
     width = 0.2
   ) +
   labs(
-    title = "$N_2 = 15$",
+    title = TeX("$N_2 = 15$"),
     x = "",
     y = "Bias (with ±2*MCSE)",
     fill = "Method"
@@ -46,8 +46,7 @@ plotbias15 <- ggplot(results_bias15, aes(x = ID, y = bias, fill = method)) +
   scale_y_continuous(limits = c(-0.10, 0.05)) +
   theme(axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
-        axis.title.x = element_blank(),
-        title = element_markdown())
+        axis.title.x = element_blank())
 
 
 # Plot für N2 = 30
@@ -59,7 +58,7 @@ plotbias30 <- ggplot(results_bias30, aes(x = ID, y = bias, fill = method)) +
     width = 0.2
   ) +
   labs(
-    title = "$$N_2 = 30$$",
+    title = TeX("$N_2 = 30$"),
     x = "Bedingung",
     y = "Bias (mit ±2*MCSE)"
   ) +
@@ -68,8 +67,7 @@ plotbias30 <- ggplot(results_bias30, aes(x = ID, y = bias, fill = method)) +
   theme(legend.position = "none", 
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
-        axis.title.x = element_blank(),
-        plot.title = element_markdown())
+        axis.title.x = element_blank())
 
 # Plot für N2 = 60
 plotbias60 <- ggplot(results_bias60, aes(x = ID, y = bias, fill = method)) +
@@ -80,14 +78,13 @@ plotbias60 <- ggplot(results_bias60, aes(x = ID, y = bias, fill = method)) +
     width = 0.2
   ) +
   labs(
-    title = "$$N_2 = 60$$",
+    title = TeX("$N_2 = 60$"),
     x = "Condition",
-    y = "Bias (mit ±2*MCSE)"
+    y = "Bias with ±2*MCSE"
   ) +
   scale_x_discrete(labels = apply(info60l, 2, function(x) paste(x, collapse = "\n"))) +
   scale_y_continuous(limits = c(-0.10, 0.05)) +
-  theme(legend.position = "none",
-        plot.title = element_markdown())
+  theme(legend.position = "none")
 # 
 # ##############################BIAS GAMMA10#######################
 # results_bias15g10 <- make_bias_data(results, param = "gamma10", N2_filter = 15)

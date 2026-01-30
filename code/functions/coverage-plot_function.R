@@ -1,15 +1,14 @@
 ### function to plot coverage deviation ##
 
 plot_cov <- function(results, info_table, N2_filter,
-                     param = "gamma01",
                      methods = c("CD", "LD", "MI-R", "MI-a", "bayes")) {
   
   library(dplyr)
   library(ggplot2)
+  library(latex2exp)
   
   df <- results %>%
-    filter(parameter == param,
-           N2 == N2_filter,
+    filter(N2 == N2_filter,
            method %in% methods) %>%
     select(ID, method, ICC, beta, gamma01, coverage, mcse_cov) %>%
     mutate(
@@ -32,15 +31,10 @@ plot_cov <- function(results, info_table, N2_filter,
     ) +
     scale_x_discrete(labels = labels_vec) +
     labs(
-      title = paste0(
-        "Coverage der Konfidenzintervalle für ",
-        param,
-        ", N = ",
-        N2_filter
-      ),
-      x = "Bedingung",
-      y = "Abweichung von 95% (± 2×MCSE)",
-      fill = "Methode"
+      title = bquote("Coverage of confidence/credible intervals for " ~ gamma[01] ~ ", " ~ N[2] ~ "= 15"),
+      x = "Condition",
+      y = "Deviation from 95% (± 2×MCSE)",
+      fill = "Method"
     ) +
     coord_cartesian(ylim = c(-0.025, 0.05)) +
     theme_minimal(base_size = 12) +

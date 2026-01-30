@@ -16,9 +16,9 @@ book:
     - chapters/results.qmd
     - chapters/discussion.qmd
     - references.qmd
-  #appendices:
+  appendices:
    # - appendices/AppendixA.qmd
-   # - appendices/AppendixB.qmd
+    - appendices/AppendixB.qmd
 
   repo-url: https://github.com/lonalytical/masterthesis
   search: true
