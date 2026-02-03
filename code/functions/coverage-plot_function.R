@@ -5,16 +5,16 @@ plot_cov <- function(results, info_table, N2_filter,
   
   library(dplyr)
   library(ggplot2)
-  library(latex2exp)
   
-  df <- results %>%
+  datf <- results %>%
     filter(N2 == N2_filter,
+           parameter == "gamma01",
            method %in% methods) %>%
     select(ID, method, ICC, beta, gamma01, coverage, mcse_cov) %>%
     mutate(
       covdev = coverage - 0.95,
-      lower = -2 * mcse_cov,
-      upper =  2 * mcse_cov,
+      lower = covdev - 2 * mcse_cov,
+      upper =  covdev + 2 * mcse_cov,
       method = factor(method, levels = methods),
       ID = factor(ID)
     ) %>%
@@ -22,7 +22,7 @@ plot_cov <- function(results, info_table, N2_filter,
   
   labels_vec <- apply(info_table, 2, function(x) paste(x, collapse = "\n"))
   
-  p <- ggplot(df, aes(x = ID, y = covdev, fill = method)) +
+  p <- ggplot(datf, aes(x = ID, y = covdev, fill = method)) +
     geom_col(position = position_dodge(width = 0.8)) +
     geom_errorbar(
       aes(ymin = lower, ymax = upper),
@@ -31,7 +31,7 @@ plot_cov <- function(results, info_table, N2_filter,
     ) +
     scale_x_discrete(labels = labels_vec) +
     labs(
-      title = bquote("Coverage of confidence/credible intervals for " ~ gamma[01] ~ ", " ~ N[2] ~ "= 15"),
+      title = bquote("Coverage of confidence/credible intervals for " ~ gamma["01"] ~ ", " ~ N[2] == 15),
       x = "Condition",
       y = "Deviation from 95% (± 2×MCSE)",
       fill = "Method"

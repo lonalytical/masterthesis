@@ -9,11 +9,11 @@ The findings for $\gamma_{01}$ are depicted in [@fig-bias].
 For $\gamma_{01}$, listwise deletion produced substantial bias, especially in low-ICC conditions, with positive bias for the null effect and negative bias for the positive between-group effect. With increasing sample size and under MAR condition, this bias was more pronounced.  
 Multiple imputation showed even larger bias than listwise deletion in conditions with low ICC and positive effect^[However, using alternative weakly informative priors in these conditions consistently reduced bias by roughly 30–60%.]In contrast, the Bayesian approach only led to noticeable bias in the most challenging conditions (smallest sample size, low ICC and positive $\gamma_{01}$-effect}.
 
-```{r, results='asis', echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE}
 #| label: fig-bias
-#| caption: "Figure caption"
+#| fig.cap: "Figure caption"
 #| fig-asp: 1.3
-#| out-width: 100%
+#| out-width: 70%
 library(here)
 library(patchwork)
 source(here("code", "bias-plot_script.R"))
@@ -31,11 +31,11 @@ HIER NOCH ANDERE PLOTS ODER REICHT EINER?
 ODER MAL NUR TABELLE?
 
 
-```{r, results='asis', echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE}
 #| label: fig-cov
-#| caption: "Coverage"
+#| fig.cap: "Coverage   ---- "
 #| fig-asp: 0.5
-#| out-width: 80%
+#| out-width: 90%
 # packages
 library(here)
 library(dplyr) 
@@ -45,13 +45,69 @@ library(ggplot2)
 
 # read in results and functions
 results <- read.table(file = here("results", "summarized_simulation-results.csv"))
-source(file = here("code", "functions", "condition-table_function.R"))
-source(file = here("code", "functions", "coverage-plot_function.R"))
-info15l <- make_condition_table(results, N2_filter = 15)
 
-plot_cov(results, info15l, N2_filter = 15,
-                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
+#filter data and calculate deviation from zero
+  datf <- results %>%
+    filter(N2 == 15,
+           parameter == "gamma01") %>%
+    select(ID, method, ICC, beta, gamma01, coverage, mcse_cov) %>%
+    mutate(
+      MM = ifelse(beta == 0, "MCAR", "MAR"),
+      covdev = coverage - 0.95,
+      lower = covdev - 2 * mcse_cov,
+      upper =  covdev + 2 * mcse_cov,
+      ID = factor(ID),
+      method = factor(method, levels = c("CD", "LD", "MI-R", "MI-a", "bayes"))
+    ) %>%
+    arrange(ID, method)
+  
+  ggplot(datf, aes(x = method, y = covdev, fill = method)) +
+    geom_col(width = 0.7)+
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
+    facet_grid(ICC ~ MM + gamma01,
+             labeller = labeller(
+                ICC = \(x) paste0("ICC = ", x),
+                gamma01 = \(x) paste0("ES = ", x),
+                MM = label_value
+             )) +
+    geom_hline(yintercept = 0) +
+    labs(
+      title = bquote("Coverage of 95% confidence/credible intervals for" ~ gamma["01"]),
+      x = "",
+      y = "Deviation from 95% (± 2×MCSE)",
+      fill = "Method"
+    ) +
+     theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank())
 
 ```
 
 ## Standard deviation of point estimates
+Other than complete data leading to smallest SD across all conditions, there are no substantial differences between methods for the parameter $\gamma_{10}$.  
+Interestingly, for $\gamma_{10}$, standard deviation of point estimates across simulation repetitions is smallest for multiple imputation in low-ICC conditions and similar to complete data analysis for high-ICC, whereas the Bayesian approach produced the largest standard deviations across all conditions (see @fig-sd). A tendency for a pattern is visible: Multiple imputation standard deviations get smaller with a low ICC, whereas in the Bayesian approach, they are smaller with a high ICC for $N_2 = 30$ and $N_2 = 60$.
+Listwise deletion shows very similar results to complete data analysis regarding standard deviation.  
+Differences between methods are overall quite small, with MI SD being smaller than Bayes SD by a maximum of ~14,5%.
+
+
+```{r echo=FALSE, message=FALSE}
+#| label: fig-sd
+#| fig.cap: "blablabalbslsd"
+#| fig-asp: 0.7
+#| out-width: 100%
+
+# packages
+library(here)
+library(dplyr) # for data grouping
+library(tidyr)
+library(knitr)
+library(ggplot2)
+
+# read in script
+source(file = here("code", "sd-plot_script.R"))
+
+# make plot
+print(sd_plot)
+
+```
+
