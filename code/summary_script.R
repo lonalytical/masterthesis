@@ -44,14 +44,14 @@ res_grouped <- res %>%
     rel_bias = ifelse(unique(true) != 0, bias / unique(true), NA), # relative bias for conditions with non-zero effect
     coverage = mean(cov), # mean coverage across repetitions
     empSE = sd(est), # empirical standard deviation of estimations
-    #rms_se = sqrt(mean(se^2)), # root mean square of model SEs
-    ciw = mean(ci_w),
+    ciw = mean(ci_w), # width of CI
     
     # MCSEs
     mcse_bias = sd(est) / sqrt(R), # empirical sd of estimates divided by sqrt of replication number
     mcse_cov = sqrt(coverage*(1-coverage)/R),
     mcse_empSE = empSE / sqrt(2*(R-1)),
-    #mcse_rms_se = sqrt(var(se^2)/(4 * R * mean(se^2))), # Morris formula for MCSE of average modSE
+    mcse_ciw = sd(ci_w) / sqrt(R),
+    
     
     .groups = "drop" # erase grouping at the end
     )

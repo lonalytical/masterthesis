@@ -1,0 +1,54 @@
+# Sensitivity analysis for bias in multiple imputation {#sec-appC}
+
+In this analysis, for the conditions when multiple imputation produced the highest bias, i.e. when $ICC = 0.1$ and $\gamma_{01} = .4$, alternative inverse Wishart priors were specified for the level-2 covariance matrix based on the true parameter values:  
+
+$$
+\tau_{\text{guess}} =
+\begin{bmatrix}
+.1 & 0   & 0 \\
+0   & .1 & 0 \\
+0   & 0   & 1
+\end{bmatrix}
+$$
+
+This corresponds to the two standardized Level-1 variables $Y$ and $X$ and the Level-2 variable $\bar{X}$.
+
+The covariance prior was defined as
+
+$$
+\boldsymbol{\tau} \sim \mathcal{IW}(\nu, \mathbf{S}),
+\qquad
+\mathbf{S} = 3\,\boldsymbol{\tau}_{\text{guess}}
+$$
+Summarized results of this analysis can be found in @tbl-jomo.
+
+```{r, results='asis', echo=FALSE, message=FALSE}
+#| label: tbl-jomo
+#| tbl-cap: "Bias reduction with alternative priors"
+library(here)
+jomotable <- read.table(here("results", "jomotable.csv"))
+library(kableExtra)
+library(dplyr)
+jomotable %>%
+  select(-beta) %>%
+  kable(
+    format = "latex",
+    escape = TRUE,
+    booktabs = TRUE,
+    align = "c",
+    col.names = c("N2", "Bias ui", "rel. Bias ui", "Bias wi", "rel. Bias wi", "Bias red.")
+  ) %>%
+  pack_rows(index = c("MCAR" = 3, "MAR" = 3)) %>%
+  column_spec(1:6, width = "1.8cm") %>%
+  kable_styling(full_width = FALSE, 
+                position = "center", 
+                latex_options = "hold_position") %>%
+  landscape() %>%
+  row_spec(0, bold=TRUE) %>%
+  footnote(
+    general = "Fußnote zur Erklärung TEst",
+    threeparttable = TRUE
+  ) %>%
+  print()
+
+```

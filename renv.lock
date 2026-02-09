@@ -517,10 +517,11 @@
     },
     "base64enc": {
       "Package": "base64enc",
-      "Version": "0.1-3",
+      "Version": "0.1-6",
       "Source": "Repository",
-      "Title": "Tools for base64 encoding",
-      "Author": "Simon Urbanek <Simon.Urbanek@r-project.org>",
+      "Title": "Tools for 'base64' Encoding",
+      "Author": "Simon Urbanek [aut, cre, cph] (https://urbanek.nz, ORCID: <https://orcid.org/0000-0003-2297-1732>)",
+      "Authors@R": "person(\"Simon\", \"Urbanek\", role=c(\"aut\",\"cre\",\"cph\"), email=\"Simon.Urbanek@r-project.org\", comment=c(\"https://urbanek.nz\", ORCID=\"0000-0003-2297-1732\"))",
       "Maintainer": "Simon Urbanek <Simon.Urbanek@r-project.org>",
       "Depends": [
         "R (>= 2.9.0)"
@@ -528,9 +529,10 @@
       "Enhances": [
         "png"
       ],
-      "Description": "This package provides tools for handling base64 encoding. It is more flexible than the orphaned base64 package.",
+      "Description": "Tools for handling 'base64' encoding. It is more flexible than the orphaned 'base64' package.",
       "License": "GPL-2 | GPL-3",
-      "URL": "http://www.rforge.net/base64enc",
+      "URL": "https://www.rforge.net/base64enc",
+      "BugReports": "https://github.com/s-u/base64enc/issues",
       "NeedsCompilation": "yes",
       "Repository": "CRAN",
       "Encoding": "UTF-8"
@@ -1063,7 +1065,7 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "1.1.4",
+      "Version": "1.2.0",
       "Source": "Repository",
       "Type": "Package",
       "Title": "A Grammar of Data Manipulation",
@@ -1073,27 +1075,25 @@
       "URL": "https://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr",
       "BugReports": "https://github.com/tidyverse/dplyr/issues",
       "Depends": [
-        "R (>= 3.5.0)"
+        "R (>= 4.1.0)"
       ],
       "Imports": [
-        "cli (>= 3.4.0)",
+        "cli (>= 3.6.2)",
         "generics",
         "glue (>= 1.3.2)",
-        "lifecycle (>= 1.0.3)",
+        "lifecycle (>= 1.0.5)",
         "magrittr (>= 1.5)",
         "methods",
         "pillar (>= 1.9.0)",
         "R6",
-        "rlang (>= 1.1.0)",
+        "rlang (>= 1.1.7)",
         "tibble (>= 3.2.0)",
         "tidyselect (>= 1.2.0)",
         "utils",
-        "vctrs (>= 0.6.4)"
+        "vctrs (>= 0.7.1)"
       ],
       "Suggests": [
-        "bench",
         "broom",
-        "callr",
         "covr",
         "DBI",
         "dbplyr (>= 2.2.1)",
@@ -1101,12 +1101,9 @@
         "knitr",
         "Lahman",
         "lobstr",
-        "microbenchmark",
         "nycflights13",
         "purrr",
         "rmarkdown",
-        "RMySQL",
-        "RPostgreSQL",
         "RSQLite",
         "stringi (>= 1.7.6)",
         "testthat (>= 3.1.5)",
@@ -1114,13 +1111,14 @@
         "withr"
       ],
       "VignetteBuilder": "knitr",
-      "Config/Needs/website": "tidyverse, shiny, pkgdown, tidyverse/tidytemplate",
+      "Config/build/compilation-database": "true",
+      "Config/Needs/website": "tidyverse/tidytemplate",
       "Config/testthat/edition": "3",
       "Encoding": "UTF-8",
       "LazyData": "true",
-      "RoxygenNote": "7.2.3",
+      "RoxygenNote": "7.3.3",
       "NeedsCompilation": "yes",
-      "Author": "Hadley Wickham [aut, cre] (<https://orcid.org/0000-0003-4757-117X>), Romain François [aut] (<https://orcid.org/0000-0002-2444-4226>), Lionel Henry [aut], Kirill Müller [aut] (<https://orcid.org/0000-0002-1416-3412>), Davis Vaughan [aut] (<https://orcid.org/0000-0003-4777-038X>), Posit Software, PBC [cph, fnd]",
+      "Author": "Hadley Wickham [aut, cre] (ORCID: <https://orcid.org/0000-0003-4757-117X>), Romain François [aut] (ORCID: <https://orcid.org/0000-0002-2444-4226>), Lionel Henry [aut], Kirill Müller [aut] (ORCID: <https://orcid.org/0000-0002-1416-3412>), Davis Vaughan [aut] (ORCID: <https://orcid.org/0000-0003-4777-038X>), Posit Software, PBC [cph, fnd]",
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
       "Repository": "CRAN"
     },
@@ -1390,9 +1388,54 @@
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
       "Repository": "CRAN"
     },
+    "ggh4x": {
+      "Package": "ggh4x",
+      "Version": "0.3.1",
+      "Source": "Repository",
+      "Title": "Hacks for 'ggplot2'",
+      "Authors@R": "person(given = \"Teun\", family = \"van den Brand\", role = c(\"aut\", \"cre\"), email = \"tahvdbrand@gmail.com\", comment = c(ORCID = \"0000-0002-9335-7468\"))",
+      "Description": "A 'ggplot2' extension that does a variety of little helpful things.  The package extends 'ggplot2' facets through customisation, by setting individual scales per panel, resizing panels and providing nested facets.  Also allows multiple colour and fill scales per plot. Also hosts a smaller collection of stats, geoms and axis  guides.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://github.com/teunbrand/ggh4x, https://teunbrand.github.io/ggh4x/",
+      "BugReports": "https://github.com/teunbrand/ggh4x/issues",
+      "Depends": [
+        "ggplot2 (>= 3.5.2)"
+      ],
+      "Imports": [
+        "grid",
+        "gtable",
+        "scales",
+        "vctrs (>= 0.5.0)",
+        "rlang (>= 1.1.0)",
+        "lifecycle",
+        "stats",
+        "cli",
+        "S7"
+      ],
+      "Suggests": [
+        "covr",
+        "fitdistrplus",
+        "ggdendro",
+        "vdiffr",
+        "knitr",
+        "MASS",
+        "rmarkdown",
+        "testthat (>= 3.0.0)",
+        "utils"
+      ],
+      "VignetteBuilder": "knitr",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "Config/testthat/edition": "3",
+      "Collate": "'at_panel.R' 'borrowed_ggplot2.R' 'conveniences.R' 'ggh4x_extensions.R' 'coord_axes_inside.R' 'deprecated.R' 'element_part_rect.R' 'facet_grid2.R' 'facet_wrap2.R' 'facet_manual.R' 'facet_nested.R' 'facet_nested_wrap.R' 'facetted_pos_scales.R' 'force_panelsize.R' 'geom_box.R' 'geom_outline_point.R' 'geom_pointpath.R' 'geom_polygonraster.R' 'geom_rectrug.R' 'geom_text_aimed.R' 'ggh4x-package.R' 'guide_stringlegend.R' 'help_secondary.R' 'position_disjoint_ranges.R' 'position_lineartrans.R' 'scale_facet.R' 'scale_listed.R' 'scale_manual.R' 'scale_multi.R' 'stat_difference.R' 'stat_funxy.R' 'stat_rle.R' 'stat_roll.R' 'stat_theodensity.R' 'strip_vanilla.R' 'strip_themed.R' 'strip_nested.R' 'strip_split.R' 'strip_tag.R' 'themes.R' 'utils.R' 'utils_grid.R' 'utils_gtable.R'",
+      "NeedsCompilation": "no",
+      "Author": "Teun van den Brand [aut, cre] (ORCID: <https://orcid.org/0000-0002-9335-7468>)",
+      "Maintainer": "Teun van den Brand <tahvdbrand@gmail.com>",
+      "Repository": "CRAN"
+    },
     "ggplot2": {
       "Package": "ggplot2",
-      "Version": "4.0.1",
+      "Version": "4.0.2",
       "Source": "Repository",
       "Title": "Create Elegant Data Visualisations Using the Grammar of Graphics",
       "Authors@R": "c( person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\", comment = c(ORCID = \"0000-0003-4757-117X\")), person(\"Winston\", \"Chang\", role = \"aut\", comment = c(ORCID = \"0000-0002-1576-2126\")), person(\"Lionel\", \"Henry\", role = \"aut\"), person(\"Thomas Lin\", \"Pedersen\", , \"thomas.pedersen@posit.co\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-5147-4711\")), person(\"Kohske\", \"Takahashi\", role = \"aut\"), person(\"Claus\", \"Wilke\", role = \"aut\", comment = c(ORCID = \"0000-0002-7470-9261\")), person(\"Kara\", \"Woo\", role = \"aut\", comment = c(ORCID = \"0000-0002-5125-4188\")), person(\"Hiroaki\", \"Yutani\", role = \"aut\", comment = c(ORCID = \"0000-0002-3385-7233\")), person(\"Dewey\", \"Dunnington\", role = \"aut\", comment = c(ORCID = \"0000-0002-9415-4582\")), person(\"Teun\", \"van den Brand\", role = \"aut\", comment = c(ORCID = \"0000-0002-9335-7468\")), person(\"Posit, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
@@ -2059,42 +2102,6 @@
       ],
       "Repository": "CRAN",
       "Encoding": "UTF-8"
-    },
-    "latex2exp": {
-      "Package": "latex2exp",
-      "Version": "0.9.8",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Use LaTeX Expressions in Plots",
-      "Date": "2024-07-05",
-      "Authors@R": "person(\"Stefano\", \"Meschiari\", email=\"stefano.meschiari@gmail.com\", role=c(\"aut\", \"cre\"))",
-      "Description": "Parses and converts LaTeX math formulas to R's plotmath expressions, used to enter mathematical formulas and symbols to be rendered as text, axis labels, etc. throughout R's plotting system.",
-      "License": "MIT + file LICENSE",
-      "URL": "https://www.stefanom.io/latex2exp/, https://github.com/stefano-meschiari/latex2exp",
-      "BugReports": "https://github.com/stefano-meschiari/latex2exp/issues",
-      "Encoding": "UTF-8",
-      "Suggests": [
-        "tools",
-        "testthat",
-        "waldo",
-        "knitr",
-        "ggplot2",
-        "rmarkdown",
-        "purrr",
-        "tibble",
-        "reactable",
-        "htmltools",
-        "RCurl",
-        "rlang",
-        "dplyr"
-      ],
-      "VignetteBuilder": "knitr",
-      "RoxygenNote": "7.2.3",
-      "Language": "en-US",
-      "NeedsCompilation": "no",
-      "Author": "Stefano Meschiari [aut, cre]",
-      "Maintainer": "Stefano Meschiari <stefano.meschiari@gmail.com>",
-      "Repository": "CRAN"
     },
     "lattice": {
       "Package": "lattice",
@@ -2781,50 +2788,6 @@
       ],
       "Encoding": "UTF-8"
     },
-    "patchwork": {
-      "Package": "patchwork",
-      "Version": "1.3.2",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "The Composer of Plots",
-      "Authors@R": "person(given = \"Thomas Lin\", family = \"Pedersen\", role = c(\"cre\", \"aut\"), email = \"thomasp85@gmail.com\", comment = c(ORCID = \"0000-0002-5147-4711\"))",
-      "Maintainer": "Thomas Lin Pedersen <thomasp85@gmail.com>",
-      "Description": "The 'ggplot2' package provides a strong API for sequentially  building up a plot, but does not concern itself with composition of multiple plots. 'patchwork' is a package that expands the API to allow for  arbitrarily complex composition of plots by, among others, providing  mathematical operators for combining multiple plots. Other packages that try  to address this need (but with a different approach) are 'gridExtra' and  'cowplot'.",
-      "License": "MIT + file LICENSE",
-      "Encoding": "UTF-8",
-      "Imports": [
-        "ggplot2 (>= 3.0.0)",
-        "gtable (>= 0.3.6)",
-        "grid",
-        "stats",
-        "grDevices",
-        "utils",
-        "graphics",
-        "rlang (>= 1.0.0)",
-        "cli",
-        "farver"
-      ],
-      "RoxygenNote": "7.3.2",
-      "URL": "https://patchwork.data-imaginist.com, https://github.com/thomasp85/patchwork",
-      "BugReports": "https://github.com/thomasp85/patchwork/issues",
-      "Suggests": [
-        "knitr",
-        "rmarkdown",
-        "gridGraphics",
-        "gridExtra",
-        "ragg",
-        "testthat (>= 2.1.0)",
-        "vdiffr",
-        "covr",
-        "png",
-        "gt (>= 0.11.0)"
-      ],
-      "VignetteBuilder": "knitr",
-      "Config/Needs/website": "gifski",
-      "NeedsCompilation": "no",
-      "Author": "Thomas Lin Pedersen [cre, aut] (ORCID: <https://orcid.org/0000-0002-5147-4711>)",
-      "Repository": "CRAN"
-    },
     "pbapply": {
       "Package": "pbapply",
       "Version": "1.7-4",
@@ -3216,7 +3179,7 @@
     },
     "reformulas": {
       "Package": "reformulas",
-      "Version": "0.4.3.1",
+      "Version": "0.4.4",
       "Source": "Repository",
       "Title": "Machinery for Processing Random Effect Formulas",
       "Authors@R": "c( person(given = \"Ben\", family = \"Bolker\", role = c(\"aut\", \"cre\"), email = \"bolker@mcmaster.ca\", comment=c(ORCID=\"0000-0002-2127-0443\")), person(\"Anna\", \"Ly\", role = \"ctb\", comment = c(ORCID = \"0000-0002-0210-0342\")) )",
@@ -3235,7 +3198,7 @@
         "lme4",
         "tinytest",
         "glmmTMB",
-        "testthat (>= 3.0.0)"
+        "Formula"
       ],
       "RoxygenNote": "7.3.3",
       "Config/testthat/edition": "3",

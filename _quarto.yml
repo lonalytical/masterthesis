@@ -12,13 +12,14 @@ book:
   chapters:
     - index.qmd
     - chapters/theory.qmd
-    - chapters/methods.qmd
-    - chapters/results.qmd
-    - chapters/discussion.qmd
-    - references.qmd
-  appendices:
+    #- chapters/methods.qmd
+   # - chapters/results.qmd
+   # - chapters/discussion.qmd
+   # - references.qmd
+  #appendices:
    # - appendices/AppendixA.qmd
-    - appendices/AppendixB.qmd
+    #- appendices/AppendixB.qmd
+    #- appendices/AppendixC.qmd
 
   repo-url: https://github.com/lonalytical/masterthesis
   search: true
@@ -57,3 +58,8 @@ format:
     urlcolor: blue
     toclinkcolor: black
     toc-depth: 2
+    include-in-header:
+      text: |
+        \usepackage{enumitem}
+        \setlist[itemize]{label=--}
+    

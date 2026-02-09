@@ -71,20 +71,20 @@ $$ The full derivation of these equations is provided in @sec-appA.
 ### Missing data generation
 
 After simulation of the complete dataset, values of the $X$-variable
-have been deleted to simulate missingness. Following an approach by
-Grund (2023, unpublished HTML-Document), a 'missingness tendency' $r$
-was simulated for each $X$-value according to this equation: $$ 
+have been deleted to simulate missingness. A 'missingness tendency' $r$ was simulated for each $X$-value according to 
+$$ 
 \begin{aligned}
 r_{ij}=\alpha+\beta W_j+e_{ij}, \qquad e_{ij}\sim N(0,1-\beta^2)
 \end{aligned}
-$$ $r_{ij}$ is a normally distributed, continuous variable. When
-$r_{ij} > 0$, the $ij$-person´s $X$-value was deleted.\
+$$ 
+$r_{ij}$ is normally distributed. Observations with $r_{ij} > 0$ were set to missing.\
 The intercept $\alpha$ controls the proportion of missingness in $X$,
 whereas the slope $\beta$ determines the strength of the
 missing-at-random mechanism. When $\beta = 0$, missingness is completely
 at random (MCAR). With increasing $\beta$, the missingness mechanism
 becomes more dependent on the $W$-values; with $\beta = 1$, missingness
-would be completely deterministic.
+would be completely deterministic.  
+For the present simulation, $\beta = 0.3$ was used for MAR conditions, corresponding to approximately $9\%$ explained variance.
 
 ### Factors of the data-generating mechanism {#sec-factors}
 
@@ -189,10 +189,13 @@ Three performance measures were used for each parameter ($\gamma_{10}$ and $\gam
 1. Standard deviation of the estimations across simulation repetitions.
 
 Monte Carlo uncertainty of the estimated performance measures was calculated using Monte Carlo Standard Errors (MCSE), using the formulas provided in Siepe et al. [-@siepe].  
-For each condition, 1000 simulation replications were used, based on comparable simulation studies [@grundMI18; @enders16] and ensuring a sufficiently small MCSE of < 1% for coverage [^methods-2: MCSE calculation for bias and standard deviation are based on the sample variance of the estimates and cannot be pre-calculated.].  
+For each condition, 1000 simulation replications were used, based on comparable simulation studies [@grundMI18; @enders16] and ensuring a sufficiently small MCSE of < 1% for coverage ^[MCSE calculation for bias and standard deviation are based on the sample variance of the estimates and cannot be pre-calculated.].  
 
-The simulation was conducted in RStudio with the aim of full reproducibility, following guidelines of the repro book (ZITIEREN), e.g. by setting a seed for simulation and using reproducible package environments. The code and all relevant information for reproduction can be found in the digital version of the master thesis. (LINK ZU GITHUB)    
+The simulation was conducted in RStudio with the aim of full reproducibility, following guidelines of the repro book (ZITIEREN), e.g. by setting a seed for simulation and using reproducible package environments. The code and all relevant information for reproduction can be found in the digital version of the master thesis. (*LINK*)    
 
 
 
-INSGESAMT NOCH MEHR BESCHREIBEN? ALSO AUCH, WELCHE GEDANKEN ICH MIR ZUR AUSWERTUNG GEMACHT HATTE.
+INSGESAMT NOCH MEHR BESCHREIBEN? ALSO AUCH, WELCHE GEDANKEN ICH MIR ZUR AUSWERTUNG GEMACHT HATTE..?
+(z.B., wie  Performance measures evaluiert werden sollen)
+
+ERKLÄRUNG DER METHODEN KOMMT SCHON IM THEORIETEIL, WÜRDE ICH SAGEN

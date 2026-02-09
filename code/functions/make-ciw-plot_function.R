@@ -1,46 +1,39 @@
 ### function to plot CI width ###
 
-plot_ci_width <- function(results, info_table, N2_filter,
-                          param = "gamma01",
-                          methods = c("CD", "LD", "MI-R", "MI-a", "bayes")) {
-  
-  library(dplyr)
-  library(ggplot2)
+plot_ci_width <- function(results) {
   
   # Filter Daten
   df <- results %>%
-    filter(parameter == param,
-           N2 == N2_filter,
-           method %in% methods) %>%
-    select(ID, method, ICC, beta, gamma01, ciw) %>%
+    filter(parameter == "gamma01",
+           gamma01 == 0.4,
+           ICC == 0.1,
+           beta == 0.3) %>%
+    select(ID, N2, method, ICC, beta, gamma01, ciw, mcse_ciw) %>%
     mutate(
-      method = factor(method, levels = methods),
+      MM = ifelse(beta == 0, "MCAR", "MAR"),
+      lower = ciw - 2 * mcse_ciw,
+      upper =  ciw + 2 * mcse_ciw,
+      method = factor(method, levels = c("CD", "LD", "MI-R", "MI-a", "bayes")),
       ID = factor(ID)
     ) %>%
     arrange(ID, method)
   
-  # x-Achsen-Labels aus Info-Tabelle
-  labels_vec <- apply(info_table, 2, function(x) paste(x, collapse = "\n"))
   
-  # Plot
-  p <- ggplot(df, aes(x = ID, y = ciw, color = method, group = method)) +
-    geom_line(linewidth = 1) +
-    geom_point(size = 2) +
-    scale_x_discrete(labels = labels_vec) +
-    scale_y_continuous(limits = c(0, 1.6)) +
+  ciw_plot <- ggplot(df, aes(x = method, y = ciw, fill = method)) +
+    geom_col(width = 0.7)+
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
     labs(
-      title = paste0(
-        "Breite der Konfidenzintervalle für ",
-        param,
-        ", N = ",
-        N2_filter
-      ),
-      x = "Bedingung",
-      y = "Breite",
-      color = "Methode"
+      title = bquote("Width of 95% CI for " ~ gamma["01"] ~
+                       "; ICC = 0.1, MAR," ~ gamma["01"] ~ "= 0.4"),
+      x = "",
+      y = "CI Width (± 2×MCSE)",
+      fill = "Method"
     ) +
-    theme_minimal(base_size = 12) +
-    theme(axis.text.x = element_text(vjust = 0.5, hjust = 0.5))
-  
-  return(p)
+    facet_grid(~N2, labeller = labeller(
+      N2 = \(x) paste0("N2 = ", x))) +
+    theme(axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_blank())
+
+  return(ciw_plot)
 }

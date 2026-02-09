@@ -1,56 +1,47 @@
 ########### Coverage plots for MI-R and MI-a ###########
 
 here::i_am("code/cov-plot_script.R")
-
 # packages
 library(here)
-library(dplyr) # for data grouping
+library(dplyr) 
 library(tidyr)
 library(knitr)
 library(ggplot2)
 
-
 # read in results and functions
 results <- read.table(file = here("results", "summarized_simulation-results.csv"))
-info15l <- make_condition_table(results, N2_filter = 15)
-info30l <- make_condition_table(results, N2_filter = 30)
-info60l <- make_condition_table(results, N2_filter = 60)
 
-source(file = here("code", "functions", "coverage-plot_function.R"))
+#filter data and calculate deviation from zero
+datf <- results %>%
+  filter(N2 == 15,
+         parameter == "gamma01") %>%
+  select(ID, method, ICC, beta, gamma01, coverage, mcse_cov) %>%
+  mutate(
+    MM = ifelse(beta == 0, "MCAR", "MAR"),
+    covdev = coverage - 0.95,
+    lower = covdev - 2 * mcse_cov,
+    upper =  covdev + 2 * mcse_cov,
+    ID = factor(ID),
+    method = factor(method, levels = c("CD", "LD", "MI-R", "MI-a", "bayes"))
+  ) %>%
+  arrange(ID, method)
 
-# prepare row information of conditions for looking up
-block_info <- results %>%
-  distinct(ID, parameter, gamma01, ICC, beta)
-
-# make plots with only MI-R and MI-a
-plot_cov15_MI <- plot_cov(results, info15l, N2_filter = 15,
-                          methods = c("MI-R", "MI-a"))
-
-plot_cov30_MI <- plot_cov(results, info30l, N2_filter = 30,
-                          methods = c("MI-R", "MI-a"))
-
-
-plot_cov60_MI <- plot_cov(results, info60l, N2_filter = 60,
-                          methods = c("MI-R", "MI-a"))
-
-
-plot_cov15_all <- plot_cov(results, info15l, N2_filter = 15,
-                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
-
-plot_cov30_all <- plot_cov(results, info30l, N2_filter = 30,
-                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
-
-plot_cov60_all <- plot_cov(results, info60l, N2_filter = 60,
-                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
-
-###########################FÜR GAMMA10######################
-
-
-plot_cov15_all <- plot_cov(results, info15l, param = "gamma10", N2_filter = 15,
-                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
-
-plot_cov30_all <- plot_cov(results, info30l, param = "gamma10", N2_filter = 30,
-                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
-
-plot_cov60_all <- plot_cov(results, info60l, param = "gamma10", N2_filter = 60,
-                           methods = c("CD", "LD", "MI-R", "MI-a", "bayes"))
+cov_plot<- ggplot(datf, aes(x = method, y = covdev, fill = method)) +
+  geom_col(width = 0.7)+
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
+  facet_grid(ICC ~ MM + gamma01,
+             labeller = labeller(
+               ICC = \(x) paste0("ICC = ", x),
+               gamma01 = \(x) paste0("ES = ", x),
+               MM = label_value
+             )) +
+  geom_hline(yintercept = 0) +
+  labs(
+    title = bquote("Coverage of 95% CI for" ~ gamma["01"] ~ "and" ~ N[2] == 15),
+    x = "",
+    y = "Deviation from 95% (± 2×MCSE)",
+    fill = "Method"
+  ) +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank())
