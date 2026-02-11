@@ -2,7 +2,7 @@
 title: "Theory"
 ---
 
-## Multilevel models
+## Theoretical foundation of multilevel models
 ::: {.callout-tip icon=false}
 
 ### Example
@@ -14,7 +14,6 @@ At first glance, this seems like a simple dataset of 150 individuals. But is it 
 Players from the same ensemble rehearse together, share teachers, and experience similar social and musical environments. Their responses may therefore be more similar within ensembles than between ensembles.
 :::
 
-### The idea behind multilevel models
 Populations like this, where units of interest (e.g., music players, students, employees) are grouped into higher-level units (e.g., ensembles, classes, firms), are common in the human social life and therefore in psychological studies.  
 The resulting data is called *nested* or *clustered* [@snijders, p. 7].  
 From a sampling perspective, a so-called *multistage sampling process* (sample groups first, then individuals inside these groups^[In this thesis, the term 'groups' refers to the higher-level units of the data and level-1 units are referred to as 'persons'.. However, it is important to note that these models can also be used for longitudinal research, where measurement points are on level 1 and individuals are the level-2 units. Furthermore, more than two levels are also possible, but are not discussed here.]) is not independent: After selecting a group, you will try to sample all of the members of this group, making it more likely to select one person in this group over others in non-selected groups [@snijders, p. 7].  More importantly, individuals inside the same group typically share contextual influences (e.g., the same ensemble teacher, the same class room) and thus will give more similar responses in surveys and behavior. As a consequence, the basic assumption of independence in traditional linear modeling is violated, because error terms will be correlated [@raudenbush, p. xx].  
@@ -130,15 +129,48 @@ $$
 The ICC is an important diagnostic metric because it indicates whether the use of a multilevel model is advantageous. If $ICC = 0,$ no between-group variance is present and individuals within the same group are not more similar to each other than to individuals from different groups (conditional on the predictors included in the model). In this case, the independence assumption of classical regression is not violated and a conventional single-level regression model is sufficient.  
 Conversely, larger ICC values indicate increasing similarity within groups and thus statistical dependency of observations. Ignoring this dependency and applying a classical linear model leads to biased standard errors, confidence intervals, and hypothesis tests [@fahrmeir, p.370].
 
-## Small sample sizes in multilevel models
-In the preceding chapter, the theoretical foundation and parameters of the multilevel model were introduced. In practice, however, these parameters are unknown and only exist in the theoretical realm as ‘true’ values. The fixed effects $\gamma$ and variance components $\sigma^2$ and $\tau^2$ must therefore be estimated from observed data. Based on these estimates, inferences about the underlying population parameters are made. In frequentist approaches, estimation procedures of multilevel models are based on 'asymptotic theory' and assume a sufficiently large sample size. In practice, this assumption is often difficult to meet, especially because estimation depends not only on the number of individual observations (Level 1), but also on the number of clusters (Level 2), which are often difficult or costly to obtain [@mcneishcoll]. Fortunately, statistics has solutions at hand for those cases. The main challenges of small-sample multilevel models and possible solutions are presented in the following section.
+## Estimation of multilevel models
+In the preceding chapter, the theoretical foundation and parameters of the multilevel model were introduced. In practice, however, these parameters are unknown and only exist in the theoretical realm as ‘true’ values. The fixed effects $\gamma$ and variance components $\sigma^2$ and $\tau^2$ must therefore be estimated from observed data. Based on these estimates, inferences about the underlying population parameters are made.  
+In multilevel modeling, statistical inference is based on estimation or approximation of various components, as illustrated in @fig-est. If these components are accurately estimated precisely approximated, respectively, the inferential machinery of the model generally performs reliably [@elff]:
 
-### Main problems
-In multilevel modeling, statistical inference is primarily determined by three key components. If these are estimated accurately and appropriately specified, the inferential machinery of the model generally performs reliably [@elff]:
+
+HIER GRAFIK HIN
 
 1. Estimation of fixed-effect coefficients (regression parameters)
 2. Estimation of variance–covariance components of the random effects (u) and residual errors (e)
 3. The choice of an appropriate approximation of the sampling distribution of the test statistic.
+
+## Small level-2 sample sizes in multilevel models^[In the following, I will refer to small level-2 sample sizes simply as small sample sizes, because level-1 sample sizes are usually sufficiently large and thus not problematic.]
+In frequentist approaches, estimation procedures of linear multilevel models are based on asymptotic theory and assume a sufficiently large sample size. In practice, this assumption is often difficult to meet, especially because estimation depends not only on the number of individual observations (Level 1), but also on the number of clusters (Level 2), which are often difficult or costly to obtain [@mcneishcoll]. Fortunately, statistics has solutions at hand for the challenges that come with this violation of the assumption. The main challenges of small-sample multilevel models and possible solutions are presented in the following section.  
+
+Following the structure of @fig-est, let's look at the estimation of fixed effects and variance components first. In MLM, these parameters can be estimated with the maximum likelihood (ML) or restricted maximum likelihood (REML) method [@snijders, p.89]. Kackar & Harville [-@kackar] have proven that both ML and REML estimators of variance components are even and translation-invariant, thus fixed effect point estimates are unbiased independent of sample size.  
+Estimation of the variance components, however, is more complex. In ML estimation, fixed effects and variance components are estimated simultaneously, typically with iterative procedures like the Expectation Maximization (EM) mechanism [@mcneishcoll], and in this process fixed effects are being treated as known when estimating variance components. Consequently, the sampling variability of the fixed-effect estimates is ignored and the loss of degrees of freedom due to their estimation is not accounted for. These issues are not troublesome in large samples, but lead to systematic underestimation of variance components in small samples [@mcneishcoll]. 
+REML estimation fixes this issue by separating the estimation conceptually. The fixed effects are eliminated from the likelihood, and variance components are estimated solely based on residual information. Fixed effects are then estimated via generalized least squares (GLS), using the already estiamted variance components [@mcneishcoll]. This leads to less downward-biased variance component estimates, while ML and REML become asymptotically equivalent in large samples.
+The next step in the estimation scheme (@fig-est) is the model-implicated variance-covariance-matrix of y (V). It has entries for each person and shows the variance of the Y-values of one person (tau + sigma quadrat), the covariance of two individuals y-values in the same group, and in different groups (0, independent).
+The V matrix is calculated depending only on the variance components, and is therefore also estimated more accurately with REML in small samples. The standard error subsequently depends only on this matrix and the predictor values that are not estimated but fixed:
+
+$$
+Var(\hat{\gamma} \mid X) = (X^TV^{-1}X)^{-1}
+$$
+$$
+V \rightarrow \hat{V}(\hat{\theta})
+$$
+
+Even with REML, a small-sample issue results from this calculation: As $V$ uses the estimated variance components $\hat{\theta}$, these components have sampling variability, meaning that they will differ each time the study is repeated. The equation above treats these components as known and ignores this additional uncertainty [@mcneishcoll]. While this variability becomes insignificantly small in large samples, in small samples it leads to underestimation of the standard errors. Therefore, Kackar & Harville showed that the true sampling variance can be written as
+
+$$
+Var(\gamma)= Var^{REML}(\hat{\gamma}) + \text{Small Sample Bias}
+$$
+[@kackarcorr; @mcneishcoll].  
+The Prasad-Jao-Jeske-Kackar-Harville correction accounts for this small sample bias.
+Even after this correction, standard errors may remain slightly underestimated because the REML-based variance expression itself relies on asymptotic approximations (the $Var^{REML}(\hat{\gamma})$ in @eq-?). Kenward and Roger therefore proposed a refined approximation of the full sampling variance of the fixed effects, resulting in more accurate standard errors in small samples [@mcneishcoll].
+
+
+
+
+
+
+
 
 Auch Bayesian, Raudenbush S. 399
 
