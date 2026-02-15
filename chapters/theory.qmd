@@ -237,12 +237,36 @@ Some concluding notes:
 - These missing data mechanisms are relative to the *present* data set and don't refer to $Y_{obs}$ in hypothetical repetitions of an experiment or study [@endersbook, p.13; @SG2002]. From a frequentist perspective, assumptions about the missingness mechanism must hold under repeated sampling; therefore, stricter definitions such as “*always* missing at random” have been proposed [@seaman].
 - The typology is also *relative to the analysis*: Depending on the choice of the outcome and predictor variables, the underlying missingness mechanism could change [@graham09]. E.g., if the relevant predictors of missingness are observed, but omitted from the analysis model, the analysis would behave like MNAR instead of MAR conditional on the full data.
 
+
 GRAFISCHES MODELL EINFÜGEN (DAGs)
+IMPLICATIONS von den einzelnen Mustern?
 
 ### Methods for handling missing data
-All 
-#### Listwise Deletion
-#### Full Information Maximum Likelihood
+In this section, treatment methods for missing data in multilevel models will be discussed. All of the mentioned approaches assume missingness at random (MAR), or completely at random (MCAR) for listwise deletion, respectively. Frameworks for MNAR processes are not discussed in this thesis.
+
+#### Listwise Deletion (LD)
+
+Older missing data methods often work with deletion of data, as it is convenient and does not require specialized software [@endersbook, p. 24]. *Listwise deletion*, also known as *complete case analysis*, is one of the most widespread classical approaches to missing data analysis [@graham09]. Cases with at least one missing value will be discarded completely, then the model is estimated using only the complete cases. In multilevel settings, missingness on the group level implies that all individuals in this group are excluded as well.   
+Listwise deletion is still used by many researchers and remains the default in most statistical software packages [@luedtke]. There are two major disadvantages of this deletion method [@endersbook p.24]:
+
+1. Because partial data is unused, statistical power is reduced.  
+1. If the missingness mechanism is not MCAR, deletion may lead to highly biased parameter estimates. Individuals or groups with missing values may differ from complete cases, resulting in non-representative estimation.  
+
+Despite these limitations, LD can still be adequate under some conditions. For example, power loss can be negligible if very few cases are excluded (e.g., <5%). Bias can be minimal if missingness is conditionally independent of the outcome given the predictors [@graham09], leading to estimates equivalent to maximum likelihood (see below, @endersbook, p.25).  
+However, in small samples, additional data deletion should be avoided as power is already limited [@mcneish17].
+
+#### Model-based modern approaches to missing data in multilevel models
+...
+#### Full Information Maximum Likelihood (FIML)
+In the previous chapter, maximum likelihood estimation was already briefly mentioned. This estimation principle can also be applied with missing data. In this approach, no incomplete cases are excluded and no imputations for missing values are generated. Instead, parameter estimates are obtained directly by maximizing the likelihood of the observed data [@endersbook, p. 98].    
+All individuals and groups contribute their available information (that is the reason for the term "Full Information Maximum Likelihood"). If, due to missing values, no information is available about certain parameters from one individual, this person contributes only to the estimation of the remaining parameters. In mathematical terms, the missing components are integrated out of the joint likelihood function for this person, resulting in a case-specific observed-data likelihood. These are summed up across individual observations and parameter estimates are obtained by maximizing this combined likelihood [@endersbook, p. 102]. 
+Because the likelihood function is based on a prespecified distributional form (often multivariate normality), the estimation procedure uses the model structure and observed data to infer plausible values for incomplete statistics under the hood. In this sense, maximum likelihood can be understood as a form of *implicit imputation*, although no missing values are explicitly filled in [@endersbook, p. 106].  
+
+Computing FIML estimates typically requires iteration, as no closed-form solutions are available in the presence of missing data [@endersupdate]. One widely used approach is the Expectation–Maximization (EM) algorithm, which alternates between two steps. In the expectation step (E-step), the missing portions of the sufficient statistics for parameter estimation are imputed. In the maximization step (M-step), these expected sufficient statistics are substituted into the complete-data log-likelihood, and the parameter estimates are updated accordingly [@endersbook, p. 113].  
+
+When data are MAR, ML estimation has proved to be unbiased and yields effective estimates [@mcneish17]. However, one limitation is that the inclusion of auxiliary variables that explain missingness can be difficult if these variables are not intended to appear in the substantive analysis model [@graham09]. 
+Moreover, FIML software packages initially formulates the likelihood for the outcome conditional on observed predictors. Missingness in predictor variables therefore results in case deletion unless accommodating for it by additional modeling assumptions. In multilevel models, this can lead to substantial bias in group-level effects [@grundMI18].
+
 #### Fully Bayesian Model Estimation
 #### Multiple Imputation
 
