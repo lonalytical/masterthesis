@@ -155,7 +155,7 @@ Four methods will be compared, alongside the benchmark analysis of Complete Data
 Listwise Deletion was used as a standard reference method for missing data handling. Cases with missing $X$-values were excluded prior to analysis. The group means $\bar{X}_{.j}$ were then calculated only from the remaining observations. Then, group-mean centering was applied.
 
 ### Multiple Imputation (MI) with standard (MI-R) and adjusted (MI-a) degrees of freedom
-For both multiple imputation methods, a joint modeling approach was employed. Although only values in $X$ were missing, the multivariate specification preserves the multilevel structure during imputation:
+For both multiple imputation methods, a joint modeling approach was employed. Although only values in $X$ were missing, the multivariate specification preserves the multilevel structure during imputation. The multivariate empty model is generally suitable for random-intercep models [@grundMI16]:
 $$
 \left(\begin{matrix}Y_{ij}\\X_{ij}\\W_j\\\end{matrix}\right)=\left(\begin{matrix}\beta_{0Y}\\\beta_{0X}\\\beta_{0W}\\\end{matrix}\right)+\left(\begin{matrix}u_{Yj}\\u_{Xj}\\u_{Wj}\\\end{matrix}\right)+\left(\begin{matrix}e_{Yij}\\e_{Xij}\\0\\\end{matrix}\right)
 $$
