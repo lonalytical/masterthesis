@@ -16,59 +16,88 @@ Players from the same ensemble rehearse together, share teachers, and experience
 
 Populations like this, where units of interest (e.g., music players, students, employees) are grouped into higher-level units (e.g., ensembles, classes, firms), are common in the human social life and therefore in psychological studies.  
 The resulting data is called *nested* or *clustered* [@snijders, p. 7].  
-From a sampling perspective, a so-called *multistage sampling process* (sample groups first, then individuals inside these groups^[In this thesis, the term 'groups' refers to the higher-level units of the data and level-1 units are referred to as 'persons'.. However, it is important to note that these models can also be used for longitudinal research, where measurement points are on level 1 and individuals are the level-2 units. Furthermore, more than two levels are also possible, but are not discussed here.]) is not independent: After selecting a group, you will try to sample all of the members of this group, making it more likely to select one person in this group over others in non-selected groups [@snijders, p. 7].  More importantly, individuals inside the same group typically share contextual influences (e.g., the same ensemble teacher, the same class room) and thus will give more similar responses in surveys and behavior. As a consequence, the basic assumption of independence in traditional linear modeling is violated, because error terms will be correlated [@raudenbush, p. xx].  
+From a sampling perspective, a so-called *multistage sampling process* (sample groups first, then individuals inside these groups^[In this thesis, the term 'groups' refers to the higher-level units of the data and level-1 units are referred to as 'persons'. However, it is important to note that these models can also be used for longitudinal research, where measurement points are on level 1 and individuals are the level-2 units. Furthermore, more than two levels are also possible, but are not discussed here.]) is not independent: After selecting a group, you will try to sample all of the members of this group, making it more likely to select one person in this group over others in non-selected groups [@snijders, p. 7].  More importantly, individuals inside the same group typically share contextual influences (e.g., the same ensemble teacher, the same class room) and thus will give more similar responses in surveys and behavior. As a consequence, the basic assumption of independence in traditional linear modeling is violated, because error terms will be correlated [@raudenbush, p. xx].  
 One well-suited and popular possibility to account for this fact is the use of *multilevel models* (also called *hierarchical linear models* or *mixed models*).  
 
 
 ### The concept of multilevel regression models
-The most basic aim of regression analysis is the explanation of variance in an outcome of interest [@snijders, p. 80]. Measurements of other associated variables are included in the model in an additive way to predict changes in the outcome, in other words: they explain variance in $Y$. The assumption of the classical linear model is that after inclusion of all *systematic* influences on $Y$, the deviations of the measured $Y$ from the model-predicted $Y$ are *random*. Specifically, the residuals are assumed to have expectation zero ($E(e_i)=0$), constant variance across observations (homoscedasticity; $Var(e_i)=\sigma^2$), and to be independent of one another ($Cov(e_i, e_{i'})=0$ for $i \neq i'$) [@fahrmeir, p.~87].  
-In single-level regression, the residual/error term $e_{ij}$ captures the *unexplained variance* in $Y$, that is differences in the outcome from the prediction that the model made [@leonhart, p. 319]:
-$$
-Y_i =
-\mu_i +
-e_i,
-\qquad
-\mu_i = \underbrace{\beta_0}_{\text{Intercept}} + \underbrace{\beta_1}_{\text{Slope}}X_i
-$$
-Because in nested data there are populations on more than one level, multilevel models (MLM) extend regular linear regression by adding level-2 *random effects* to explain the variability between groups that cannot be accounted for by predictors [@snijders, p. 80]. The level-1 regression equation remains similar, but the regression coefficients are now group-dependent:
+The aim of regression analysis, whether single- or multilevel, is to explain variance in an outcome variable by including associated variables in the model as predictors [@snijders, p. 80]. In single-level regression, the residual $e_{i}$ captures the *unexplained variance* in $Y$, that is differences in the outcome from the prediction that the model made [@leonhart, p. 319]. The assumption of the classical linear model is that after inclusion of all *systematic* influences on $Y$, the residuals are *random*. Specifically, they are assumed to have expectation zero ($E(e_i)=0$), constant variance across observations (homoscedasticity; $Var(e_i)=\sigma^2$), and to be independent across observations ($Cov(e_i, e_{i'})=0$ for $i \neq i'$) [@fahrmeir, p.87].  
+
+Multilevel models (MLM) extend regular linear regression by adding level-2 *random effects* to explain the variability between groups that cannot be accounted for by predictors [@snijders, p. 80]. This partition of variance can be expressed in the multilevel regression model without predictors, the *empty model*:
 
 $$
-Y_{ij} =  \mu_{ij} + e_{ij},
-\qquad
-\mu_{ij} = \beta_{0j} + \beta_{1j}X_{ij}
+Y_{ij} = \gamma_{00} + u_{0j} + e_{ij}
 $$
-These group-dependent coefficients can be separated into fixed and random parts:
+Here, the outcome value of person $i$ in group $j$ is modeled as the sum of the overall mean $\gamma_{00}$, a group level random effect $u_{0j}$ and a random effect on the individual level, $e_{ij}$ [@snijders, p. 49]. The random intercept $u_{0j}$ captures the dependency of individuals within one group statistically, as all individuals in group $j$ have the same $u_{0j}$ value and their outcome values are therefore correlated. Conditional on this group component, however, the remaining level-1 residuals $e_{ij}$ are assumed to be independent, addressing the issue of dependency that would arise if a single-level regression model were applied to nested data.
+
+### Within- and between- group regressions and inclusion of predictors
+
+Predictors can then be included to explain variability within groups (level 1) and between groups (level 2).  
+**At level 1**, the outcome of a person $i$ in group $j$ is modeled as a function of individual-level explanatory variables $X_{ij}$ to obtain the within-group regression model. For simplicity, the model is illustrated with a single level-1 predictor:
+
+$$
+Y_{ij} =  \beta_{0j} + \beta_{1j}X_{ij} + e_{ij}
+$$ {#eq-mlm}
+
+**At level 2**, the variation between groups in the group-dependent coefficients $\beta_{0j}$ and $\beta_{1j}$ is modeled. Each group may have its own intercept and slope. These coefficients can be separated into a fixed part (the average coefficient across groups) and a random deviation from this average [@snijders, p. 75]. Without level-2 predictors:
 $$
 \beta_{0j}
 =
 \underbrace{\gamma_{00}}_{\text{Fixed part}}
 +
-\underbrace{u_{0j}}_{\text{Random part}},
-\qquad
+\underbrace{u_{0j}}_{\text{Random part}}
+$$
+$$
 \beta_{1j}
 =
 \underbrace{\gamma_{10}}_{\text{Fixed part}}
 +
 \underbrace{u_{1j}}_{\text{Random part}}
 $$
-The random parts reflect differences between groups, in their average $Y$-value ($u_{0j}$) and in the effect of covariates on $Y$ ($u_{1j}$).
-
-Each group has its own intercept and slope, respectively. Substitution of all single components leads to the combined model
+On this level, in order to explain between-group variability in the intercepts and slopes, level-2 predictors $Z_j$ may be included [@snijders, p. 80]. Including such predictors may reduce the unexplained variance of the random effects $u_{0j}$ and $u_{1j}$. With a single level-2 predictor, the model becomes:
 
 $$
-Y_{ij} = \underbrace{\gamma_{00} + \gamma_{10}X_{ij}}_{\text{Fixed part}} + 
+\beta_{0j}
+=
+\gamma_{00} + \gamma_{01}Z_{j}
++
+u_{0j}
+$$ {#eq-beta0j}
+
+$$
+\beta_{1j}
+=
+\gamma_{10} + \gamma_{11}Z_{j}
++
+u_{1j}
+$$ {#eq-beta1j}
+
+Substituting the level-2 equations @eq-beta0j and @eq-beta1j into the level-1 model @eq-mlm yields the combined multilevel model:
+
+$$
+Y_{ij} =
+\underbrace{\gamma_{00} + \gamma_{10}X_{ij} + \gamma_{01}Z_{j} + \gamma_{11}X_{ij}Z_{j}}_{\text{Fixed part}}
++
 \underbrace{u_{0j} + u_{1j}X_{ij} + e_{ij}}_{\text{Random part}}
 $$
-
-$Y_{ij}$: Outcome variable for individual $i$ in group $j$  
+$Y_{ij}$: Outcome for individual $i$ in group $j$  
 $X_{ij}$: Level-1 (within-group) predictor  
-$\gamma_{00}$: Fixed intercept; average value of $Y_{ij}$ across all groups when $X_{ij}=0$  
-$\gamma_{10}$: Fixed slope; average effect of $X_{ij}$ on $Y_{ij}$ across all groups  
-$u_{0j}$: Random intercept for group $j$; group-specific deviation from the overall   intercept $\gamma_{00}$  
-$u_{1j}$: Random slope for group $j$; group-specific deviation from the average effect $\gamma_{10}$  
-$e_{ij}$: Level-1 residual; individual deviation from the group-specific predicted value  
+$Z_j$: Level-2 (between-group) predictor  
 
-Similar distributional assumptions are made for the level-2 random effects as for the residuals in single-level regression: they have mean zero, constant variances across groups, and are independent across clusters and independent of the level-1 residuals. However, random effects within the same cluster may be correlated and are often expected to do so [@snijders, p. 76]. Additionally, residuals and random effects are often assumed to follow a normal distribution for convenience, as it facilitates the likelihood-based estimation of the unknown parameters [@fahrmeir, p. 388]. In summary:
+$\gamma_{00}$: Fixed intercept (overall mean when $X_{ij}=0$, $Z_j=0$)  
+$\gamma_{10}$: Average within-group effect of $X_{ij}$ on $Y_{ij}$  
+$\gamma_{01}$: Effect of $Z_j$ on the intercept (between-group effect)  
+$\gamma_{11}$: Cross-level interaction; change in the effect of $X_{ij}$ depending on $Z_j$  
+
+$u_{0j}$: Random intercept (group-specific deviation from $\gamma_{00}$)  
+$u_{1j}$: Random slope (group-specific deviation from $\gamma_{10}$)  
+$e_{ij}$: Level-1 residual
+
+If no level-2 predictors are included ($Z_j = 0$), the model reduces to the simpler random-coefficients model without contextual predictors.
+
+### Distributional assumptions of the multilevel regression model
+
+Similar distributional assumptions are made for the level-2 random effects as for the residuals in single-level regression: they have mean zero, constant variances across groups, and are independent across clusters and independent of the level-1 residuals. However, random effects within the same cluster may be correlated and are often expected to do so [@snijders, p. 76]. Additionally, residuals and random effects are commonly assumed to follow a normal distribution for convenience, as it facilitates the likelihood-based estimation of the unknown parameters [@fahrmeir, p. 388]. In summary:
 $$
 \begin{aligned}
 \begin{pmatrix}
@@ -88,27 +117,43 @@ u_{1j}
 \begin{pmatrix}
 \tau_0^2 & \tau_{01} \\
 \tau_{01} & \tau_1^2
-\end{pmatrix} \\[6pt]
+\end{pmatrix}
+\end{aligned}
+$$
+$$
+\begin{aligned}
 e_{ij} &\sim \mathcal{N}(0,\sigma^2) \\[6pt]
 \text{Cov}(u_{0j}, e_{ij}) &= 0, \quad
 \text{Cov}(u_{1j}, e_{ij}) = 0
 \end{aligned}
 $$
 
-
-### The random intercept model with context effects
-A simpler, but often used version of the random coefficients model is the *random intercept model*. This model allows for baseline differences in the outcome between groups (random intercept), but the strength of the relationship between predictors and the outcome is assumed to be constant (i.e., $u_{1j} = 0$). The strength of the effects of predictors is assumed to be the same between groups.  
-In such models, it is of special interest how the group context influences the outcome. The random intercept's variance indicates whether and how much groups vary in their baseline level, but to explain these differences, a certain kind of variables can be introduced: contextual effects. Adding a predictor $X$'s mean as an explanatory context variable, the within-group regression coefficient may vary from the between-group regression coefficient, making it more flexible and realistic [@snijders, p. 57].  
-In these cases, *group-mean-centering* of the level-1 predictor is often applied. Instead of using $X_{ij}$ directly, the centered predictor $(X_{ij} - \bar{X}_j)$ is entered into the model. This decomposes within- and between- group effects and facilitates their interpretation [@snijders, p.58]. Such a random intercept model can look like this: 
+### The random intercept model
+In many empirical applications of multilevel models the slope $\beta_{1j}$ is assumed to be constant across groups ($u_{1j} = 0$), leading to the *random intercept model* [@snijders, p. 45]. This model allows for baseline differences in the outcome between groups, whereas the strength of the relationship between predictors and the outcome is assumed to be constant:
+$$ 
+Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + \gamma_{01}Z_j + u_{0j} + e_{ij}
+$$
+The random intercept model also provides a convenient framework for examining the use of *group means* of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. Example ::: illustrates how the processes operating within groups may differ from those operating between groups.
+To separate within- and between-group effects, the level-1 predictor is then often *group-mean-centered*: Instead of using $X_{ij}$ directly, the centered predictor $(X_{ij} - \bar{X}_j)$ is entered into the model. This decomposes within- and between- group effects and facilitates their interpretation [@snijders, p.58]. A random intercept model including such a decomposition can be written like this: 
 
 $$ 
 Y_{ij} = \gamma_{00} + \gamma_{10}(X_{ij} - \bar{X}_{.j}) + \gamma_{01}\bar{X}_{.j} + u_{0j} + e_{ij}
 $$ {#eq-RI}
+In this random intercept model with context effect, musical self-concept of student $i$ in ensemble $j$ is predicted by the sum of
+$\gamma_{00}$: the average musical self-concept across all ensembles
+$X_{ij} - \bar{X}_{.j}$: the group-mean centered weekly practice duration of this student 
+$\bar{X}_{.j}$: the average practice duration of this student's ensemble
+$u_{0j}$: a random deviation of ensemble $j$'s average MSC from the overall mean (unexplained differences between ensembles)
+$e_{ij}$: a random deviation of the student's MSC from the predicted value within their ensemble  
+The two regression coefficients represent the following effects:
+$\gamma_{10}$: within-group effect, indicating the influence of a student's own WPD on their MSC, controlling for the ensemble context
+$\gamma_{01}$: the contextual effect, indicating the influence of the ensemble's average WPD on the student's MSC
 
+For the remainder of this thesis, the focus lies on this particular random intercept model.
 
-### The intraclass correlation coefficient (ICC) in the random intercept model
+### The intraclass correlation coefficient (ICC)
 
-In the RI model, the variance components are given by
+In the random intercept model, the variance components are given by
 $$
 u_{0j} \sim \mathcal{N}(0,\tau_0^2),
 \qquad
@@ -116,16 +161,13 @@ e_{ij} \sim \mathcal{N}(0,\sigma^2),
 \qquad
 \text{Cov}(e_{ij}, u_{0j}) = 0 .
 $$
-
-
-From these variance components, the proportion of variability that is attributable to between-group differences can be calculated. This quantity is referred to as the *intraclass correlation coefficient* (ICC). The ICC is equal to the correlation between the outcomes of two randomly chosen individuals from the same group [@snijders, p. 18].
-In models including predictors, the ICC is interpreted conditionally on the predictors, that is, as the correlation between two individuals from the same group who share identical predictor values. 
+From these variance components, the proportion of variability that is attributable to between-group differences can be calculated. This quantity is referred to as the *intraclass correlation coefficient* (ICC). In the empty model, the ICC is equal to the correlation between the outcomes of two randomly chosen individuals from the same group [@snijders, p. 18].
+In models including predictors, the ICC is interpreted conditionally on the predictors, that is, as the correlation between two individuals from the same group who share identical predictor values (also referred to as the *residual ICC*) [@snijders, p. 52].
 
 Formally, the ICC is defined as
 $$
 ICC = \frac{\tau_0^2}{\tau_0^2 + \sigma^2}
 $$
-
 
 The ICC is an important diagnostic metric because it indicates whether the use of a multilevel model is advantageous. If $ICC = 0,$ no between-group variance is present and individuals within the same group are not more similar to each other than to individuals from different groups (conditional on the predictors included in the model). In this case, the independence assumption of classical regression is not violated and a conventional single-level regression model is sufficient.  
 Conversely, larger ICC values indicate increasing similarity within groups and thus statistical dependency of observations. Ignoring this dependency and applying a classical linear model leads to biased standard errors, confidence intervals, and hypothesis tests [@fahrmeir, p.370].
@@ -194,8 +236,8 @@ This posterior distribution is the end result of Bayesian estimation. Point esti
 
 1. Bayesian methods do not rely on large samples in the same way as frequentist methods do. Estimation of the posterior distribution is typically performed via Markov Chain Monte Carlo (MCMC) sampling. From the posterior distribution, a large number of samples is drawn to approximate its shape. In this process, the accuracy of the posterior approximation is not dependent on the sample size of the single samples, but on the number of drawn samples [@mcneishbay].
 
-Despite all these potential advantages, a crucial point is that with smaller samples, the prior distributions are key factors, because likelihoods are relatively flat and contribute less information to the posterior distribution [@mcneish]. If informative priors based on earlier research or expert knowledge are used, this can improve performance. However, when researchers are primarily interested in their observed data or do not have prior information about the parameters, they may use noninformative, vague priors. These allow for the sampling of extreme values during MCMC estimation which in turn can lead to inflated variance parameters and posterior standard errors [@mcneishbay]. Also, recommended or software default uninformative prior distributions have proven to be more informative than intended in small sample sizes and often perform poorly [@mcneishpriors; @gelmanprior; @mcneishbay]. Prior choice is therefore a critical step in small sample Bayes analysis - Bayesian methods shift the small-sample problem from asymptotic approximation errors to prior specification.
-
+Despite all these potential advantages, a crucial point is that with smaller samples, the prior distributions are key factors, because likelihoods are relatively flat and contribute less information to the posterior distribution [@mcneish]. If informative priors based on earlier research or expert knowledge are used, this can improve performance. However, when researchers are primarily interested in their observed data or do not have prior information about the parameters, they may use noninformative, vague priors. These allow for the sampling of extreme values during MCMC estimation which in turn can lead to inflated variance parameters and posterior standard errors [@mcneishbay]. Also, recommended or software default uninformative prior distributions have proven to be more informative than intended in small sample sizes and often perform poorly [@mcneishpriors; @gelmanprior; @mcneishbay]. However, there is also evidence that Bayes estimation with noninformative priors can lead to more accurate estimation than with an ML estimator in terms of RSME in latent models [@zitzmann].
+Genauer erklären, warum Bayes dann einen Vorteil hat (Stabilisierung der Varianzschätzung der between-Level-Komponente.)
 DOCH NOCH ETWAS AUSFÜHRLICHER ZU MCMC ESTIMATION? -> auch für missing relevant
 
 ## Missing data in multilevel models
@@ -253,14 +295,14 @@ In this section, treatment methods for missing data in multilevel models will be
 
 #### Listwise Deletion (LD)
 
-Older missing data methods often work with deletion of data, as it is convenient and does not require specialized software [@endersbook, p. 24]. *Listwise deletion*, also known as *complete case analysis*, is one of the most widespread classical approaches to missing data analysis [@graham09]. Cases with at least one missing value will be discarded completely, then the model is estimated using only the complete cases. In multilevel settings, missingness on the group level implies that all individuals in this group are excluded as well.   
+*Listwise deletion*, a.k.a. *complete case analysis*, is one of the most widespread older approaches to missing data analysis. Cases with at least one missing value will be discarded completely, then the model is estimated using only the complete cases [@graham09]. In multilevel settings, missingness on the group level implies that all individuals in this group are excluded as well.   
 Listwise deletion is still used by many researchers and remains the default in most statistical software packages [@luedtke]. There are two major disadvantages of this deletion method [@endersbook p.24]:
 
 1. Because partial data is unused, statistical power is reduced.  
-1. If the missingness mechanism is not MCAR, deletion may lead to highly biased parameter estimates. Individuals or groups with missing values may differ from complete cases, resulting in non-representative estimation.  
+1. If the missingness mechanism is not MCAR, deletion may lead to highly biased parameter estimates.   
 
-Despite these limitations, LD can still be adequate under some conditions. For example, power loss can be negligible if very few cases are excluded (e.g., <5%). Bias can be minimal if missingness is conditionally independent of the outcome given the predictors [@graham09], leading to estimates equivalent to maximum likelihood (see below, @endersbook, p.25).  
-However, in small samples, additional data deletion should be avoided as power is already limited [@mcneish17].
+LD can still be adequate under some conditions [@graham09; @endersbook, p.25], but in already small samples, additional data deletion should be avoided as power is already limited [@mcneish17]. 
+
 
 #### Model-based modern approaches to missing data in multilevel models
 ...
@@ -277,16 +319,18 @@ When data are MAR, ML estimation has proved to be unbiased and yields effective 
 Moreover, FIML software packages initially formulates the likelihood for the outcome conditional on observed predictors. Missingness in predictor variables therefore results in case deletion unless it is addressed through additional modeling assumptions. However, such modifications are not fully supported in many software packages, can be difficult to implement, and may result in unintended changes to the analysis model if the model contains manifest group means [@grundapa]. In multilevel models with contextual effects estimated in *Mplus*, this may lead to substantial bias in parameter estimates [@grundMI18].
 
 ##### Fully Bayesian Model Estimation
-The Bayesian framework can be seen as a bridge between Maximum Likelihood Estimation and Multiple Imputation, as it is model-based like Maximum Likelihood and therefore parameter estimation is the focus, but the machinery to treat missing values is identical to multiple imputation, as we will see later [@endersbook, p. 188f.]. 
-A Bayesian analysis with missing values is similar to a Bayesian complete data analysis described in @sec-bayes: Parameter estimates are drawn from the posterior distribution of the parameters given the data, whereas this posterior distribution combines the prior information and the likelihood. Missing data are treated as additional unknown quantities, analogous to model parameters. Consequently, the missing values and the parameters have a joint distribution conditional on the observed data [@gelmanbook, p. 449].  
+Missing data are treated as additional unknown quantities, analogous to model parameters. Consequently, inference is based on the joint posterior distribution of model parameters and missing values conditional on the observed data [@gelmanbook, p. 449].
+
 The MCMC algorithm is now threefold [@endersbook, p. 190]:
 First, assign starting values to all unknown quantities.
 Then, repeat the following steps:
 1. Update coefficients.
-1. Update variance components.
-1. Update imputations for missing values.
-In each iteration, every step is performed conditional on the most recent draws of the other quantities.
-Steps one and two are equal to complete data Bayesian analysis, and the imputation step (step three) is explained more thoroughly in @nte-MI.
+2. Update variance components.
+3. Update imputations for missing values.
+
+In each iteration, every step is performed conditional on the most recent draws of the other quantities. Steps one and two are equal to complete data Bayesian analysis.
+
+Fully Bayesian estimation with missing data can be implemented using different ways of specifying the data model underlying this posterior distribution. Two major approaches are joint modeling and factored regression specifications. The imputation step (step three) is explained more thoroughly in @nte-MI.
 
 ::: {#nte-MI .callout-note icon=false}
 
@@ -298,7 +342,7 @@ p(Y_{mis} \mid Y_{obs}, Y_{mis}, \theta)
 =
 p(Y_{mis} \mid Y_{obs}, \theta)
 $$
-This distribution of missing outcome values can be called a *posterior predicitve distribution*, as predictions are generated based on posterior distributions of the parameters [@endersbook, p. 190]. Now it is evident why a MAR process is necessary for accurate estimates: Imputations are based on the information in the observed data, spiced with, which corresponds to the notion of MAR, that missingness is completely random, if it is conditioned on all the available data [@graham09].   
+This distribution of missing outcome values can be called a *posterior predictive distribution*, as predictions are generated based on posterior distributions of the parameters [@endersbook, p. 190]. Now it is evident why a MAR process is necessary for accurate estimates: Imputations are based on the information in the observed data, spiced with, which corresponds to the notion of MAR, that missingness is completely random, if it is conditioned on all the available data [@graham09].   
 For every variable, outcome or predictor with missing values, a distribution must be available from which imputations of missing values can be drawn [@endersbook, p.192].
 There a different possibilities to specify the distributions of missing values in order to impute data. For a multilevel model, two major approaches can be separated and will be sketched here: *Fully Conditional Specification* and *Joint Modeling* [@enders16].
 
@@ -334,7 +378,7 @@ A crucial point in the choice of a valid imputation model is compatibility with 
 
 ##### 2. Analyzing the completed data sets
 
-Researchers are now in the comfortable position to have *m* completed data sets. To each of these, the substantive analysis model of interest (e.g., the random intercept mpdel) is then fitted. Each analysis proceeds according to the standard estimation procedure described in @sec-est, up to the computation of parameter estimates and their standard errors. Hypothesis testing is not conducted at this stage. The result of this step are *m* sets of parameter estimates and corresponding standard errors.
+Researchers are now in the comfortable position to have *m* completed data sets. To each of these, the substantive analysis model of interest (e.g., the random intercept model) is then fitted. Each analysis proceeds according to the standard estimation procedure described in @sec-est, up to the computation of parameter estimates and their standard errors. Hypothesis testing is not conducted at this stage. The result of this step are *m* sets of parameter estimates and corresponding standard errors.
 
 ##### 3. Pooling the results
 
