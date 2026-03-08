@@ -133,7 +133,7 @@ In many empirical applications of multilevel models the slope $\beta_{1j}$ is as
 $$ 
 Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + \gamma_{01}Z_j + u_{0j} + e_{ij}
 $$
-The random intercept model also provides a convenient framework for examining the use of *group means* of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. Example ::: illustrates how the processes operating within groups may differ from those operating between groups.
+The random intercept model also provides a convenient framework for examining the use of *group means* of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. Example ... illustrates how the processes operating within groups may differ from those operating between groups.
 To separate within- and between-group effects, the level-1 predictor is then often *group-mean-centered*: Instead of using $X_{ij}$ directly, the centered predictor $(X_{ij} - \bar{X}_j)$ is entered into the model. This decomposes within- and between- group effects and facilitates their interpretation [@snijders, p.58]. A random intercept model including such a decomposition can be written like this: 
 
 $$ 
@@ -173,49 +173,68 @@ The ICC is an important diagnostic metric because it indicates whether the use o
 Conversely, larger ICC values indicate increasing similarity within groups and thus statistical dependency of observations. Ignoring this dependency and applying a classical linear model leads to biased standard errors, confidence intervals, and hypothesis tests [@fahrmeir, p.370].
 
 ## Estimation of multilevel models {#sec-est}
-In the preceding chapter, the theoretical foundation and parameters of the multilevel model were introduced. In practice, however, these parameters are unknown and only exist in the theoretical realm as ‘true’ values. The fixed effects $\gamma$ and variance components $\sigma^2$ and $\tau^2$ must therefore be estimated from observed data. Based on these estimates, inferences about the underlying population parameters are drawn.  
-In multilevel modeling, statistical inference is based on estimation or approximation of various components, as illustrated in @fig-est. The reliable performance of this 'inferential machinery' depends particularly on the following elements^[in addition to correct model specification] [@elff]:
+In the preceding chapter, the theoretical foundations and parameters of the multilevel model were introduced. In practice, however, these parameters are unknown and only exist in the theoretical realm as ‘true’ values. The fixed effects $\gamma$ and variance components $\sigma^2$ and $\tau^2$ must therefore be estimated from observed data. Based on these estimates, inferences about the underlying population parameters are drawn.  
+This process is illustrated for the random intercept model in @fig-est. Provided that the model specification corresponds to the true data-generating process well enough, the reliable performance of this 'inferential machinery' depends on three main elements [@elff]:
 
-HIER GRAFIK HIN {#fig-est}
 
 1. Estimation of fixed-effect coefficients (regression parameters)
-2. Estimation of variance–covariance components of the random effects (u) and residual errors (e)
+2. Estimation of variance–covariance components of the random effects ($u$) and residual errors ($e$)
 3. Selection of an appropriate approximation of the sampling distribution of the test statistic.  
 
-Moreover, the inferential machinery itself (i.e., its formulas and underlying assumptions) may be inapt for the empirical data reality, as will be discussed in the next chapter.
+Aspects of the observed data may pose challenges to this estimation process. Moreover, the inferential machinery itself (i.e., its formulas and underlying assumptions) may be inapt for the empirical data reality.
+Two common challenging aspects, namely small sample sizes and missing data, will be discussed in the following chapters.
+:::{#fig-est}
+![](/figures/estimation.pdf)
 
-## Small level-2 sample sizes in multilevel models^[In the following, I will refer to small level-2 sample sizes simply as small sample sizes, because level-1 sample sizes are usually sufficiently large and thus not problematic.]
-**Einfügen: Zahlen ab wann klein**
-#### Frequentist corrections for small samples
-In frequentist approaches, estimation procedures of linear multilevel models are based on asymptotic theory and assume a sufficiently large sample size. In practice, this assumption is often difficult to meet, especially because estimation depends not only on the number of individual observations (Level 1), but also on the number of clusters (Level 2), which are often difficult or costly to obtain [@mcneishcoll]. Fortunately, statistics has solutions at hand for the challenges that come with this violation of the assumption. The main issues associated with small-sample multilevel models and corresponding solutions are presented below.  
+\footnotesize
+**Simplified frequentist inferential process in a random intercept model**, based on @snijders and @raudenbush. The boxes illustrate the procedure for two groups with two persons each and serve only as a simple example.
 
-Following the structure of @fig-est, we first consider the estimation of fixed effects and variance components. In MLM, these parameters can be estimated with the maximum likelihood (ML) or restricted maximum likelihood (REML) method [@snijders, p.89]. Kackar & Harville [-@kackar] showed that both ML and REML estimators of variance components are even and translation-invariant, implying that fixed effect point estimates are unbiased, independent of sample size.  
-Estimation of the variance components, however, is more delicate. In ML estimation, fixed effects and variance components are estimated simultaneously, typically via iterative procedures like the Expectation Maximization (EM) mechanism [@mcneishcoll]. In this process fixed effects are effectively being treated as known when estimating variance components. Consequently, the sampling variability of the fixed-effect estimates is ignored and the loss of degrees of freedom due to their estimation is not accounted for. While these issues are not troublesome in large samples, they lead to systematic underestimation of variance components in small samples [@mcneishcoll]. 
-REML fixes this issue by separating the estimation conceptually. The fixed effects are eliminated from the likelihood, and variance components are estimated solely based on residual information. Fixed effects are then estimated via generalized least squares (GLS), using the previously estimated variance components [@raudenbush, p. 410]. This leads to less downward-biased variance component estimates, while ML and REML become asymptotically equivalent as sample size increases.
-The next step in the estimation scheme (@fig-est) is the model-implied variance-covariance-matrix of y (denoted $V$). It contains entries for each person and shows the marginal variance of the Y-values of one person ($\tau^2 + \sigma^2$), the covariance of outcomes in the same group ($\tau^2$), and across different groups (0, independent).  
-Because the V matrix depends only on the variance components, it is also estimated more accurately with REML in small samples. The standard error depends on this matrix and on the design matrix:
+The figure summarizes the main steps of frequentist inference in multilevel models:
 
-$$
-Var(\hat{\gamma} \mid X) = (X^TV^{-1}X)^{-1}
-$$
-$$
-V \rightarrow \hat{V}(\hat{\theta})
-$$
+1. **Parameter estimation.**  
+   The unknown model parameters are estimated from the observed data. These include the fixed-effect regression coefficients $\boldsymbol{\gamma}$ and the variance components of the random effects and residual errors, typically denoted by $\tau_0^2$ and $\sigma^2$. In practice, these quantities are usually estimated using maximum likelihood (ML) or restricted maximum likelihood (REML).
 
-Even with REML, a small-sample issue results from this calculation: As $V$ uses the estimated variance components $\hat{\theta}$, these components have sampling variability and would differ each time the study is repeated. However, the variance formula (eq...) treats them as known and ignores this additional uncertainty [@mcneishcoll]. Although this variability becomes insignificantly small in large samples, it leads to underestimation of the standard errors in small samples. Accordingly, Kackar & Harville showed that the true sampling variance can be written as
+2. **Deriving the variance structure.**  
+   The estimated variance components determine the model-implied variance–covariance structure of the outcome vector $Y$, denoted by $V$. In the random intercept model, this structure depends on the grouping of the observations. The matrix $Z$ is the design matrix for the random effects and encodes group membership (1 = observation belongs to the group, 0 = otherwise). Observations belonging to the same group therefore share the same random intercept.
 
-$$
-Var(\hat{\gamma})= Var^{REML}(\hat{\gamma}) + \text{Small Sample Bias}
-$$
-[@kackarcorr; @mcneishcoll].  
-The Prasad-Jao-Jeske-Kackar-Harville correction provides an approximation to this bias term.  
-Nevertheless, standard errors may remain slightly underestimated because the REML-based variance expression itself relies on asymptotic approximations. Kenward and Roger therefore proposed a refined approximation of the full sampling variance of the fixed effects, resulting in more accurate standard errors in small samples [@mcneishcoll].  
-The standardized test statistic for inference procedures (GRAFIK) can be regarded as 'small-sample-adjusted' at this point. The final step concerns the choice of a sampling distribution for p-values and confidence intervals. In small samples, a t distribution should be used [@snijders, p. 95]. The choice of degrees of freedom is particularly important because small changes in degrees of freedom have a noticeable impact on the shape of the sampling distribution and therefore on statistical inference.  
-** EINFÜGEN: ABSATZ ÜBER DFS IRGENDWO**
-In multilevel models, degrees of freedom generally must be approximated, as there is no closed-form solution. For small samples, this is often done via the Kenward-Roger correction, which is based on the Satterthwaite correction [@mcneishcoll]. A simpler approximation with good properties is given by textbooks from Raudenbush & Bryk [@-raudenbush, p. 58] or Snijders & Bosker [-@snijders, p. 95]:
+3. **Standard errors of the fixed effects.**  
+   Using the estimated variance structure $\hat V$, the variance of the fixed-effect estimators can be calculated, from which their standard errors are derived. Here, $\gamma_k$ denotes the $k$-th coefficient in the vector of fixed effects $\boldsymbol{\gamma}$.
+
+4. **Statistical inference.**  
+   Inference for the fixed effects is conducted using a Wald-type test statistic, defined as the estimated coefficient divided by its estimated standard error. In large samples this statistic is typically evaluated against a standard normal distribution, whereas in smaller samples a $t$-distribution with approximated degrees of freedom is recommended.
+\normalsize
+:::
+
+## Small sample sizes in multilevel models
+### Frequentist corrections for small samples
+Frequentist estimation procedures of linear multilevel models are typically based on asymptotic theory, meaning that biased estimates may occur in small samples. In multilevel models, the number of groups is particularly important. Depending on the model of interest, roughly 25-30 clusters are found to be necessary to obtain precise results [@mcneishstaple14; @mcneish17]. In practice, however, these numbers are often difficult to achieve, as recruiting a large number of groups can be difficult and costly. The main issues associated with small-sample multilevel models and corresponding solutions are presented below.  
+
+#### Estimation of regression parameters
+The regression parameters are estimates of the effects of interest. For example, how much does one additional hour of weekly practice influence a student's musical self-concept? How does the musical self-concept differ between ensembles that practice on average three hours per week and those that practice thirteen hours per week?  
+Kackar & Harville [-@kackar] showed that both ML and REML estimators of variance components are even and translation-invariant, implying that fixed effect point estimates are unbiased, independent of sample size.  
+
+#### Estimation of variance components
+The estimation of the variance components is more delicate. In ML estimation, fixed effects and variance components are estimated simultaneously, typically via iterative procedures like the Expectation Maximization (EM) mechanism [@mcneishcoll]. In this process fixed effects are effectively being treated as known when estimating variance components. Consequently, the sampling variability of the fixed-effect estimates is ignored and the loss of degrees of freedom due to their estimation is not accounted for. While these issues are not troublesome in large samples, they lead to systematic underestimation of variance components in small samples [@mcneishcoll].  
+REML fixes this issue by separating the estimation conceptually. The fixed effects are eliminated from the likelihood, and variance components are estimated solely based on residual information. Fixed effects are then estimated via generalized least squares (GLS), using the previously estimated variance components [@raudenbush, p. 410]. This leads to less downward-biased variance component estimates, while ML and REML become asymptotically equivalent as sample size increases.  
+
+Nevertheless, the REML variance estimate of the fixed effects may still be too small in small samples for two reasons. 
+First, the variance formula treats the estimated variance components $\hat{\theta}$ as known and therefore ignores their sampling variability [@kackarcorr]. 
+Second, the REML variance expression itself relies on asymptotic approximations [@mcneishcoll]. 
+Both issues can lead to underestimated standard errors. 
+Several small-sample corrections have been proposed to address this problem, among which the Kenward–Roger procedure is one of the most widely used [@mcneishcoll].
+
+#### Approximation of the sampling distribution {#sec-df}
+The standardized test statistic used for inference (see @fig-est) can be regarded as 'small-sample-adjusted' at this point. The final step concerns the choice of a sampling distribution for p-values and confidence intervals. In small samples, a $t$-distribution is typically recommended instead of a standard normal distribution [@snijders, p. 95].
+
+The shape of the $t$-distribution is determined by the number of degrees of freedom (HIER BILDER VON VERSCHIEDENEN T VERTEILUNGEN?). With small degrees of freedom, even small changes noticeably affect the shape of the sampling distribution and therefore the resulting p-values and confidence intervals. The concept of degrees of freedom is difficult to define concisely, but it can be described as the number of independent pieces of information in the data that remain after accounting for restrictions such as estimated parameters [@pandey]. 
+
+In multilevel models, the degrees of freedom generally cannot be calculated exactly and must therefore be approximated because of the nested data structure [@snijders, p. 95]. The Kenward–Roger correction mentioned earlier also includes a complex small-sample-adjusted approximation of the degrees of freedom, building on the Satterthwaite method [@mcneishcoll].
+
+A more straightforward approximation is provided in textbooks by Raudenbush & Bryk [@raudenbush, p. 58] and Snijders & Bosker [@snijders, p. 95], and has also been proposed in methodological articles [@elff]. This approach distinguishes between level-1 and level-2 predictors and reflects the concept of degrees of freedom as information minus estimated parameters:
 $$
 df_{Lv1} = N_1 - r - 1, \qquad df_{Lv2} = N_2 - q - 1
 $$
+
 $$
 \begin{array}{l}
 N_1: \text{Level-1 sample size (total number of individuals)}\\
@@ -225,20 +244,11 @@ q: \text{Number of predictors at level two}
 \end{array}
 $$
 
-#### Fully Bayesian analysis {#sec-bayes}
+### Fully Bayesian analysis {#sec-bayes}
 
-Instead of relying on REML and small-sample corrections within the predominantly frequentist framework presented here, a fully Bayesian framework can be adopted to account for the additional uncertainty stemming from small sample sizes in a natural way [@raudenbush, p. 411]. A comprehensive illustration of the Bayesian framework is beyond the scope of this thesis, however, the main philosophical and practical differences to the frequentist approach will be given here:  
-
-1. In Bayesian methods, all parameters are considered uncertain and therefore have distributions, whereas in frequentist methods parameters are assumed to have one fixed but unknown true value. Because variance components and fixed effects are represented in a joint distribution as a result of Bayesian analysis, the uncertainty of parameters is considered simultaneously for all parameters and doesn't need to be corrected for step by step as in frequentist analysis [@mcneishbay].
-
-1. A Bayesian analysis combines prior information about parameters with the observed data, expressed by the likelihood, to obtain a posterior distribution.
-This posterior distribution is the end result of Bayesian estimation. Point estimates can be taken as the posterior mean or median, and credible intervals are derived directly from percentiles from the posterior distribution [@mcneishbay]. No asymptotic standard error corrections, degrees-of-freedom adjustments, or finite-sample corrections are required.
-
-1. Bayesian methods do not rely on large samples in the same way as frequentist methods do. Estimation of the posterior distribution is typically performed via Markov Chain Monte Carlo (MCMC) sampling. From the posterior distribution, a large number of samples is drawn to approximate its shape. In this process, the accuracy of the posterior approximation is not dependent on the sample size of the single samples, but on the number of drawn samples [@mcneishbay].
-
-Despite all these potential advantages, a crucial point is that with smaller samples, the prior distributions are key factors, because likelihoods are relatively flat and contribute less information to the posterior distribution [@mcneish]. If informative priors based on earlier research or expert knowledge are used, this can improve performance. However, when researchers are primarily interested in their observed data or do not have prior information about the parameters, they may use noninformative, vague priors. These allow for the sampling of extreme values during MCMC estimation which in turn can lead to inflated variance parameters and posterior standard errors [@mcneishbay]. Also, recommended or software default uninformative prior distributions have proven to be more informative than intended in small sample sizes and often perform poorly [@mcneishpriors; @gelmanprior; @mcneishbay]. However, there is also evidence that Bayes estimation with noninformative priors can lead to more accurate estimation than with an ML estimator in terms of RSME in latent models [@zitzmann].
-Genauer erklären, warum Bayes dann einen Vorteil hat (Stabilisierung der Varianzschätzung der between-Level-Komponente.)
-DOCH NOCH ETWAS AUSFÜHRLICHER ZU MCMC ESTIMATION? -> auch für missing relevant
+As alternative to the frequentist framework predominantly presented here, a Bayesian approach is often recommended for small sample sizes [@mcneishbay]. Details of Bayesian analysis will not be discussed in this thesis but are only briefly introduced here. Two aspects of Bayesian analyses are particularly helpful in small samples.  
+A Bayesian framework is naturally equipped to account for the additional uncertainty arising in small samples because it does not rely on large-sample asymptotic approximations [@mcneishbay]. Instead, the posterior distribution, the end result of a Bayesian analysis, is typically approximated using Markov Chain Monte Carlo (MCMC) sampling. Consequently, Bayesian inference does not require small-sample corrections for standard errors or degrees of freedom.  
+Furthermore, Bayesian inference combines prior information about parameters with the observed data. This makes it possible to include previous knowledge into the analysis to increase the amount of available information [@mcneishbay]. This advantage, however, depends strongly on prior specification. In small samples, prior distributions can have a substantial influence on the results because the likelihood function is often relatively flat and therefore contains limited information about the parameters [@gelmanbook, p. 355]. Informative or weakly informative priors can improve estimation accuracy, whereas vague or software default priors may be more influential than intended and can perform poorly in small samples [@mcneishbay; @mcneishpriors; @gelmanprior]. Nevertheless, even Bayesian estimation with noninformative priors has in some settings been found to outperform maximum likelihood estimation in terms of RMSE [@zitzmann]. In addition, prior distributions may prevent the estimation of inadmissible values that could otherwise lead to convergence problems, such as negative variance estimates [@vandeschoot]. Thus, the inclusion of prior distributions may be regarded either as a methodological advantage or as “a price to be paid” [@raudenbush, p. 411] for Bayesian inference.
 
 ## Missing data in multilevel models
 
@@ -280,15 +290,7 @@ Some concluding notes:
 
 - While these terms are also applicable to multilevel data, the situation is somewhat more complex as missing values can occur in the outcome, in level-1 predictors, in level-2 predictors or even the grouping variable (and combinations of all of these; @buuren)
 
-- The missing data mechanism is generally not empirically testable from the observed data alone (except MCAR with Little's test); assumptions about the mechanism must therefore be theoretically justified [@endersbook, p. 14ff.].
-
-- These missing data mechanisms are relative to the *present* data set and don't refer to $Y_{obs}$ in hypothetical repetitions of an experiment or study [@endersbook, p.13; @SG2002]. From a frequentist perspective, assumptions about the missingness mechanism must hold under repeated sampling; therefore, stricter definitions such as “*always* missing at random” have been proposed [@seaman].
-
-- The typology is also *relative to the analysis*: Depending on the choice of the outcome and predictor variables, the underlying missingness mechanism could change [@graham09]. E.g., if the relevant predictors of missingness are observed, but omitted from the analysis model, the analysis would behave like MNAR instead of MAR conditional on the full data.
-
-
-GRAFISCHES MODELL EINFÜGEN (DAGs)
-IMPLICATIONS von den einzelnen Mustern?
+- The missing data mechanism is generally not empirically testable from the observed data alone; assumptions about the mechanism must therefore be theoretically justified [@endersbook, p. 14ff.].
 
 ### Methods for handling missing data
 In this section, treatment methods for missing data in multilevel models will be discussed. All of the mentioned approaches assume missingness at random (MAR), or completely at random (MCAR) for listwise deletion, respectively. Frameworks for MNAR processes are not discussed in this thesis.
