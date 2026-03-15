@@ -39,13 +39,14 @@ $$ $$
 u_{X_j}\sim N(0,{\tau_x}^2), \qquad e_{X_{ij}}\sim N(0,{\sigma_x}^2) 
 $$ with ${\tau_x}^2 = ICC_x$ and ${\sigma_x}^2 = 1 - ICC_x$,
 respectively.\
-$X_{ij}$ was then group-mean-centered.\
-The group-level covariate $W_{j}$ was constructed with a linear
-regression equation to have a prespecified correlation with $\bar{X.}_j$
+$X_{ij}$ was then group-mean-centered.  
+The group-level covariate $W_{j}$ was constructed with a linear regression equation to have a prespecified correlation with $\bar{X.}_j$
 ($\rho_{\bar{X}W}$):
-$$ W_j=a\bar{X}_j + e_{Wj}, \qquad e_{Wj}\sim N(0,{\sigma_w}^2)  $$ The
-residual variance ${\sigma_w}^2$ and the regression coefficient $a$ are
-fully determined by the restriction that $Var(W_j) = 1$: $$
+$$ 
+W_j=a\bar{X}_j + e_{Wj} \qquad 
+e_{Wj}\sim N(0,{\sigma_w}^2)
+$$ 
+The residual variance ${\sigma_w}^2$ and the regression coefficient $a$ are fully determined by the restriction that $Var(W_j) = 1$: $$
 \begin{aligned}
 {\sigma_w}^2 = 1- \rho_{\bar{X}W}^2, \\
 a =\frac{\rho_{\bar{X}W}}{\sqrt{\tau_x^2+ \frac{{\sigma_x}^2 }{n} }}
@@ -80,7 +81,8 @@ $$
 $r_{ij}$ is normally distributed. Observations with $r_{ij} > 0$ were set to missing.\
 The intercept $\alpha$ controls the proportion of missingness in $X$,
 whereas the slope $\beta$ determines the strength of the
-missing-at-random mechanism. When $\beta = 0$, missingness is completely
+missing-at-random mechanism.
+When $\beta = 0$, missingness is completely
 at random (MCAR). With increasing $\beta$, the missingness mechanism
 becomes more dependent on the $W$-values; with $\beta = 1$, missingness
 would be completely deterministic.  
@@ -155,16 +157,11 @@ Four methods will be compared, alongside the benchmark analysis of Complete Data
 Listwise Deletion was used as a standard reference method for missing data handling. Cases with missing $X$-values were excluded prior to analysis. The group means $\bar{X}_{.j}$ were then calculated only from the remaining observations. Then, group-mean centering was applied.
 
 ### Multiple Imputation (MI) with standard (MI-R) and adjusted (MI-a) degrees of freedom
-For both multiple imputation methods, a joint modeling approach was employed. Although only values in $X$ were missing, the multivariate specification preserves the multilevel structure during imputation. The multivariate empty model is generally suitable for random-intercep models [@grundMI16]:
-$$
-\left(\begin{matrix}Y_{ij}\\X_{ij}\\W_j\\\end{matrix}\right)=\left(\begin{matrix}\beta_{0Y}\\\beta_{0X}\\\beta_{0W}\\\end{matrix}\right)+\left(\begin{matrix}u_{Yj}\\u_{Xj}\\u_{Wj}\\\end{matrix}\right)+\left(\begin{matrix}e_{Yij}\\e_{Xij}\\0\\\end{matrix}\right)
-$$
-The random effects $(u_{Yj}, u_{Xj}, u_{Wj})^{\top}$ and the residuals $(e_{Yij}, e_{Xij})^{\top}$ follow multivariate normal distributions with mean zero and covariance matrices $\Psi=\left[\ \begin{matrix}\psi_y^2&\psi_{yx}&\psi_{yw}\\\psi_{yx}&\psi_x^2&\psi_{xw}\\\psi_{yw}&\psi_{xw}&\psi_w^2\\\end{matrix}\right]$ and $\Sigma=\left[\ \begin{matrix}\sigma_y^2&\sigma_{yx}\\\sigma_{yx}&\sigma_x^2\\\end{matrix}\ \right]$
+For both multiple imputation methods, a joint modeling approach was employed. The imputation model was the multivariate empty model specified before (@eq-imputationmodel), with $W_j$ as an auxiliary variable on level 2.  
 
-$W_j$ serves as an auxiliary variable to explain missingness.  
 Imputation was executed with the R package `jomo` [@quartagnoJomoPackageMultilevel2023] with 2000 burn-in-iterations and 3000 post-burn-in iterations, saving every 300th imputation (10 imputations).  
 For MI-R, degrees of freedom for calculating the test statistic were calculated with the software standard (Rubin´s rules, assuming infinite degrees of freedom in complete data).  
-For MI-a, degrees of freedom were calculated with $df_{\gamma_{10}} = M - r - 1$ ($M$: total number of Level-1 units; $r$: total number of predictors, in the present case $2$) and $df_{\gamma_{01}} = N_2 - q - 1$ ($N_2$: number of Level-2 units; $q$: number of Level-2 predictors, here: $1$)
+For MI-a, complete data degrees of freedom were calculated with $df_{\gamma_{10}} = M - r - 1$ ($M$: total number of Level-1 units; $r$: total number of predictors, in the present case $2$) and $df_{\gamma_{01}} = N_2 - q - 1$ ($N_2$: number of Level-2 units; $q$: number of Level-2 predictors, here: $1$).
 
 ### Fully Bayesian Analysis
 A factored regression specification was used within the Bayesian framework to allow the inclusion of the auxiliary variable $W$ while leaving the focal analysis model unchanged:
@@ -195,7 +192,4 @@ The simulation was conducted in RStudio with the aim of full reproducibility, fo
 
 
 
-INSGESAMT NOCH MEHR BESCHREIBEN? ALSO AUCH, WELCHE GEDANKEN ICH MIR ZUR AUSWERTUNG GEMACHT HATTE..?
-(z.B., wie  Performance measures evaluiert werden sollen)
-
-ERKLÄRUNG DER METHODEN KOMMT SCHON IM THEORIETEIL, WÜRDE ICH SAGEN
+Noch einfügen: wie Performance measures evaluiert werden sollen; außerdem width of confidence intervals als Performance measure?

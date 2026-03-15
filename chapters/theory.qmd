@@ -17,8 +17,7 @@ Players from the same ensemble rehearse together, share teachers, and experience
 Populations like this, where units of interest (e.g., music players, students, employees) are grouped into higher-level units (e.g., ensembles, classes, firms), are common in the human social life and therefore in psychological studies.  
 The resulting data is called *nested* or *clustered* [@snijders, p. 7].  
 From a sampling perspective, a so-called *multistage sampling process* (sample groups first, then individuals inside these groups^[In this thesis, the term 'groups' refers to the higher-level units of the data and level-1 units are referred to as 'persons'. However, it is important to note that these models can also be used for longitudinal research, where measurement points are on level 1 and individuals are the level-2 units. Furthermore, more than two levels are also possible, but are not discussed here.]) is not independent: After selecting a group, you will try to sample all of the members of this group, making it more likely to select one person in this group over others in non-selected groups [@snijders, p. 7].  More importantly, individuals inside the same group typically share contextual influences (e.g., the same ensemble teacher, the same class room) and thus will give more similar responses in surveys and behavior. As a consequence, the basic assumption of independence in traditional linear modeling is violated, because error terms will be correlated [@raudenbush, p. xx].  
-One well-suited and popular possibility to account for this fact is the use of *multilevel models* (also called *hierarchical linear models* or *mixed models*).  
-
+One well-suited and popular possibility to account for this fact is the use of *multilevel models* (also called *hierarchical linear models* or *mixed models*). 
 
 ### The concept of multilevel regression models
 The aim of regression analysis, whether single- or multilevel, is to explain variance in an outcome variable by including associated variables in the model as predictors [@snijders, p. 80]. In single-level regression, the residual $e_{i}$ captures the *unexplained variance* in $Y$, that is differences in the outcome from the prediction that the model made [@leonhart, p. 319]. The assumption of the classical linear model is that after inclusion of all *systematic* influences on $Y$, the residuals are *random*. Specifically, they are assumed to have expectation zero ($E(e_i)=0$), constant variance across observations (homoscedasticity; $Var(e_i)=\sigma^2$), and to be independent across observations ($Cov(e_i, e_{i'})=0$ for $i \neq i'$) [@fahrmeir, p.87].  
@@ -29,6 +28,9 @@ $$
 Y_{ij} = \gamma_{00} + u_{0j} + e_{ij}
 $$
 Here, the outcome value of person $i$ in group $j$ is modeled as the sum of the overall mean $\gamma_{00}$, a group level random effect $u_{0j}$ and a random effect on the individual level, $e_{ij}$ [@snijders, p. 49]. The random intercept $u_{0j}$ captures the dependency of individuals within one group statistically, as all individuals in group $j$ have the same $u_{0j}$ value and their outcome values are therefore correlated. Conditional on this group component, however, the remaining level-1 residuals $e_{ij}$ are assumed to be independent, addressing the issue of dependency that would arise if a single-level regression model were applied to nested data.
+
+This and the further explained models are illustrated in @fig-mlmplots.
+
 
 ### Within- and between- group regressions and inclusion of predictors
 
@@ -151,6 +153,20 @@ $\gamma_{01}$: the contextual effect, indicating the influence of the ensemble's
 
 For the remainder of this thesis, the focus lies on this particular random intercept model.
 
+
+:::{#fig-mlmplots}
+![](/figures/plotmlm.png)
+
+**Illustration of multilevel model specifications.** Empty model, random intercept model and random slope model on Level 1. For level 2, the difference between a random intercept model with and without group-mean predictor is shown.
+
+\small
+
+Erklärung der Plots
+
+
+\normalsize
+:::
+
 ### The intraclass correlation coefficient (ICC)
 
 In the random intercept model, the variance components are given by
@@ -176,34 +192,35 @@ Conversely, larger ICC values indicate increasing similarity within groups and t
 In the preceding chapter, the theoretical foundations and parameters of the multilevel model were introduced. In practice, however, these parameters are unknown and only exist in the theoretical realm as ‘true’ values. The fixed effects $\gamma$ and variance components $\sigma^2$ and $\tau^2$ must therefore be estimated from observed data. Based on these estimates, inferences about the underlying population parameters are drawn.  
 This process is illustrated for the random intercept model in @fig-est. Provided that the model specification corresponds to the true data-generating process well enough, the reliable performance of this 'inferential machinery' depends on three main elements [@elff]:
 
-
 1. Estimation of fixed-effect coefficients (regression parameters)
 2. Estimation of variance–covariance components of the random effects ($u$) and residual errors ($e$)
 3. Selection of an appropriate approximation of the sampling distribution of the test statistic.  
 
 Aspects of the observed data may pose challenges to this estimation process. Moreover, the inferential machinery itself (i.e., its formulas and underlying assumptions) may be inapt for the empirical data reality.
 Two common challenging aspects, namely small sample sizes and missing data, will be discussed in the following chapters.
+
 :::{#fig-est}
-![](/figures/estimation.pdf)
+![](/figures/estimation.png)
+Simplified frequentist inferential process in a random intercept model, based on @snijders and @raudenbush.
 
-\footnotesize
-**Simplified frequentist inferential process in a random intercept model**, based on @snijders and @raudenbush. The boxes illustrate the procedure for two groups with two persons each and serve only as a simple example.
+\small
 
-The figure summarizes the main steps of frequentist inference in multilevel models:
+**Notes on notation**
 
-1. **Parameter estimation.**  
-   The unknown model parameters are estimated from the observed data. These include the fixed-effect regression coefficients $\boldsymbol{\gamma}$ and the variance components of the random effects and residual errors, typically denoted by $\tau_0^2$ and $\sigma^2$. In practice, these quantities are usually estimated using maximum likelihood (ML) or restricted maximum likelihood (REML).
+- $X$: design matrix for the fixed effects. Each row corresponds to an observation (e.g., a person) and each column to a predictor included in the fixed part of the model.
 
-2. **Deriving the variance structure.**  
-   The estimated variance components determine the model-implied variance–covariance structure of the outcome vector $Y$, denoted by $V$. In the random intercept model, this structure depends on the grouping of the observations. The matrix $Z$ is the design matrix for the random effects and encodes group membership (1 = observation belongs to the group, 0 = otherwise). Observations belonging to the same group therefore share the same random intercept.
+- $Z$: design matrix for the random effects. In the random intercept model it encodes group membership (1 = observation belongs to the group, 0 = otherwise), so observations from the same group share the same random intercept.
 
-3. **Standard errors of the fixed effects.**  
-   Using the estimated variance structure $\hat V$, the variance of the fixed-effect estimators can be calculated, from which their standard errors are derived. Here, $\gamma_k$ denotes the $k$-th coefficient in the vector of fixed effects $\boldsymbol{\gamma}$.
+- $Y$: outcome vector containing the observed values of the dependent variable.
 
-4. **Statistical inference.**  
-   Inference for the fixed effects is conducted using a Wald-type test statistic, defined as the estimated coefficient divided by its estimated standard error. In large samples this statistic is typically evaluated against a standard normal distribution, whereas in smaller samples a $t$-distribution with approximated degrees of freedom is recommended.
+- $\hat V$: estimated variance--covariance matrix of the outcome vector $Y$. In the random intercept model it is determined by the estimated variance components of the random intercept ($\hat{\tau}_0^2$) and the residual variance ($\hat{\sigma}^2$), reflecting that observations within the same group are correlated.
+
+- $\hat{\gamma}_k$: the $k$-th element of the estimated fixed-effect vector $\boldsymbol{\hat{\gamma}}$.
+
 \normalsize
 :::
+
+
 
 ## Small sample sizes in multilevel models
 ### Frequentist corrections for small samples
@@ -246,143 +263,273 @@ $$
 
 ### Fully Bayesian analysis {#sec-bayes}
 
-As alternative to the frequentist framework predominantly presented here, a Bayesian approach is often recommended for small sample sizes [@mcneishbay]. Details of Bayesian analysis will not be discussed in this thesis but are only briefly introduced here. Two aspects of Bayesian analyses are particularly helpful in small samples.  
+As alternative to the frequentist framework predominantly presented here, a Bayesian approach is often recommended for small sample sizes [@mcneishbay]. In this framework, parameters are viewed as random variables with probability distributions. Prior knowledge about the parameters of interest in the form of prior distributions is combined with the information in the observed data in the form of a likelihood function. Together they are combined via Bayes' theorem to form the posterior distribution of the parameter of interest, namely the updated knowledge and certainty about the parameters [@vandeschoot]. More general details on Bayesian analyses will not be discussed in this thesis.
+
+Two aspects of Bayesian analyses are particularly helpful in small samples.  
 A Bayesian framework is naturally equipped to account for the additional uncertainty arising in small samples because it does not rely on large-sample asymptotic approximations [@mcneishbay]. Instead, the posterior distribution, the end result of a Bayesian analysis, is typically approximated using Markov Chain Monte Carlo (MCMC) sampling. Consequently, Bayesian inference does not require small-sample corrections for standard errors or degrees of freedom.  
 Furthermore, Bayesian inference combines prior information about parameters with the observed data. This makes it possible to include previous knowledge into the analysis to increase the amount of available information [@mcneishbay]. This advantage, however, depends strongly on prior specification. In small samples, prior distributions can have a substantial influence on the results because the likelihood function is often relatively flat and therefore contains limited information about the parameters [@gelmanbook, p. 355]. Informative or weakly informative priors can improve estimation accuracy, whereas vague or software default priors may be more influential than intended and can perform poorly in small samples [@mcneishbay; @mcneishpriors; @gelmanprior]. Nevertheless, even Bayesian estimation with noninformative priors has in some settings been found to outperform maximum likelihood estimation in terms of RMSE [@zitzmann]. In addition, prior distributions may prevent the estimation of inadmissible values that could otherwise lead to convergence problems, such as negative variance estimates [@vandeschoot]. Thus, the inclusion of prior distributions may be regarded either as a methodological advantage or as “a price to be paid” [@raudenbush, p. 411] for Bayesian inference.
 
 ## Missing data in multilevel models
+::: {.callout-tip icon=false}
 
-BEISPIEL EINFÜGEN
+### Example
 
-Missing data (i.e., incomplete data sets) are a widespread issue in empirical research and of course also applies to multilevel data, e.g., because individuals drop out of studies or forget to fill out certain items of a questionnaire. Three major concerns commonly arise from data that contain missing values:
+In the study about musical self-concept, you find after data collection that some students in several ensembles did not report how many hours they practice per week. They completed the questionnaire on musical self-concept but left the practice question blank. 
+
+The reason for this is unknown: they might have forgotten to answer the question, skipped it intentionally, or misunderstood it. Regardless of the reason, the data set now contains missing values. How should these missing observations be handled in the analysis?
+:::
+
+Missing data (i.e., incomplete data sets) are a widespread issue in empirical research and of course also applies to multilevel data, e.g., because individuals drop out of studies or forget to fill out certain items of a questionnaire. Three major concerns commonly arise from data that contain missing values [@luedtke]:
 
 1. The effective sample size is reduced, leading to lower efficiency in estimation (this is especially troublesome if the would-be sample size is already small)
 1. Typical statistical methods are difficult to conduct, because they were designed for complete data.
-1. Parameter estimation may be biased, if the missing and the observed data differ from each other systematically [@luedtke]  
+1. Parameter estimation may be biased, if the missing and the observed data differ from each other systematically  
 
 Therefore, it is crucial to treat missing data appropriately. In the last three decades, this issue has received attention in psychological research, and modern methods were developed [@SG2002; @endersbook], more recently also for the more complex case of multilevel data [@luedtkeMI; @endersupdate]. This chapter discusses these methods, after giving a short introduction into different missing data mechanisms and patterns.
 
 ### Missing data mechanisms
-Why data are missing can have multiple reasons, and different mechanisms may lead to different consequences in statistical inference. Rubin and Little [@littlerubin87; @rubin76] introduced a typology and theoretical framework of missing data mechanisms that describes the relationship between the observed and the missing data. 
+Why data are missing can have multiple reasons, and different mechanisms may lead to different consequences in statistical inference. Rubin and Little [@littlerubin87; @rubin76] introduced a typology and theoretical framework of missing data mechanisms that describes the relationship between the observed and the missing data. The missing data mechanism is generally not empirically testable from the observed data alone and assumptions about the mechanism must therefore be theoretically justified [@endersbook, p. 14ff.].
 
-**Missing completely at random (MCAR)**. Considering the hypothetical complete data matrix Y, $Y_{com}$ is partitioned into observed, $Y_{obs}$, and missing parts, $Y_{mis}$, and $R$ denotes the missingness^[$R$ is treated as a set of random variables that indicate for each value if it is missing or not [@SG2002].]. Missing values are considered to be MCAR if the distribution of missingness does not depend on the data [@SG2002]:
+**Missing completely at random (MCAR)**. Considering the hypothetical complete data matrix Y^[Here, $Y$ represents the complete data set, including both outcome variables and predictors.], $Y_{com}$ is partitioned into observed, $Y_{obs}$, and missing parts, $Y_{mis}$, and $R$ denotes the missingness^[$R$ is treated as a set of random variables that indicate for each value if it is missing or not [@SG2002].]. Missing values are considered to be MCAR if the distribution of missingness does not depend on the data [@SG2002]:
 $$
 P(R \mid Y_{com}) = P (R)
 $$
-In other words, no variable (observed or unobserved) can predict missingness and every individual in every group has the same chance of missing values [@endersbook, p. 6]
-BEISPIEL
+In other words, no variable (observed or unobserved) can predict missingness and every individual in every group has the same chance of missing values [@endersbook, p. 6].
 
 **Missing at random (MAR)**. The MAR mechanism describes the case when the probability of missingness does depend on observed data, but not on missing values [@endersbook, p.8]:
 $$
 P(R \mid Y_{com}) = P (R \mid Y_{obs})
 $$
 Missingness is therefore not random, as the name would suggest, but *conditionally random*: After controlling for the observed data, the missingness is purely random [@endersbook, p.8].
-BEISPIEL
 
-**Missing not at random (MNAR)**. If missingness depends on the observed and the missing values, this is called a missing not at random process^[The case $P(R \mid Y_{com}) = P (R \mid Y_{mis})$ is referred to as **focused MNAR** [@endersbook, p. 11].]:
+For example, students who practice less might be more likely to skip the question about weekly practice duration. If this behavior can be predicted from other observed variables (musical self-concept or ensemble membership), the MAR assumption could be plausible.
+
+**Missing not at random (MNAR)**. If missingness depends on unobserved values, this is called a missing not at random process^[The special case $P(R \mid Y_{com}) = P (R \mid Y_{mis})$ is referred to as **focused MNAR** [@endersbook, p. 11].]:
 $$
 P(R \mid Y_{com}) = P (R \mid Y_{obs}, Y_{mis})
 $$
-Two individuals in the same group with identical scores in all observed variables then no longer have the same chance of missing values, because this chance depends on information that we do not have (because it lies in the missing values)[@endersbook, p.11].
+Two individuals in the same group with identical scores in all observed variables therefore no longer have the same chance of missing values, because this chance depends on the unavailable, missing information itself [@endersbook, p.11].
 
-BEISPIEL 
-Some concluding notes:
-
-- While these terms are also applicable to multilevel data, the situation is somewhat more complex as missing values can occur in the outcome, in level-1 predictors, in level-2 predictors or even the grouping variable (and combinations of all of these; @buuren)
-
-- The missing data mechanism is generally not empirically testable from the observed data alone; assumptions about the mechanism must therefore be theoretically justified [@endersbook, p. 14ff.].
+While these mechanisms also apply to multilevel data, the situation becomes more complex because missing values can occur in the outcome, in level-1 predictors, in level-2 predictors, or even in the grouping variable (or combinations of these; @buuren).
 
 ### Methods for handling missing data
-In this section, treatment methods for missing data in multilevel models will be discussed. All of the mentioned approaches assume missingness at random (MAR), or completely at random (MCAR) for listwise deletion, respectively. Frameworks for MNAR processes are not discussed in this thesis.
 
-#### Listwise Deletion (LD)
-
-*Listwise deletion*, a.k.a. *complete case analysis*, is one of the most widespread older approaches to missing data analysis. Cases with at least one missing value will be discarded completely, then the model is estimated using only the complete cases [@graham09]. In multilevel settings, missingness on the group level implies that all individuals in this group are excluded as well.   
-Listwise deletion is still used by many researchers and remains the default in most statistical software packages [@luedtke]. There are two major disadvantages of this deletion method [@endersbook p.24]:
+Many estimation procedures require complete data. Therefore, missing data must be handled explicitly before model estimation. If researchers do not actively specify a method, statistical software often defaults to using only complete observations [@luedtke].
+This simple ad hoc procedure is called *listwise deletion* (LD) or *complete case analysis* and is a widely used approach to handling missing data. Cases with at least one missing value are discarded, and the model is estimated using only complete observations [@graham09]. In multilevel settings, missingness on the group level implies that all individuals in this group are excluded as well.   
+Listwise deletion has two major disadvantages [@endersbook, p.24]:
 
 1. Because partial data is unused, statistical power is reduced.  
-1. If the missingness mechanism is not MCAR, deletion may lead to highly biased parameter estimates.   
+1. If the missing data mechanism is not MCAR, parameter estimates may be highly biased.   
 
 LD can still be adequate under some conditions [@graham09; @endersbook, p.25], but in already small samples, additional data deletion should be avoided as power is already limited [@mcneish17]. 
 
+More modern and better-performing methods are available and will be introduced in the following sections.
+These approaches generally rely on the assumption that data are missing at random (MAR). Methods for dealing with MNAR processes are not discussed in this thesis. 
 
-#### Model-based modern approaches to missing data in multilevel models
-...
+Modern approaches to missing data can be broadly specified into two classes:
 
-##### Full Information Maximum Likelihood (FIML)
-
-In the previous chapter, maximum likelihood estimation was already briefly mentioned. This estimation principle can also be applied with missing data. In this approach, no incomplete cases are excluded and no imputations for missing values are generated. Instead, parameter estimates are obtained directly by maximizing the likelihood of the observed data [@endersbook, p. 98].    
-All individuals and groups contribute their available information (that is the reason for the term "Full Information Maximum Likelihood"). If, due to missing values, no information is available about certain parameters from one individual, this person contributes only to the estimation of the remaining parameters. In mathematical terms, the missing components are integrated out of the joint likelihood function for this person, resulting in a case-specific observed-data likelihood. These are summed up across individual observations and parameter estimates are obtained by maximizing this combined likelihood [@endersbook, p. 102]. 
-Because the likelihood function is based on a prespecified distributional form (often multivariate normality), the estimation procedure uses the model structure and observed data to infer plausible values for incomplete statistics under the hood. In this sense, maximum likelihood can be understood as a form of *implicit imputation*, although no missing values are explicitly filled in [@endersbook, p. 106].  
-
-Computing FIML estimates typically requires iteration, as no closed-form solutions are available in the presence of missing data [@endersupdate]. One widely used approach is the Expectation–Maximization (EM) algorithm, which alternates between two steps. In the expectation step (E-step), the missing portions of the sufficient statistics for parameter estimation are imputed. In the maximization step (M-step), these expected sufficient statistics are substituted into the complete-data log-likelihood, and the parameter estimates are updated accordingly [@endersbook, p. 113].  
-
-When data are MAR, ML estimation has proved to be unbiased and yields effective estimates [@mcneish17]. However, one limitation is that the inclusion of auxiliary variables that explain missingness can be difficult if these variables are not intended to appear in the substantive analysis model [@graham09]. 
-Moreover, FIML software packages initially formulates the likelihood for the outcome conditional on observed predictors. Missingness in predictor variables therefore results in case deletion unless it is addressed through additional modeling assumptions. However, such modifications are not fully supported in many software packages, can be difficult to implement, and may result in unintended changes to the analysis model if the model contains manifest group means [@grundapa]. In multilevel models with contextual effects estimated in *Mplus*, this may lead to substantial bias in parameter estimates [@grundMI18].
-
-##### Fully Bayesian Model Estimation
-Missing data are treated as additional unknown quantities, analogous to model parameters. Consequently, inference is based on the joint posterior distribution of model parameters and missing values conditional on the observed data [@gelmanbook, p. 449].
-
-The MCMC algorithm is now threefold [@endersbook, p. 190]:
-First, assign starting values to all unknown quantities.
-Then, repeat the following steps:
-1. Update coefficients.
-2. Update variance components.
-3. Update imputations for missing values.
-
-In each iteration, every step is performed conditional on the most recent draws of the other quantities. Steps one and two are equal to complete data Bayesian analysis.
-
-Fully Bayesian estimation with missing data can be implemented using different ways of specifying the data model underlying this posterior distribution. Two major approaches are joint modeling and factored regression specifications. The imputation step (step three) is explained more thoroughly in @nte-MI.
-
-::: {#nte-MI .callout-note icon=false}
-
-**Imputing Missing Values**
-Imputations can be understood 'predicted values plus noise' [@endersbook, p.266]. They should be reasonable guesses for missing data, while at the same time the missing-data uncertainty must be reflected in order to obtain unbiased and accurate results [@SG2002]. 
-When a MAR process is assumed, the distribution of missing values is only dependent of observed data and model parameters:
-$$
-p(Y_{mis} \mid Y_{obs}, Y_{mis}, \theta)
-=
-p(Y_{mis} \mid Y_{obs}, \theta)
-$$
-This distribution of missing outcome values can be called a *posterior predictive distribution*, as predictions are generated based on posterior distributions of the parameters [@endersbook, p. 190]. Now it is evident why a MAR process is necessary for accurate estimates: Imputations are based on the information in the observed data, spiced with, which corresponds to the notion of MAR, that missingness is completely random, if it is conditioned on all the available data [@graham09].   
-For every variable, outcome or predictor with missing values, a distribution must be available from which imputations of missing values can be drawn [@endersbook, p.192].
-There a different possibilities to specify the distributions of missing values in order to impute data. For a multilevel model, two major approaches can be separated and will be sketched here: *Fully Conditional Specification* and *Joint Modeling* [@enders16].
+1. *Model-based approaches* to missing data specify a statistical model for the complete data and base inference on the likelihood or posterior distribution implied by that model. Missing values are handled directly within the estimation procedure [@little20, p.25]. 
+2. *Imputation-based approaches* are two-fold: First, substitutions for the missing values are estimated, leading to complete data sets, which are then analyzed using standard methods. 
 
 
-**1. Joint Modeling**
-In joint modeling, a single multivariate distribution for all variables with missing values is specified, often the multivariate normal distribution in case of continuous variables [@endersbook, p.263]. Estimation is typically implemented using Bayesian data augmentation techniques [@tanner]. Missing values are treated as unknown quantities that have a distribution. Imputations are then iteratively drawn randomly from the conditional posterior distributions of each variable given the rest, alternating with sampling the model parameters. This cycle is repeated many times until the simulated distributions stabilize [@snijders, p.137f.]. The procedure is usually carried out via a *Gibbs sampler*, a form of MCMC algorithm [@enders16]. Consequently, prior distributions must be specified for all unknown model parameters (see also @sec-bayes).
-In a fully Bayesian analysis, all posterior draws of both parameters and missing values are saved, resulting in a posterior distribution for the parameters of interest. In contrast, within multiple imputation, only selected draws of the missing values are saved to create multiple complete data sets.
+#### Multiple Imputation (MI)
+Multiple imputation is an imputation-based method, as the name suggests. The idea behind it is to first solve the missing data problem by obtaining reasonable guesses for the missing data, called imputations, and subsequently fitting the complete data analysis on the imputed data.
+In order to include the uncertainty due to missing values, in MI several imputations for each missing observation are generated. By incorporating the variance between these imputations, the additional uncertainty can be captured [@endersbook, p.283].
+The analysis of incomplete data is separated into three steps: imputation, analysis, and pooling.
 
-**2. Fully Conditional Specification**
-*Fully Conditional Specification* or *Chained Equations Imputation* cycles through a sequence of univariate models for each variable with missings, conditional on the others. This approach is suitable if many ordinal or nominal variables are included in the data, as for every variable the researcher specifies a separate imputation model [@luedtke].
-...
+##### Creating imputations {sec-imp}
+Imputations can be understood as “predicted values plus noise” [@endersbook, p.266].
+Multiple imputation is closely related to Bayesian data augmentation techniques, in which missing values are treated as additional unknown quantities [@tanner]. 
+From the joint distribution of regression parameters $\theta$ and the missing values $P(\theta, Y_{mis} \mid Y_{obs})$, parameters and imputations are simulated iteratively by an MCMC algorithm [@endersbook, p. 190].
+While during this process many thousand posterior draws are generated, only a small number (usually between $m$ = 20 and $m = 100$ is recommended, @graham07) of imputations is saved, leading to $m$ complete data sets. The posterior draws of the parameters are discarded [@gelmanbook, p. 451].  
+The distribution of missing values (i.e., the imputation model) is either conceptualized jointly for all variables (*joint imputation*) or individually (*fully conditional specification*). Both approaches are also suitable for multilevel data structures [@enders16]. In joint modeling, a single multivariate distribution for all variables with missing values is specified, often the multivariate normal distribution in case of continuous variables [@endersbook, p.263]. *Fully Conditional Specification* approximates the joint distribution by cycling through a sequence of univariate models for each variable with missings, conditional on the others. This approach is suitable if many ordinal or nominal variables are included in the data, as for every variable the researcher specifies a separate imputation model [@luedtke].
 
-Both specifications are equal in single-level data with normally distributed values, but can differ in multilevel contexts [@enders16]. Both approaches are suitable for multilevel data structures and are implemented in common software [@enders16]
+**Compatibility of imputation and analysis model**
+A crucial point in the choice of a valid imputation model is compatibility with the focal analysis model that is used later on. That is, the imputation model must reflect the key structural features of this analysis model [@grundMI18]. If it fails to do so, parameter estimates may become biased because the imputed values no longer preserve the structure of the data. Consider, for example, the random intercept model with group means (@eq-RI). In this setting, the imputation model must account for the nested data structure (i.e., random effects at the group level) and allow for different effects at the individual and the group level [@grundMI18]. 
+**Auxiliary variables**
+Importantly, the imputation model is allowed to be 'richer' than the analysis model. Including additional effects or variables that are not part of the analysis model as *auxiliary variables*^[Auxiliary variables are referred to as variables whose only purpose it is to improve the missing data imputation [@collins].] is considered beneficial for parameter estimation [@collins]. These variables could either be a cause of missingness, thereby making the assumption of missing at random (MAR) more plausible. Furthermore, they may correlate with variables that contain missing values, which increases the precision of the imputations and reduces bias in parameter estimates [@collins].  
+
+::: {.callout-tip icon=false}
+In the musical self-concept study, the years of teaching experience of the ensemble teachers might also be available. Although this variable is not part of the analysis model, it may correlate with practice behavior or musical self-concept and can therefore serve as an auxiliary level-2 variable.
 :::
 
+In this thesis only the joint imputation will be considered.
+The *multivariate empty model* represents a suitable joint imputation model for the random intercept analysis model [@grundMI16]. Revisiting the example from the previous chapter, an imputation model with one auxiliary variable can be written as
+
+$$ 
+\left(
+\begin{matrix}
+Y_{ij} \\
+X_{ij} \\
+W_j
+\end{matrix}
+\right)
+=
+\left(
+\begin{matrix}
+\beta_{0Y} \\
+\beta_{0X} \\
+\beta_{0W}
+\end{matrix}
+\right)
++
+\left(
+\begin{matrix}
+u_{Yj} \\
+u_{Xj} \\
+u_{Wj}
+\end{matrix}
+\right)
++
+\left(
+\begin{matrix}
+e_{Yij} \\
+e_{Xij} \\
+0
+\end{matrix}
+\right)
+$$ {#eq-imputationmodel}
+
+Here, $W_j$ represents a level-2 auxiliary variable and therefore has no level-1 residual term. The model preserves the clustered data structure by allowing random intercepts at the group level.
 
 
-#### Imputation-based methods: Multiple Imputation (MI)
-While in a Bayesian analysis, missing data imputations are just a means to facilitate parameter estimation, in multiple imputation (MI) the complete datasets are saved for further analysis, whereas the Bayesian parameter inferences from the posterior distribution are discarded [@gelmanbook, p. 451]. The separation of imputation and analysis is the key distinction from model-based approaches, in which the treatment of missing data and the parameter estimation are embedded within a single estimation framework [@luedtke]. Advantages and disadvantages of each approach will be discussed in the next section.  
-It is long known that a single imputation, filling each missing value with an informed guess, leads to biased point estimates and underestimated standard errors of estimates, thus to overliberal inference, because uncertainty due to missing values is not included [@rubinbook87, p.13]. Multiple imputation overcomes this limitation by generating several plausible values for each missing observations. By incorporating between-imputation variance, the additional uncertainty can be captured, as is described below in more detail [@endersbook, p.283].
+The random effects and residuals are assumed to follow multivariate normal distributions
 
-Multiple imputation is carried out in three steps:
+$$
+\left(
+\begin{matrix}
+u_{Yj} \\
+u_{Xj} \\
+u_{Wj}
+\end{matrix}
+\right)
+\sim N(0,\Psi),
+\qquad
+\left(
+\begin{matrix}
+e_{Yij} \\
+e_{Xij}
+\end{matrix}
+\right)
+\sim N(0,\Sigma)
+$$
 
-1. Create m complete data sets by multiply imputing reasonable values.
-1. Perform the analysis of interest on each of the data sets.
-1. Pool the m results to one final analysis result.
+where the covariance matrix $\Psi$ captures the between-group variability and covariation of the random intercepts and $\Sigma$ represents the within-group covariance structure of the level-1 residuals:
 
-##### 1. Creating imputations
+$$
+\Psi =
+\left[
+\begin{matrix}
+\psi_y^2 & \psi_{yx} & \psi_{yw} \\
+\psi_{yx} & \psi_x^2 & \psi_{xw} \\
+\psi_{yw} & \psi_{xw} & \psi_w^2
+\end{matrix}
+\right],
+\qquad
+\Sigma =
+\left[
+\begin{matrix}
+\sigma_y^2 & \sigma_{yx} \\
+\sigma_{yx} & \sigma_x^2
+\end{matrix}
+\right]
+$$
 
-Where do the imputations come from?
-Multiple imputation can follow different strategies to generate plausible values for the missing data. The two main frameworks are *joint imputation* and *fully conditional specification*, see @nte-MI.
-A crucial point in the choice of a valid imputation model is compatibility with the focal analysis model. That is, the imputation model must reflect the key structural features of the analysis model [@grundMI18]. If it fails to do so, parameter estimates may become biased because the imputed values no longer preserve the structure of the data. Consider, for example, the random intercept model with group means (@eq-RI). In this setting, the imputation model must account for the nested data structure (i.e., random effects at the group level) and allow for different effects at the individual and the group level [@grundMI18]. Furthermore, making the imputation model 'richer' than the analysis model by adding additional effects or variables that are not part of the analysis model is beneficial for parameter estimation [@luedtke]. Such variables can serve as *auxiliary variables* and improve the performance of the missing data imputation: Auxiliary variables can help explain the missingness mechanism, thereby making the MAR assumption more plausible, or they may correlate with variables that contain missing values, which increases the precision of the imputations and reduces bias in parameter estimates [@collins].
 
-##### 2. Analyzing the completed data sets
 
-Researchers are now in the comfortable position to have *m* completed data sets. To each of these, the substantive analysis model of interest (e.g., the random intercept model) is then fitted. Each analysis proceeds according to the standard estimation procedure described in @sec-est, up to the computation of parameter estimates and their standard errors. Hypothesis testing is not conducted at this stage. The result of this step are *m* sets of parameter estimates and corresponding standard errors.
+##### Analyzing the completed data sets
 
-##### 3. Pooling the results
+After the imputation step, researchers are in the comfortable position to have *m* completed data sets that can be analyzed using standard frequentist methods. To each of the data sets, the substantive analysis model of interest (e.g., the random intercept model) is now fitted. Each analysis proceeds according to the standard estimation procedure described in @sec-est, up to the computation of parameter estimates and their standard errors. Hypothesis testing is not conducted at this stage. The result of this step is a set of *m* parameter estimates and corresponding standard errors.
 
+##### Pooling the results
+
+These *m* estimates and standard errors are aggregated into a single set of results following Rubin's pooling rules [@rubinbook87].  
+He defined the point estimates of effects as the arithmetic average of the $m$ estimates:
+
+$$
+\hat{\theta} = \frac{1}{m}
+\sum_{k=1}^{m}
+\hat{\theta}_k
+$$
+$\hat{\theta}$ is the pooled point estimate, and $\hat{\theta}_k$ is the estimate from data set $k$.  
+
+For the pooled standard errors, both the within-imputation variance (that is based on a complete data set) and the between-imputation variance (that adds the uncertainty due to missing values) are combined. The within-imputation variance is the arithmetic average of the imputation's variances (standard errors squared):
+
+$$
+\bar{V}_w
+=
+\frac{1}{m}
+\sum_{k=1}^{m}
+SE^2_k
+$$
+The between-imputation variance is defined as the variance of point estimates between imputations that is due to uncertainty caused by the missing values:
+
+$$
+V_b
+=
+\frac{1}{m-1}
+\sum_{k=1}^{m}
+(\hat{\theta}_k - \bar{\theta})^2
+$$
+The total pooled standard error combines the within-imputation variance $\bar{V}_w$ and the between-imputation variance $V_b$:
+
+
+$$
+SE
+=
+\sqrt{
+\bar{V}_w
++ V_b
++ \frac{V_b}{m}}
+$$
+The third term in this expression acts as a correction factor for using a finite number of imputations in the Monte Carlo simulation [@endersbook, p. 284]. As the number of imputations $m$ increases, this correction term approaches zero. 
+As the between-imputation variance is a measure of increase in uncertainty due to missing values, the influence of missing data on the variance of estimates can be expressed proportionally, e.g. as the relative increase of variance (RIV) due to missing values:
+
+$$
+RIV
+=
+\frac{V_b+\frac{V_b}{m}}{\bar{V}_w}
+$$
+
+With an appropriate point estimate and standard error, the remaining step (see @fig-est) is the choice of the sampling distribution.
+Rubin proposed a calculation method for degrees of freedom of the t-distribution, that is based on the $RIV$ and the number of imputations $m$:
+$$
+df_R
+=
+(m-1)
+\left(
+1+\frac{1}{RIV^2}
+\right)
+$$
+This formula assumes that the degrees of freedom of the complete data are effectively infinite [@barnard]. In smaller samples, the classic Rubin formula therefore tends to produce degrees of freedom that are too large, sometimes even larger than the degrees of freedom of the complete data.
+Barnard and Rubin [@-barnard] thus proposed a small-sample-adjusted degrees-of-freedom calculation for pooled parameters. Their formula downweights the complete-data degrees of freedom to account for the missing values. As the complete-data degrees of freedom cannot easily be obtained for multilevel analyses, a suitable degrees-of-freedom approximation must be chosen for the analysis. Possible approaches include the methods described in @sec-df, such as the Kenward–Roger correction or the simple *m − l − 1* rule.
+
+
+#### Full Information Maximum Likelihood (FIML)
+
+Full information maximum likelihood (FIML) is a model-based approach, as parameter estimates are obtained directly by maximizing the likelihood of the observed data [@endersbook, p. 98]. Under the assumption that data are missing at random (MAR), FIML yields unbiased and efficient parameter estimates [@mcneish17].
+
+However, for the random intercept model with group-mean effects considered in this thesis, FIML is not always well suited when missingness occurs in predictor variables. In such cases, maximum likelihood estimation requires additional distributional assumptions about the predictors in order to incorporate them into the likelihood function [@grundMI18]. In multilevel models with manifest group means, these assumptions may lead to biased estimates of between-group effects [@grundapa].
+
+For this reason, the focus of the present thesis lies on an alternative model-based approach for handling missing data: fully Bayesian estimation.
+
+#### Fully Bayesian Estimation
+The Bayesian framework introduced in @sec-bayes can also be applied to missing-data problems. In contrast to the two-step procedure of multiple imputation, Bayesian missing-data analysis directly uses the posterior distribution of the model parameters conditional on the observed data for statistical inference.
+
+As described in @sec-imp, missing values are treated as additional unknown quantities. To simulate these values during estimation, a model for the variables with missing data must be specified. A convenient way to specify the joint distribution of the outcome and the variables with missing values is to apply the probability chain rule and express the joint distribution as a product of conditional distributions, which is referred to as *sequential specification* or *factored regression specification* [@luedtke20]:
+
+$$ 
+g\left(y,\ x;\gamma\right)=g_y\left(y\middle| x;\gamma_y\right) \times g_x(x;\gamma_x)\ 
+$$ 
+Here, the joint density is decomposed into two components. 
+The first term $g_y(y \mid x; \gamma_y)$ corresponds to the analysis model, describing the conditional distribution of the outcome given the covariate $X$. 
+The second term $g_x(x; \gamma_x)$ specifies a model for the distribution of the covariate $X$. 
+An advantage of this formulation is its flexibility: it allows the inclusion of variables with different measurement scales and facilitates the use of auxiliary variables that are not part of the substantive analysis model [@erler; @daniels]. For example, auxiliary variables such as $W$ may be included to improve the imputation of missing values while the substantive model of interest is still estimated without $W$. For this purpose, auxiliary variables are put in the first position of the factored regression, so that the analysis variables predict the auxiliary variables, but not vice versa [@endersbook, p. 215]:
+
+$$ 
+g\left(y,\ x,w;\gamma\right)=g_w\left(w\middle| y,x;\gamma_w\right) \times g_y\left(y\middle| x;\gamma_y\right) \times g_x(x;\gamma_x)
+$$ {#eq-frs}
+
+Because all missing values are resampled in each iteration, the uncertainty due to missing data is automatically included in the posterior distribution [@erler]. 
 
 

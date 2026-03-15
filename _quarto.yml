@@ -12,8 +12,8 @@ book:
   chapters:
     - index.qmd
     - chapters/theory.qmd
-    #- chapters/methods.qmd
-   # - chapters/results.qmd
+    - chapters/methods.qmd
+    - chapters/results.qmd
    # - chapters/discussion.qmd
    # - references.qmd
   #appendices:
