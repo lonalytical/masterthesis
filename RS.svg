@@ -23,7 +23,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
      inkscape:zoom="1.9032427"
-     inkscape:cx="78.550151"
+     inkscape:cx="78.287441"
      inkscape:cy="162.6172"
      inkscape:window-width="2560"
      inkscape:window-height="1494"
@@ -223,14 +223,14 @@
      id="path10"
      sodipodi:nodetypes="cc" />
   <rect
-     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.881295;stroke-linecap:square;stroke-dashoffset:0.133333"
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.0145;stroke-linecap:square;stroke-dashoffset:0.133333"
      id="rect9"
-     width="75.655815"
-     height="20.633278"
-     x="169.81403"
-     y="121.43314"
-     ry="1.7513653"
-     transform="matrix(0.96163497,-0.27433224,0.17937752,0.98378031,0,0)" />
+     width="90.555336"
+     height="22.843035"
+     x="117.46577"
+     y="158.95847"
+     ry="1.938931"
+     transform="matrix(0.87685258,-0.48075936,0.42787986,0.90383562,0,0)" />
   <g
      id="g1797"
      ns3:version="1.12.0"
@@ -240,7 +240,7 @@
      ns3:preamble="C:\Users\lonaf\AppData\Roaming\inkscape\extensions\textext\default_packages.tex"
      ns3:scale="1.5"
      ns3:alignment="middle center"
-     transform="matrix(1.1889898,-0.30753068,0.30753068,1.1889898,191.93507,75.096707)"
+     transform="matrix(1.4509575,-0.48410346,0.48410346,1.4509575,175.46972,80.949458)"
      ns3:jacobian_sqrt="1.5">
     <defs
        id="defs8275">
@@ -433,7 +433,7 @@
      ns3:scale="1.2114063"
      ns3:alignment="middle center"
      ns3:inkscapeversion="1.4.2"
-     transform="matrix(1.21141,0,0,1.21141,95.914486,121.84309)"
+     transform="matrix(1.9648865,0,0,1.9648865,96.308644,119.47889)"
      ns3:jacobian_sqrt="1.21141">
     <defs
        id="defs3805">
@@ -503,7 +503,7 @@
      ns3:scale="1.2114063"
      ns3:alignment="middle center"
      ns3:inkscapeversion="1.4.2"
-     transform="matrix(1.21141,0,0,1.21141,126.58606,161.66693)"
+     transform="matrix(1.7451225,0,0,1.7451225,126.58613,161.66706)"
      ns3:jacobian_sqrt="1.21141">
     <defs
        id="defs3805-1">
@@ -577,7 +577,7 @@
      ns3:scale="1.2114063"
      ns3:alignment="middle center"
      ns3:inkscapeversion="1.4.2"
-     transform="matrix(1.21141,0,0,1.21141,127.47466,147.40898)"
+     transform="matrix(1.7710279,0,0,1.7710279,127.47473,147.40912)"
      ns3:jacobian_sqrt="1.21141">
     <defs
        id="defs4220">

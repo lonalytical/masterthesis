@@ -14,7 +14,7 @@ At first glance, this seems like a simple dataset of 150 individuals. But is it 
 Players from the same ensemble rehearse together, share teachers, and experience similar social and musical environments. Their responses may therefore be more similar within ensembles than between ensembles.
 :::
 
-Populations like this, where units of interest (e.g., music players, students, employees) are grouped into higher-level units (e.g., ensembles, classes, firms), are common in the human social life and therefore in psychological studies.  
+Populations like this are common in the social sciences. Units of interest (e.g., students, employees, musicians) are grouped into higher-level units such as classes, firms, or ensembles.
 The resulting data is called *nested* or *clustered* [@snijders, p. 7].  
 From a sampling perspective, a so-called *multistage sampling process* (sample groups first, then individuals inside these groups^[In this thesis, the term 'groups' refers to the higher-level units of the data and level-1 units are referred to as 'persons'. However, it is important to note that these models can also be used for longitudinal research, where measurement points are on level 1 and individuals are the level-2 units. Furthermore, more than two levels are also possible, but are not discussed here.]) is not independent: After selecting a group, you will try to sample all of the members of this group, making it more likely to select one person in this group over others in non-selected groups [@snijders, p. 7].  More importantly, individuals inside the same group typically share contextual influences (e.g., the same ensemble teacher, the same class room) and thus will give more similar responses in surveys and behavior. As a consequence, the basic assumption of independence in traditional linear modeling is violated, because error terms will be correlated [@raudenbush, p. xx].  
 One well-suited and popular possibility to account for this fact is the use of *multilevel models* (also called *hierarchical linear models* or *mixed models*). 
@@ -29,8 +29,18 @@ Y_{ij} = \gamma_{00} + u_{0j} + e_{ij}
 $$
 Here, the outcome value of person $i$ in group $j$ is modeled as the sum of the overall mean $\gamma_{00}$, a group level random effect $u_{0j}$ and a random effect on the individual level, $e_{ij}$ [@snijders, p. 49]. The random intercept $u_{0j}$ captures the dependency of individuals within one group statistically, as all individuals in group $j$ have the same $u_{0j}$ value and their outcome values are therefore correlated. Conditional on this group component, however, the remaining level-1 residuals $e_{ij}$ are assumed to be independent, addressing the issue of dependency that would arise if a single-level regression model were applied to nested data.
 
-This and the further explained models are illustrated in @fig-mlmplots.
+This and the models explained below are illustrated in @fig-mlmplots.
 
+:::{#fig-mlmplots}
+![](/figures/plotmlm.png)
+
+Illustration of common multilevel model specifications.
+Top row: empty model, random intercept model, and random slope model.
+Bottom row: group-level relationships between group means of the predictor $\bar{X}_{.j}$ and the group-specific intercepts $\beta_{0j}$.
+
+The empty model captures only between-group variance. The random intercept model includes a predictor with a common slope across groups, while the random slope model allows the slope of the predictor to vary between groups. The lower panels illustrate the group-level relationship between the predictor mean $\bar{X}_{.j}$ and the group-specific intercepts $\beta_{0j}$, shown once without and once with the group-mean predictor included in the model.
+
+:::
 
 ### Within- and between- group regressions and inclusion of predictors
 
@@ -135,37 +145,44 @@ In many empirical applications of multilevel models the slope $\beta_{1j}$ is as
 $$ 
 Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + \gamma_{01}Z_j + u_{0j} + e_{ij}
 $$
-The random intercept model also provides a convenient framework for examining the use of *group means* of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. Example ... illustrates how the processes operating within groups may differ from those operating between groups.
+The random intercept model also provides a convenient framework for examining the use of *group means* of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. The following example illustrates how processes operating within ensembles may differ from those operating between ensembles.
+
+::: {.callout-tip icon=false}
+
+### Example
+
+Students often compare their own practice behavior with that of other ensemble members.  
+A student who practices more than their peers may feel more competent and report a higher musical self-concept.  
+At the same time, students in ensembles where everyone practices a lot may feel less competent because upward social comparisons become more likely.
+
+This leads to two possible hypotheses:
+
+- Students who practice more than others in their ensemble tend to report a higher musical self-concept.  
+- Students in ensembles with a higher average practice time may report a lower musical self-concept.
+:::
+
+
 To separate within- and between-group effects, the level-1 predictor is then often *group-mean-centered*: Instead of using $X_{ij}$ directly, the centered predictor $(X_{ij} - \bar{X}_j)$ is entered into the model. This decomposes within- and between- group effects and facilitates their interpretation [@snijders, p.58]. A random intercept model including such a decomposition can be written like this: 
 
 $$ 
 Y_{ij} = \gamma_{00} + \gamma_{10}(X_{ij} - \bar{X}_{.j}) + \gamma_{01}\bar{X}_{.j} + u_{0j} + e_{ij}
 $$ {#eq-RI}
-In this random intercept model with context effect, musical self-concept of student $i$ in ensemble $j$ is predicted by the sum of
-$\gamma_{00}$: the average musical self-concept across all ensembles
-$X_{ij} - \bar{X}_{.j}$: the group-mean centered weekly practice duration of this student 
-$\bar{X}_{.j}$: the average practice duration of this student's ensemble
-$u_{0j}$: a random deviation of ensemble $j$'s average MSC from the overall mean (unexplained differences between ensembles)
-$e_{ij}$: a random deviation of the student's MSC from the predicted value within their ensemble  
-The two regression coefficients represent the following effects:
-$\gamma_{10}$: within-group effect, indicating the influence of a student's own WPD on their MSC, controlling for the ensemble context
-$\gamma_{01}$: the contextual effect, indicating the influence of the ensemble's average WPD on the student's MSC
+In this random intercept model with a contextual effect, the musical self-concept of student $i$ in ensemble $j$ is predicted by the sum of several components:
+
+- $\gamma_{00}$: the average musical self-concept across all ensembles  
+- $\gamma_{10}(X_{ij} - \bar{X}_{.j})$: the effect of the student's practice time relative to the average practice time in their ensemble  
+- $\gamma_{01}\bar{X}_{.j}$: the effect of the ensemble's average practice time  
+- $u_{0j}$: a random deviation of ensemble $j$'s average musical self-concept from the overall mean (unexplained differences between ensembles)  
+- $e_{ij}$: a random deviation of the student's musical self-concept from the predicted value within their ensemble  
+
+The regression coefficients represent two conceptually different effects:
+
+- $\gamma_{10}$: the *within-group effect*, indicating how a student's own practice time relates to their musical self-concept while controlling for the ensemble context  
+- $\gamma_{01}$: the *contextual effect*, indicating how the ensemble's average practice time relates to students' musical self-concept  
 
 For the remainder of this thesis, the focus lies on this particular random intercept model.
 
 
-:::{#fig-mlmplots}
-![](/figures/plotmlm.png)
-
-**Illustration of multilevel model specifications.** Empty model, random intercept model and random slope model on Level 1. For level 2, the difference between a random intercept model with and without group-mean predictor is shown.
-
-\small
-
-Erklärung der Plots
-
-
-\normalsize
-:::
 
 ### The intraclass correlation coefficient (ICC)
 
@@ -185,7 +202,7 @@ $$
 ICC = \frac{\tau_0^2}{\tau_0^2 + \sigma^2}
 $$
 
-The ICC is an important diagnostic metric because it indicates whether the use of a multilevel model is advantageous. If $ICC = 0,$ no between-group variance is present and individuals within the same group are not more similar to each other than to individuals from different groups (conditional on the predictors included in the model). In this case, the independence assumption of classical regression is not violated and a conventional single-level regression model is sufficient.  
+The ICC is an important diagnostic metric because it indicates whether the use of a multilevel model is advantageous. If ICC = 0, no between-group variance is present and a conventional single-level regression model would typically be sufficient.
 Conversely, larger ICC values indicate increasing similarity within groups and thus statistical dependency of observations. Ignoring this dependency and applying a classical linear model leads to biased standard errors, confidence intervals, and hypothesis tests [@fahrmeir, p.370].
 
 ## Estimation of multilevel models {#sec-est}
@@ -223,18 +240,21 @@ Simplified frequentist inferential process in a random intercept model, based on
 
 
 ## Small sample sizes in multilevel models
-### Frequentist corrections for small samples
-Frequentist estimation procedures of linear multilevel models are typically based on asymptotic theory, meaning that biased estimates may occur in small samples. In multilevel models, the number of groups is particularly important. Depending on the model of interest, roughly 25-30 clusters are found to be necessary to obtain precise results [@mcneishstaple14; @mcneish17]. In practice, however, these numbers are often difficult to achieve, as recruiting a large number of groups can be difficult and costly. The main issues associated with small-sample multilevel models and corresponding solutions are presented below.  
+
+Frequentist estimation procedures for linear multilevel models typically rely on large-sample (asymptotic) theory. In multilevel models, the number of groups is particularly important. Simulation studies suggest that approximately 25–30 clusters are often required for reliable estimation, depending on the model specification and the parameters of interest [@mcneishstaple14; @mcneish17]. In practice, however, such numbers are often difficult to achieve because recruiting a large number of groups can be challenging and costly. 
+
+When the number of groups is small, several components of the inferential procedure may perform poorly, particularly the estimation of variance components, the calculation of standard errors, and the approximation of sampling distributions. The main issues associated with small-sample multilevel models and available corrections and alternatives are presented below.
+
 
 #### Estimation of regression parameters
 The regression parameters are estimates of the effects of interest. For example, how much does one additional hour of weekly practice influence a student's musical self-concept? How does the musical self-concept differ between ensembles that practice on average three hours per week and those that practice thirteen hours per week?  
-Kackar & Harville [-@kackar] showed that both ML and REML estimators of variance components are even and translation-invariant, implying that fixed effect point estimates are unbiased, independent of sample size.  
+Kackar & Harville [-@kackar] showed that both ML and REML estimators of variance components are even and translation-invariant, implying that fixed effect point estimates are unbiased even in small samples. 
 
 #### Estimation of variance components
 The estimation of the variance components is more delicate. In ML estimation, fixed effects and variance components are estimated simultaneously, typically via iterative procedures like the Expectation Maximization (EM) mechanism [@mcneishcoll]. In this process fixed effects are effectively being treated as known when estimating variance components. Consequently, the sampling variability of the fixed-effect estimates is ignored and the loss of degrees of freedom due to their estimation is not accounted for. While these issues are not troublesome in large samples, they lead to systematic underestimation of variance components in small samples [@mcneishcoll].  
-REML fixes this issue by separating the estimation conceptually. The fixed effects are eliminated from the likelihood, and variance components are estimated solely based on residual information. Fixed effects are then estimated via generalized least squares (GLS), using the previously estimated variance components [@raudenbush, p. 410]. This leads to less downward-biased variance component estimates, while ML and REML become asymptotically equivalent as sample size increases.  
+REML addresses this issue by separating the estimation conceptually. The fixed effects are eliminated from the likelihood, and variance components are estimated solely based on residual information. Fixed effects are then estimated via generalized least squares (GLS), using the previously estimated variance components [@raudenbush, p. 410]. This leads to less downward-biased variance component estimates, while ML and REML become asymptotically equivalent as sample size increases.  
 
-Nevertheless, the REML variance estimate of the fixed effects may still be too small in small samples for two reasons. 
+Nevertheless, the the estimated variance of the fixed-effect estimators may still be too small in small samples for two reasons. 
 First, the variance formula treats the estimated variance components $\hat{\theta}$ as known and therefore ignores their sampling variability [@kackarcorr]. 
 Second, the REML variance expression itself relies on asymptotic approximations [@mcneishcoll]. 
 Both issues can lead to underestimated standard errors. 
@@ -243,7 +263,7 @@ Several small-sample corrections have been proposed to address this problem, amo
 #### Approximation of the sampling distribution {#sec-df}
 The standardized test statistic used for inference (see @fig-est) can be regarded as 'small-sample-adjusted' at this point. The final step concerns the choice of a sampling distribution for p-values and confidence intervals. In small samples, a $t$-distribution is typically recommended instead of a standard normal distribution [@snijders, p. 95].
 
-The shape of the $t$-distribution is determined by the number of degrees of freedom (HIER BILDER VON VERSCHIEDENEN T VERTEILUNGEN?). With small degrees of freedom, even small changes noticeably affect the shape of the sampling distribution and therefore the resulting p-values and confidence intervals. The concept of degrees of freedom is difficult to define concisely, but it can be described as the number of independent pieces of information in the data that remain after accounting for restrictions such as estimated parameters [@pandey]. 
+The shape of the $t$-distribution is determined by the number of degrees of freedom. With small degrees of freedom, even small changes noticeably affect the shape of the sampling distribution and therefore the resulting p-values and confidence intervals. The concept of degrees of freedom is difficult to define concisely, but it can be described as the number of independent pieces of information in the data that remain after accounting for restrictions such as estimated parameters [@pandey]. 
 
 In multilevel models, the degrees of freedom generally cannot be calculated exactly and must therefore be approximated because of the nested data structure [@snijders, p. 95]. The Kenward–Roger correction mentioned earlier also includes a complex small-sample-adjusted approximation of the degrees of freedom, building on the Satterthwaite method [@mcneishcoll].
 
@@ -263,11 +283,11 @@ $$
 
 ### Fully Bayesian analysis {#sec-bayes}
 
-As alternative to the frequentist framework predominantly presented here, a Bayesian approach is often recommended for small sample sizes [@mcneishbay]. In this framework, parameters are viewed as random variables with probability distributions. Prior knowledge about the parameters of interest in the form of prior distributions is combined with the information in the observed data in the form of a likelihood function. Together they are combined via Bayes' theorem to form the posterior distribution of the parameter of interest, namely the updated knowledge and certainty about the parameters [@vandeschoot]. More general details on Bayesian analyses will not be discussed in this thesis.
+As alternative to the frequentist framework predominantly presented here, a Bayesian approach is often recommended for small sample sizes [@mcneishbay]. In this framework, parameters are viewed as random variables with probability distributions. Prior knowledge about the parameters of interest in the form of prior distributions is combined with the information in the observed data in the form of a likelihood function. Bayes' theorem yields the posterior distribution, representing the updated knowledge about the parameters [@vandeschoot]. More general details on Bayesian analyses will not be discussed in this thesis.
 
 Two aspects of Bayesian analyses are particularly helpful in small samples.  
-A Bayesian framework is naturally equipped to account for the additional uncertainty arising in small samples because it does not rely on large-sample asymptotic approximations [@mcneishbay]. Instead, the posterior distribution, the end result of a Bayesian analysis, is typically approximated using Markov Chain Monte Carlo (MCMC) sampling. Consequently, Bayesian inference does not require small-sample corrections for standard errors or degrees of freedom.  
-Furthermore, Bayesian inference combines prior information about parameters with the observed data. This makes it possible to include previous knowledge into the analysis to increase the amount of available information [@mcneishbay]. This advantage, however, depends strongly on prior specification. In small samples, prior distributions can have a substantial influence on the results because the likelihood function is often relatively flat and therefore contains limited information about the parameters [@gelmanbook, p. 355]. Informative or weakly informative priors can improve estimation accuracy, whereas vague or software default priors may be more influential than intended and can perform poorly in small samples [@mcneishbay; @mcneishpriors; @gelmanprior]. Nevertheless, even Bayesian estimation with noninformative priors has in some settings been found to outperform maximum likelihood estimation in terms of RMSE [@zitzmann]. In addition, prior distributions may prevent the estimation of inadmissible values that could otherwise lead to convergence problems, such as negative variance estimates [@vandeschoot]. Thus, the inclusion of prior distributions may be regarded either as a methodological advantage or as “a price to be paid” [@raudenbush, p. 411] for Bayesian inference.
+First, Bayesian inference does not rely on large-sample asymptotic approximations. Instead, the posterior distribution, the end result of a Bayesian analysis, is typically approximated using Markov Chain Monte Carlo (MCMC) sampling. Consequently, Bayesian inference does not require small-sample corrections for standard errors or degrees of freedom.  
+Second, Bayesian methods allow the incorporation of prior information about parameters. Informative or weakly informative priors may improve estimation accuracy by adding information when the likelihood is relatively flat in small samples [@gelmanbook, p. 355]. At the same time, prior specification becomes particularly influential under such conditions. Vague or software default priors may therefore have unintended effects and can perform poorly in small samples [@mcneishbay; @mcneishpriors; @gelmanprior]. Nevertheless, Bayesian estimation has in some settings been found to outperform maximum likelihood estimation in terms of RMSE, even when noninformative priors are used [@zitzmann]. In addition, prior distributions may prevent inadmissible parameter estimates that could otherwise lead to convergence problems, such as negative variance estimates [@vandeschoot]. Thus, the inclusion of prior distributions may be regarded either as a methodological advantage or as “a price to be paid” [@raudenbush, p. 411] for Bayesian inference.
 
 ## Missing data in multilevel models
 ::: {.callout-tip icon=false}
@@ -333,11 +353,13 @@ Modern approaches to missing data can be broadly specified into two classes:
 
 
 #### Multiple Imputation (MI)
-Multiple imputation is an imputation-based method, as the name suggests. The idea behind it is to first solve the missing data problem by obtaining reasonable guesses for the missing data, called imputations, and subsequently fitting the complete data analysis on the imputed data.
+Multiple imputation is an imputation-based method, as the name suggests. 
+The basic idea is to replace missing values with plausible draws ('imputations') from their predictive distribution.
+The substantive analysis model is then fitted to the imputed data.
 In order to include the uncertainty due to missing values, in MI several imputations for each missing observation are generated. By incorporating the variance between these imputations, the additional uncertainty can be captured [@endersbook, p.283].
 The analysis of incomplete data is separated into three steps: imputation, analysis, and pooling.
 
-##### Creating imputations {sec-imp}
+##### Creating imputations {#sec-imp}
 Imputations can be understood as “predicted values plus noise” [@endersbook, p.266].
 Multiple imputation is closely related to Bayesian data augmentation techniques, in which missing values are treated as additional unknown quantities [@tanner]. 
 From the joint distribution of regression parameters $\theta$ and the missing values $P(\theta, Y_{mis} \mid Y_{obs})$, parameters and imputations are simulated iteratively by an MCMC algorithm [@endersbook, p. 190].
@@ -469,7 +491,7 @@ V_b
 =
 \frac{1}{m-1}
 \sum_{k=1}^{m}
-(\hat{\theta}_k - \bar{\theta})^2
+(\hat{\theta}_k - \hat{\theta})^2
 $$
 The total pooled standard error combines the within-imputation variance $\bar{V}_w$ and the between-imputation variance $V_b$:
 
@@ -507,24 +529,27 @@ Barnard and Rubin [@-barnard] thus proposed a small-sample-adjusted degrees-of-f
 
 #### Full Information Maximum Likelihood (FIML)
 
-Full information maximum likelihood (FIML) is a model-based approach, as parameter estimates are obtained directly by maximizing the likelihood of the observed data [@endersbook, p. 98]. Under the assumption that data are missing at random (MAR), FIML yields unbiased and efficient parameter estimates [@mcneish17].
+Full information maximum likelihood (FIML) is a model-based approach in which parameter estimates are obtained directly by maximizing the likelihood of the observed data [@endersbook, p. 98]. Under the assumption that data are missing at random (MAR), FIML yields unbiased and efficient parameter estimates [@mcneish17].
 
-However, for the random intercept model with group-mean effects considered in this thesis, FIML is not always well suited when missingness occurs in predictor variables. In such cases, maximum likelihood estimation requires additional distributional assumptions about the predictors in order to incorporate them into the likelihood function [@grundMI18]. In multilevel models with manifest group means, these assumptions may lead to biased estimates of between-group effects [@grundapa].
+Incorporating auxiliary variables is less straightforward in FIML than in multiple imputation. Nevertheless, several approaches have been proposed to include auxiliary information in FIML estimation, such as the saturated correlates model or the extra dependent variable approach [@grahamFIML], as well as the factored regression framework described below, which forms the basis of Bayesian missing-data approaches.
 
-For this reason, the focus of the present thesis lies on an alternative model-based approach for handling missing data: fully Bayesian estimation.
+For the random intercept model with group-mean effects considered in this thesis, FIML is not always well suited when missingness occurs in predictor variables. In such cases, maximum likelihood estimation requires additional distributional assumptions about the distribution of the predictors in order to incorporate them into the likelihood function [@grundMI18]. In multilevel models with manifest group means, these assumptions may lead to biased estimates of between-group effects [@grundapa].
+
 
 #### Fully Bayesian Estimation
-The Bayesian framework introduced in @sec-bayes can also be applied to missing-data problems. In contrast to the two-step procedure of multiple imputation, Bayesian missing-data analysis directly uses the posterior distribution of the model parameters conditional on the observed data for statistical inference.
+The Bayesian framework introduced in @sec-bayes can naturally be applied to missing-data problems. In contrast to the two-step procedure of multiple imputation, Bayesian missing-data analysis directly uses the posterior distribution of the model parameters conditional on the observed data for statistical inference.
 
 As described in @sec-imp, missing values are treated as additional unknown quantities. To simulate these values during estimation, a model for the variables with missing data must be specified. A convenient way to specify the joint distribution of the outcome and the variables with missing values is to apply the probability chain rule and express the joint distribution as a product of conditional distributions, which is referred to as *sequential specification* or *factored regression specification* [@luedtke20]:
 
 $$ 
 g\left(y,\ x;\gamma\right)=g_y\left(y\middle| x;\gamma_y\right) \times g_x(x;\gamma_x)\ 
 $$ 
+
+where $\gamma = (\gamma_y, \gamma_x)$ denotes the vector of all model parameters.
 Here, the joint density is decomposed into two components. 
 The first term $g_y(y \mid x; \gamma_y)$ corresponds to the analysis model, describing the conditional distribution of the outcome given the covariate $X$. 
 The second term $g_x(x; \gamma_x)$ specifies a model for the distribution of the covariate $X$. 
-An advantage of this formulation is its flexibility: it allows the inclusion of variables with different measurement scales and facilitates the use of auxiliary variables that are not part of the substantive analysis model [@erler; @daniels]. For example, auxiliary variables such as $W$ may be included to improve the imputation of missing values while the substantive model of interest is still estimated without $W$. For this purpose, auxiliary variables are put in the first position of the factored regression, so that the analysis variables predict the auxiliary variables, but not vice versa [@endersbook, p. 215]:
+An advantage of this formulation is its flexibility: it allows the inclusion of variables with different measurement scales and facilitates the use of auxiliary variables that are not part of the substantive analysis model [@erler; @daniels]. For example, auxiliary variables such as $W$ may be included to improve the imputation of missing values while the substantive model of interest is still estimated without $W$. For this purpose, auxiliary variables can be placed in the first position of the factored regression, so that the analysis variables predict the auxiliary variables, but not vice versa [@endersbook, p. 215]:
 
 $$ 
 g\left(y,\ x,w;\gamma\right)=g_w\left(w\middle| y,x;\gamma_w\right) \times g_y\left(y\middle| x;\gamma_y\right) \times g_x(x;\gamma_x)
@@ -532,4 +557,11 @@ $$ {#eq-frs}
 
 Because all missing values are resampled in each iteration, the uncertainty due to missing data is automatically included in the posterior distribution [@erler]. 
 
+### Present study
+
+The previous sections suggest two important open questions. First, although small-sample-adjusted degrees-of-freedom approximations are relevant for inference after multiple imputation, their performance in multilevel models with missing data has not yet been systematically evaluated. Second, fully Bayesian estimation may offer a promising alternative because it is naturally suited to handling both missing predictor values and small sample sizes.
+
+To address these questions, the present study uses a simulation design to compare methods for handling missing data in a small-sample multilevel random intercept model. In particular, it examines whether applying small-sample-adjusted degrees-of-freedom approximations after multiple imputation improves inferential performance, and whether fully Bayesian estimation provides a suitable alternative to imputation-based or likelihood-based approaches.
+
+Simulation studies can be understood as computer experiments [@morris], in which data with known characteristics are generated and then analysed using the methods of interest. Because the true parameter values are known, the resulting estimates can be compared with the truth, allowing the performance of the methods to be evaluated [@siepe].
 

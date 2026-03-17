@@ -23,8 +23,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
      inkscape:zoom="2.6915916"
-     inkscape:cx="288.49102"
-     inkscape:cy="187.80709"
+     inkscape:cx="288.30525"
+     inkscape:cy="187.8071"
      inkscape:window-width="2560"
      inkscape:window-height="1494"
      inkscape:window-x="-11"
@@ -707,8 +707,10 @@
      ns3:preamble="C:\Users\lonaf\AppData\Roaming\inkscape\extensions\textext\default_packages.tex"
      ns3:scale="1.2281172303121737"
      ns3:alignment="middle center"
-     transform="matrix(1.22747,-0.0398479,0.0398479,1.22747,308.68241,121.21152)"
-     ns3:jacobian_sqrt="1.2281166296546961">
+     transform="matrix(1.6127737,-0.05235618,0.05235618,1.6127737,306.86338,120.67905)"
+     ns3:jacobian_sqrt="1.2281166296546961"
+     inkscape:transform-center-x="2.2291643"
+     inkscape:transform-center-y="0.83593663">
     <defs
        id="defs8845">
       <g
@@ -771,8 +773,8 @@
   <ellipse
      style="fill:none;stroke:#000000;stroke-width:1.662;stroke-linecap:square;stroke-dashoffset:0.133333"
      id="path12-4"
-     cx="150.02466"
-     cy="128.96404"
+     cx="149.74602"
+     cy="119.21144"
      rx="3.3495464"
      ry="3.7436109" />
   <ellipse
@@ -866,7 +868,7 @@
      ns3:preamble="C:\Users\lonaf\AppData\Roaming\inkscape\extensions\textext\default_packages.tex"
      ns3:scale="1.2114063"
      ns3:alignment="middle center"
-     transform="matrix(1.21141,0,0,1.21141,144.76557,136.32182)"
+     transform="matrix(1.21141,0,0,1.21141,144.48692,100.93384)"
      ns3:jacobian_sqrt="1.21141">
     <defs
        id="defs9600">

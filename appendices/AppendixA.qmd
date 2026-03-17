@@ -1,3 +1,172 @@
 # Derivations of equations of data-generating model {#sec-appA}
 
+## Calculation of $\sigma_w^2$
 
+The data-generating model for $W_j$ is:
+
+$$W_j=\ a\cdot\ {\bar{X}}_j\ +e_{Wj}, \qquad e_{Wj}\ \ \sim\ N\left(0,\ {\sigma_w}^2\right)$$ {#eq-W}
+
+The variance of $W_j$ is therefore:
+
+$$
+Var(W_j) = Var(a \cdot \bar{X}_j + e_{Wj}) 
+= a^2 \cdot Var(\bar{X}_j) + Var(e_{Wj})
+$$ {#eq-varw}
+
+Substituting the formula for slope calculation $a=\ \frac{Cov(W_j,{\ \bar{X}}_j)\ }{Var({\bar{X}}_j)}$ into @eq-varw yields:
+$$
+\begin{aligned}
+Var(W_j)
+&= \frac{Cov(W_j, \bar{X}_j)^2}{Var(\bar{X}_j)^2} \cdot Var(\bar{X}_j) 
++ Var(e_{Wj}) \\
+&= \frac{Cov(W_j, \bar{X}_j)^2}{Var(\bar{X}_j)} 
++ Var(e_{Wj})
+\end{aligned}
+$$
+
+This term can be simplified using 
+$Cov(A,B) = Corr(A,B)\cdot SD(A)\cdot SD(B)$:
+
+$$
+\begin{aligned}
+Var(W_j)
+&= \frac{Cov(W_j, \bar{X}_j)^2}{Var(\bar{X}_j)} + Var(e_{Wj}) \\
+&= \frac{\bigl(Corr(W_j, \bar{X}_j)\cdot SD(W_j)\cdot SD(\bar{X}_j)\bigr)^2}{Var(\bar{X}_j)} 
++ Var(e_{Wj}) \\
+&= \frac{Corr(W_j, \bar{X}_j)^2 \cdot Var(W_j)\cdot Var(\bar{X}_j)}{Var(\bar{X}_j)} 
++ Var(e_{Wj}) \\
+&= Corr(W_j, \bar{X}_j)^2 \cdot Var(W_j) + Var(e_{Wj})
+\end{aligned}
+$$
+
+Thus,
+
+$$
+\begin{aligned}
+Var(W_j)
+&= Corr(W_j, \bar{X}_j)^2 \cdot Var(W_j) + Var(e_{Wj}) \\
+Var(e_{Wj})
+&= Var(W_j) - Corr(W_j, \bar{X}_j)^2 \cdot Var(W_j) \\
+&= Var(W_j)\left(1 - Corr(W_j, \bar{X}_j)^2\right)
+\end{aligned}
+$$
+
+Since $Var(W_j)=1$:
+
+$$
+Var(e_{Wj}) = 1 - Corr(W_j, \bar{X}_j)^2
+$$
+
+In short notation:
+
+$$
+\sigma_w^2 = 1 - \rho_{\bar{X}W}^2
+$$
+## Calculation of the slope to generate $W_j$
+
+$$
+a = \frac{Cov(W_j, \bar{X}_j)}{Var(\bar{X}_j)}
+$$
+
+The variance of $\bar{X}_j$ can be derived as follows:
+
+$$
+\begin{aligned}
+Var(\bar{X}_j)
+&= Var\left( \frac{1}{n} \sum_{i=1}^{n} X_{ij} \right) \\
+&= Var\left( \frac{1}{n} \sum_{i=1}^{n} (u_{Xj} + e_{Xij}) \right) \\
+&= Var\left( \frac{1}{n} \sum_{i=1}^{n} u_{Xj} 
++ \frac{1}{n} \sum_{i=1}^{n} e_{Xij} \right) \\
+&= Var\left( u_{Xj} + \frac{1}{n} \sum_{i=1}^{n} e_{Xij} \right) \\
+&= Var(u_{Xj}) 
++ Var\left( \frac{1}{n} \sum_{i=1}^{n} e_{Xij} \right) \\
+&= Var(u_{Xj}) 
++ \frac{1}{n^2} Var\left( \sum_{i=1}^{n} e_{Xij} \right) \\
+&= Var(u_{Xj}) 
++ \frac{1}{n^2} \sum_{i=1}^{n} Var(e_{Xij}) \\
+&= \tau_x^2 + \frac{n \cdot \sigma_X^2}{n^2} \\
+&= \tau_x^2 + \frac{\sigma_X^2}{n}
+\end{aligned}
+$$
+where $n$ denotes the group size (cluster size), assumed to be constant across groups.\\
+The covariance $Cov(W_j, \bar{X}_j)$ is therefore:
+
+$$
+\begin{aligned}
+Cov(W_j, \bar{X}_j)
+&= \rho_{\bar{X}W} \cdot SD(\bar{X}_j) \cdot SD(W_j) \\
+&= \rho_{\bar{X}W} \cdot \sqrt{Var(\bar{X}_j)} \cdot \sqrt{Var(W_j)} \\
+&= \rho_{\bar{X}W} \cdot \sqrt{\tau_x^2 + \frac{\sigma_X^2}{n}} \cdot 1
+\end{aligned}
+$$
+
+## Variances of random components of Y
+
+Individual and group residual variances of $Y$ $(Var\left(u_{0j}\right) = \psi^2$ and $Var(e_{ij}) = \sigma^2$) are determined to obtain a prespecified residual ICC of $Y$:
+
+$$ICC_{Y|X,W}=\ \frac{\psi^2}{\psi^2+\ \sigma^2\ }$$
+
+Because $Var(Y)=1$ and residuals are uncorrelated with predictors and with each other,
+
+$$
+\psi^2 + \sigma^2 = Var(\text{Residual}) = 1 - Var(\text{fixed})
+$$
+where $Var(\text{fixed})$ denotes the variance explained by the fixed effects of the model.\\
+The variance components can therefore be expressed as:
+
+$$
+Var(u_{0j}) = ICC_{Y|X,W} \cdot \bigl(1 - Var(\text{fixed})\bigr)
+$$
+
+$$
+Var(e_{ij}) = (1 - ICC_{Y|X,W}) \cdot \bigl(1 - Var(\text{fixed})\bigr)
+$$
+
+$Var(\text{fixed})$ can be calculated as:
+
+$$
+Var(\text{fixed}) 
+= Var\bigl( \gamma_{10} (X_{ij} - \bar{X}_{.j}) 
++ \gamma_{01} \bar{X}_{.j} 
++ \gamma_{02} W_j \bigr)
+$$
+The terms $(X_{ij} - \bar{X}_{.j})$ and $\bar{X}_{.j}$ are uncorrelated. 
+$W_j$ is correlated with $\bar{X}_{.j}$ but not with $X_{ij}$ (see Equation @eq-W), and $Var(W_j)$ is set to 1, which leads to:
+
+$$
+Var(\text{fixed})
+= \gamma_{10}^2 \cdot Var(X_{ij} - \bar{X}_{.j})
++ \gamma_{01}^2 \cdot Var(\bar{X}_{.j})
++ \gamma_{02}^2
++ 2\gamma_{01}\gamma_{02} Cov(\bar{X}_{.j}, W_j)
+$$
+
+Using the decomposition of $X_{ij}$ introduced in Section @sec-dgm,
+
+$$
+X_{ij} = u_{Xj} + e_{Xij},
+$$
+
+the variance of $(X_{ij} - \bar{X}_{.j})$ can be derived as follows:
+
+$$
+\begin{aligned}
+Var(X_{ij}-\bar{X}_{.j})
+&= Var(X_{ij}) + Var(\bar{X}_{.j}) - 2 \cdot Cov(X_{ij}, \bar{X}_{.j}) \\
+&= Var(X_{ij}) + Var(\bar{X}_{.j}) - 2 \cdot \left( Var(u_{Xj}) + \frac{1}{n} \sum_{i'=1}^{n} Cov(u_{Xj}, e_{Xi'j}) \right. \\
+&\qquad\left. +\ Cov(e_{Xij}, u_{Xj}) + \frac{1}{n} \sum_{i'=1}^{n} Cov(e_{Xij}, e_{Xi'j}) \right) \\
+&= Var(X_{ij}) + Var(\bar{X}_{.j}) - 2 \cdot \left( Var(u_{Xj}) + \frac{1}{n} Var(e_{Xij}) \right) \\
+&= Var(X_{ij}) + Var(\bar{X}_{.j}) - 2 \cdot Var(\bar{X}_{.j}) \\
+&= Var(X_{ij}) - Var(\bar{X}_{.j}) \\
+&= \tau_x^2 + \sigma_X^2 - \left( \tau_x^2 + \frac{\sigma_X^2}{n} \right) \\
+&= \sigma_X^2 - \frac{\sigma_X^2}{n}
+\end{aligned}
+$$
+
+Because $\gamma_{02}$ is set to 0, $Var(\text{fixed})$ can be calculated as
+
+$$
+Var(\text{fixed})
+= \gamma_{10}^2 \left(\sigma_X^2 - \frac{\sigma_X^2}{n}\right)
++ \gamma_{01}^2 \left(\tau_x^2 + \frac{\sigma_X^2}{n}\right).
+$$

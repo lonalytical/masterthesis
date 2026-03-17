@@ -5,23 +5,13 @@ editor:
     wrap: 72
 ---
 
-A simulation study was conducted in order to compare the performance of
-methods for missing data handling in small-sample multilevel random
-intercept models.\
-The idea behind a simulation study is to carry out a computer experiment
-[@morris], where data with known
-characteristics is simulated and subsequently analyzed with the methods
-of interest. The analysis results can be compared to the truth, allowing
-for assessment of the performance of the methods
-[@siepe].
 
 Planning of the simulation study followed the ADEMP structure proposed
-by Siepe et al. [-@siepe] and will be
-reported based on their guidelines.
+by Siepe et al. [-@siepe] and will be reported based on their guidelines.
 
 ## Data generation mechanism
 
-### Data-generating model
+### Data-generating model {#sec-dgm}
 
 The data-generating model is a two-level random intercept model: $$
 \begin{aligned}
@@ -64,7 +54,8 @@ $$
 \begin{aligned}
 \sigma^2 = (1 - ICC_{Y|X,W}) \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2 }{n_j})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n_j}) }
 \end{aligned}
-$$ The full derivation of these equations is provided in @sec-appA.
+$$ 
+The full derivation of these equations is provided in @sec-appA.
 
 [^methods-1]: as well as setting $\gamma_{02}$ to be zero across all
     conditions, see @sec-factors
@@ -164,12 +155,8 @@ For MI-R, degrees of freedom for calculating the test statistic were calculated 
 For MI-a, complete data degrees of freedom were calculated with $df_{\gamma_{10}} = M - r - 1$ ($M$: total number of Level-1 units; $r$: total number of predictors, in the present case $2$) and $df_{\gamma_{01}} = N_2 - q - 1$ ($N_2$: number of Level-2 units; $q$: number of Level-2 predictors, here: $1$).
 
 ### Fully Bayesian Analysis
-A factored regression specification was used within the Bayesian framework to allow the inclusion of the auxiliary variable $W$ while leaving the focal analysis model unchanged:
-$$ 
-g\left(y,\ x,w;\gamma\right)=g_w\left(w\middle| y,x;\gamma_w\right)\ \times\ g_y\left(y\middle| x;\gamma_y\right)\ \times\ g_x(x;\gamma_x)\ 
-$$ {#eq-frs}
+A factored regression specification with the auxiliary variable $W$ was used within the Bayesian framework that corresponds to the model described in @eq-frs.  
 
-Here, $g_w$ is the conditional distribution of the auxiliary variable, while $g_y$ corresponds to the substantive analysis model.  
 The burn-in period was set to 1000 iterations, followed by 3000 post-burn-in iterations. The model was estimated using the package `mdmb` [@mdmb] with its default noninformative priors.
 
 ### Extracted quantities
