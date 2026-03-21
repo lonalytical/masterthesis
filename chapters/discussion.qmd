@@ -2,9 +2,58 @@
 title: "Discussion"
 ---
 
+## The role of small-sample-adjusted degrees of freedom in MI
+
+The results of the simulation study suggest that, under the conditions investigated, a small-sample adjustment of degrees of freedom in multiple imputation for random intercept models with manifest group mean predictors may not be critically important. This finding may provide some reassurance for researchers relying on default software implementations.
+
+A misspecification of degrees of freedom—such as assuming infinite complete-data degrees of freedom instead of approximately 13 in the smallest condition at level 2—would intuitively be expected to result in undercoverage and overly narrow confidence intervals. However, in the present simulation, coverage remained nominal or was even slightly above the nominal level despite this misspecification. This suggests that other sources of uncertainty within the multiple imputation framework may play a more dominant role in determining interval width and coverage.
+
+First, the priors are influential especially in small sample sizes. 
+
+Kleine Anzahl an Imputationen -> between Varianz etwas höher
+
+eher wenig Strktur die Missingness erklärt -> Imputationsmodell "rät" mehr
+
+Missingness in X -> da die Parameter ja mithilfe von X geschätzt werden, sind sie unsicher, wenn X unsicher ist (und das wird ja durch fehlende Werte höher)
+
+kleiner ICC-> wenig Varianz auf Level 2
+cgpt
+
+Across all conditions, coverage was close to or slightly above the nominal level, indicating mildly conservative inference. Importantly, this pattern was observed both with and without small-sample degrees-of-freedom adjustments, suggesting that misspecification of degrees of freedom is unlikely to be the primary driver of the observed behaviour.
+
+Instead, the results point towards an overestimation of uncertainty. In particular, the average model-based standard errors consistently exceeded the empirical standard deviation of the estimates, indicating that variability was overestimated. As confidence interval width is directly determined by these standard errors, this provides a straightforward explanation for the observed overcoverage.
+
+A likely source of this behaviour is the imputation process itself. Missing data in the predictor variable, combined with the multilevel structure of the data, may increase variability across imputations, thereby inflating the between-imputation variance component. This interpretation is further supported by the sensitivity analysis, in which a weakly informative prior reduced bias but led to slightly larger standard errors and wider confidence intervals.
+
+Taken together, these findings suggest that the dominant source of conservatism in this setting lies in the imputation model rather than in the specification of degrees of freedom in the analysis model.
+
+The results suggest that, in this setting, uncertainty may already be slightly overestimated, leading to mildly conservative inference. Applying additional small-sample degrees-of-freedom corrections further increases confidence interval width and may therefore exacerbate this conservatism rather than improve inferential accuracy.
+
+Consequently, the use of default degrees-of-freedom specifications may be sufficient in similar settings, as additional corrections do not appear to offer clear benefits in terms of coverage.
+
+Bayes noch mehr Overcoverage -> uncertainty in posterior distribution ist entscheidend, nicht das pooling danach bei MI (also schon beim Generieren der Imputationen) -> Ursache ist B, nicht pooling
+
+Overcoverage was observed not only in the multiple imputation framework, but also in the fully Bayesian approach, where it was even more pronounced. This suggests that the conservative behaviour is not specific to Rubin’s rules or the pooling procedure, but rather reflects properties of the underlying modeling framework.
+
+However, it should be noted that the fully Bayesian analyses were conducted using a different software implementation and prior specification. Therefore, differences between the approaches cannot be attributed solely to the distinction between multiple imputation and fully Bayesian inference, but may also reflect differences in model assumptions and prior choices.
+
+
+The more pronounced overcoverage observed in the fully Bayesian analyses may be related to the prior specification used in the mdmb package. The priors for regression coefficients are essentially flat (uniform over the real line), and covariance matrices are modeled using inverse-Wishart distributions with weak or noninformative parameter settings.
+
+Such priors impose little to no shrinkage and allow for substantial variability in parameter estimates, particularly in small samples. This can lead to increased posterior uncertainty and wider interval estimates.
+
+This interpretation is consistent with the results from the multiple imputation sensitivity analysis, where a less restrictive prior also led to increased standard errors and wider confidence intervals. Taken together, these findings suggest that the degree of prior regularization plays an important role in determining inferential properties such as coverage.
+
+trade-off between bias and variance
+
+## Comparison between MI and Bayes
+
 MI Diskussion Priors
 ICC .4 gewinnt doppelt:
 
 Prior passt besser
 
 mehr echte Information (weil weniger within-Varianz)
+
+## Limitations and further research
+nur geringes MAR, nur kontinuierliche Variablen, keine Random Slopes, einfaches Modell, keine geringsten Gruppengrößen, immer gleich große Gruppen (macht das was aus?)

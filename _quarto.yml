@@ -15,11 +15,12 @@ book:
     - chapters/methods.qmd
     - chapters/results.qmd
     - chapters/discussion.qmd
-   # - references.qmd
-  #appendices:
+    - references.qmd
+  appendices:
     - appendices/AppendixA.qmd
-    #- appendices/AppendixB.qmd
-    #- appendices/AppendixC.qmd
+    - appendices/convergence.qmd
+    - appendices/AppendixB.qmd
+    - appendices/AppendixC.qmd
 
   repo-url: https://github.com/lonalytical/masterthesis
   search: true
@@ -59,7 +60,8 @@ format:
     toclinkcolor: black
     toc-depth: 2
     include-in-header:
-      text: |
+        \usepackage{caption}
+    text: |
         \usepackage{enumitem}
         \setlist[itemize]{label=--}
     

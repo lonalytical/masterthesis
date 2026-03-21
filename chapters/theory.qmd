@@ -29,18 +29,17 @@ Y_{ij} = \gamma_{00} + u_{0j} + e_{ij}
 $$
 Here, the outcome value of person $i$ in group $j$ is modeled as the sum of the overall mean $\gamma_{00}$, a group level random effect $u_{0j}$ and a random effect on the individual level, $e_{ij}$ [@snijders, p. 49]. The random intercept $u_{0j}$ captures the dependency of individuals within one group statistically, as all individuals in group $j$ have the same $u_{0j}$ value and their outcome values are therefore correlated. Conditional on this group component, however, the remaining level-1 residuals $e_{ij}$ are assumed to be independent, addressing the issue of dependency that would arise if a single-level regression model were applied to nested data.
 
-This and the models explained below are illustrated in @fig-mlmplots.
+This and the models explained below are illustrated in Figure \ref{fig:mlmplots}.
 
-:::{#fig-mlmplots}
-![](/figures/plotmlm.png)
-
-Illustration of common multilevel model specifications.
-Top row: empty model, random intercept model, and random slope model.
-Bottom row: group-level relationships between group means of the predictor $\bar{X}_{.j}$ and the group-specific intercepts $\beta_{0j}$.
-
-The empty model captures only between-group variance. The random intercept model includes a predictor with a common slope across groups, while the random slope model allows the slope of the predictor to vary between groups. The lower panels illustrate the group-level relationship between the predictor mean $\bar{X}_{.j}$ and the group-specific intercepts $\beta_{0j}$, shown once without and once with the group-mean predictor included in the model.
-
-:::
+```{=latex}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/plotmlm.png}
+  \caption{Illustration of common multilevel model specifications.}
+  \label{fig:mlmplots}
+  \caption*{\textit{Note.} Top row: empty model, random intercept model, and random slope model. Bottom row: group-level relationships between group means of the predictor $\bar{X}_{.j}$ and the group-specific intercepts $\beta_{0j}$.}
+\end{figure}
+```
 
 ### Within- and between- group regressions and inclusion of predictors
 

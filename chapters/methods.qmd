@@ -150,7 +150,7 @@ Listwise Deletion was used as a standard reference method for missing data handl
 ### Multiple Imputation (MI) with standard (MI-R) and adjusted (MI-a) degrees of freedom
 For both multiple imputation methods, a joint modeling approach was employed. The imputation model was the multivariate empty model specified before (@eq-imputationmodel), with $W_j$ as an auxiliary variable on level 2.  
 
-Imputation was executed with the R package `jomo` [@quartagnoJomoPackageMultilevel2023] with 2000 burn-in-iterations and 3000 post-burn-in iterations, saving every 300th imputation (10 imputations).  
+Imputation was executed with the R package `jomo` [@jomo] with 2000 burn-in-iterations and 3000 post-burn-in iterations, saving every 300th imputation (10 imputations).  
 For MI-R, degrees of freedom for calculating the test statistic were calculated with the software standard (Rubin´s rules, assuming infinite degrees of freedom in complete data).  
 For MI-a, complete data degrees of freedom were calculated with $df_{\gamma_{10}} = M - r - 1$ ($M$: total number of Level-1 units; $r$: total number of predictors, in the present case $2$) and $df_{\gamma_{01}} = N_2 - q - 1$ ($N_2$: number of Level-2 units; $q$: number of Level-2 predictors, here: $1$).
 

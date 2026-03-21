@@ -62,6 +62,7 @@ In short notation:
 $$
 \sigma_w^2 = 1 - \rho_{\bar{X}W}^2
 $$
+
 ## Calculation of the slope to generate $W_j$
 
 $$
