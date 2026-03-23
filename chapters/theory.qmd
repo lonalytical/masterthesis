@@ -270,7 +270,6 @@ A more straightforward approximation is provided in textbooks by Raudenbush & Br
 $$
 df_{Lv1} = N_1 - r - 1, \qquad df_{Lv2} = N_2 - q - 1
 $$
-
 $$
 \begin{array}{l}
 N_1: \text{Level-1 sample size (total number of individuals)}\\
@@ -337,8 +336,8 @@ Many estimation procedures require complete data. Therefore, missing data must b
 This simple ad hoc procedure is called *listwise deletion* (LD) or *complete case analysis* and is a widely used approach to handling missing data. Cases with at least one missing value are discarded, and the model is estimated using only complete observations [@graham09]. In multilevel settings, missingness on the group level implies that all individuals in this group are excluded as well.   
 Listwise deletion has two major disadvantages [@endersbook, p.24]:
 
-1. Because partial data is unused, statistical power is reduced.  
-1. If the missing data mechanism is not MCAR, parameter estimates may be highly biased.   
+- Because partial data is unused, statistical power is reduced.  
+- If the missing data mechanism is not MCAR, parameter estimates may be highly biased.   
 
 LD can still be adequate under some conditions [@graham09; @endersbook, p.25], but in already small samples, additional data deletion should be avoided as power is already limited [@mcneish17]. 
 
@@ -558,9 +557,12 @@ Because all missing values are resampled in each iteration, the uncertainty due 
 
 ### Present study
 
-The previous sections suggest two important open questions. First, although small-sample-adjusted degrees-of-freedom approximations are relevant for inference after multiple imputation, their performance in multilevel models with missing data has not yet been systematically evaluated. Second, fully Bayesian estimation may offer a promising alternative because it is naturally suited to handling both missing predictor values and small sample sizes.
+Of course, both challenges considered here—small sample sizes and missing data—frequently co-occur in empirical research. Some literature investigates this intersection in single-level regression. Von Hippel [@-hippel] demonstrates that multiple imputation can exhibit bias and inefficiency in small samples and that this hinges on the prior choice. McNeish [@-mcneish17] obtained good results with using joint multiple imputation with small-sample-degrees of freedom.
 
-To address these questions, the present study uses a simulation design to compare methods for handling missing data in a small-sample multilevel random intercept model. In particular, it examines whether applying small-sample-adjusted degrees-of-freedom approximations after multiple imputation improves inferential performance, and whether fully Bayesian estimation provides a suitable alternative to imputation-based or likelihood-based approaches.
+In a multilevel context, McNeish [@-mcneishgrowth] showed in a simulation study that MI with small-sample adjustments (REML estimation and Kenward-Rogers correction) yields better statistical properties than without corrections in a growth model. However, these adjustments were not compared to standard inferential approaches based on unadjusted degrees of freedom. More generally, this remains one of the few studies explicitly addressing the joint occurrence of small samples and missing data in multilevel settings.
+In particular, it remains unclear how missing values in predictor variables should be handled. In such cases, maximum likelihood estimation cannot be readily applied, whereas fully Bayesian estimation may offer a promising alternative, as it naturally accommodates both missing predictor values and small sample sizes.
+
+To address these questions, the present study uses a simulation design to compare methods for handling missing data in the predictor variable in a small-sample multilevel random intercept model. In particular, it examines whether applying small-sample-adjusted degrees-of-freedom approximations after multiple imputation improves inferential performance, and whether fully Bayesian estimation provides a suitable alternative to imputation-based or likelihood-based approaches.
 
 Simulation studies can be understood as computer experiments [@morris], in which data with known characteristics are generated and then analysed using the methods of interest. Because the true parameter values are known, the resulting estimates can be compared with the truth, allowing the performance of the methods to be evaluated [@siepe].
 

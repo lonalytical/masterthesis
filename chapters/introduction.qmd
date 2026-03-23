@@ -5,7 +5,7 @@ Multilevel models are a standard statistical tool for analysing clustered data, 
 
 Methodological research has proposed a range of approaches to address each of these challenges separately. Small-sample corrections for multilevel models have been developed to improve statistical inference when the number of clusters is limited [@mcneishstaple14; @elff]. At the same time, modern missing-data methods have been extended to multilevel data structures [@endersupdate].
 
-However, relatively little research has investigated how these two challenges interact. In particular, it remains unclear how small-sample inference procedures perform when model parameters are estimated in the presence of missing data and handled using modern missing-data methods.
+However, relatively little research has investigated how these two challenges interact. In particular, it remains relatively unclear how small-sample inference procedures perform when model parameters are estimated in the presence of missing data and handled using modern missing-data methods.
 
 This thesis investigates this interaction. Specifically, it examines whether applying small-sample-corrected degrees of freedom after multiple imputation improves the inferential quality of estimates in random intercept models, and whether fully Bayesian estimation provides a viable alternative approach.
 
