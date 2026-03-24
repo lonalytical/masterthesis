@@ -44,6 +44,6 @@ Prior passt besser
 mehr echte Information (weil weniger within-Varianz)
 
 ## Limitations and further research
-nur geringes MAR, nur kontinuierliche Variablen, keine Random Slopes, einfaches Modell, keine geringsten Gruppengrößen, immer gleich große Gruppen (macht das was aus?), kein MNAR, keine priors angeguckt oder manipuliert, simulierte Daten die die Normalitätsannahmen erfüllen
+nur geringes MAR, nur kontinuierliche Variablen, keine Random Slopes, einfaches Modell, keine geringsten Gruppengrößen, immer gleich große Gruppen (macht das was aus?), kein MNAR, keine priors angeguckt oder manipuliert, simulierte Daten die die Normalitätsannahmen erfüllen; manifeste vs. latente group means (lüdkte)
 
 

@@ -12,7 +12,7 @@ Planning of the simulation study followed the ADEMP structure proposed by Siepe 
 
 ### Data-generating model {#sec-dgm}
 
-The data-generating model is a two-level random intercept model: $$
+The data-generating model was a two-level random intercept model: $$
 \begin{aligned}
 Y_{ij} =\gamma_{10} (X_{ij} - \bar{X.}_j) +\gamma_{01} \bar{X.}_j + \gamma_{02} W_j + u_{0j} + e_{ij} 
 \end{aligned}
@@ -34,7 +34,7 @@ W_j=a\bar{X}_j + e_{Wj} \qquad
 e_{Wj}\sim N(0,{\sigma_w}^2)
 $$ 
 Finally, the random effects on the group and the individual level were generated as $$u_{0j}\sim N(0,\psi^2), \qquad e_{ij}\sim N(0,\sigma^2)$$ and independent of each other.\
-Individual and group residual variances of $Y_{ij}$ were set to achieve a prespecified residual intraclass correlation and $Var(Y_{ij}) = 1$, see @sec-randomy.
+Individual and group residual variances of $Y_{ij}$ were set to achieve a prespecified residual intraclass correlation and $Var(Y_{ij}) = 1$, see @sec-appA.
 
 ### Missing data generation
 
@@ -124,7 +124,7 @@ Listwise Deletion was used as a standard reference method for missing data handl
 ### Multiple Imputation (MI) with standard (MI-R) and adjusted (MI-a) degrees of freedom
 For both multiple imputation methods, a joint modeling approach was employed. The imputation model was the multivariate empty model specified before (@eq-imputationmodel), with $W_j$ as an auxiliary variable on level 2.  
 
-Imputation was executed with the R package `jomo` [@jomo] with 2000 burn-in-iterations and 3000 post-burn-in iterations, saving every 300th imputation (10 imputations).  
+Imputation was executed with the R package `mitml` [@mitml] which provides an interface to the `jomo` package [@jomo]. THe algorithm was run with 2000 burn-in-iterations and 3000 post-burn-in iterations, saving every 300th imputation, resulting in 10 imputations.  
 For MI-R, degrees of freedom for calculating the test statistic were calculated with the software standard (Rubin´s rules, assuming infinite degrees of freedom in complete data).  
 For MI-a, complete data degrees of freedom were calculated with $df_{\gamma_{10}} = M - r - 1$ ($M$: total number of Level-1 units; $r$: total number of predictors, in the present case $2$) and $df_{\gamma_{01}} = N_2 - q - 1$ ($N_2$: number of Level-2 units; $q$: number of Level-2 predictors, here: $1$).
 
