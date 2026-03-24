@@ -101,7 +101,7 @@ Cov(W_j, \bar{X}_j)
 \end{aligned}
 $$
 
-## Variances of random components of Y
+## Variances of random components of Y {#sec-randomy}
 
 Individual and group residual variances of $Y$ $(Var\left(u_{0j}\right) = \psi^2$ and $Var(e_{ij}) = \sigma^2$) are determined to obtain a prespecified residual ICC of $Y$:
 
@@ -171,3 +171,12 @@ Var(\text{fixed})
 = \gamma_{10}^2 \left(\sigma_X^2 - \frac{\sigma_X^2}{n}\right)
 + \gamma_{01}^2 \left(\tau_x^2 + \frac{\sigma_X^2}{n}\right).
 $$
+
+The variances of the random components can thus be calculated like this:
+
+$$ \psi^2 = ICC_{Y|X,W} \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2}{n_j})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n_j}) } $$
+$$
+\begin{aligned}
+\sigma^2 = (1 - ICC_{Y|X,W}) \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2 }{n_j})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n_j}) }
+\end{aligned}
+$$ 

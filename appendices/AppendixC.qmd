@@ -66,17 +66,16 @@ jomotable %>%
     escape = TRUE,
     booktabs = TRUE,
     align = "c",
-    col.names = c("N2", "Bias ui", "rel. Bias ui", "Bias wi", "rel. Bias wi", "Bias red.")
+    col.names = c("N2", "Bias.d", "rel. Bias.d", "Bias.a", "rel. Bias.a", "Bias red.")
   ) %>%
   pack_rows(index = c("MCAR" = 3, "MAR" = 3)) %>%
   column_spec(1:6, width = "1.8cm") %>%
   kable_styling(full_width = FALSE, 
                 position = "center", 
                 latex_options = "hold_position") %>%
-  landscape() %>%
   row_spec(0, bold=TRUE) %>%
   footnote(
-    general = "Fußnote zur Erklärung TEst",
+    general = "d = default priors, a = alternative priors, Bias red. = Bias reduction",
     threeparttable = TRUE
   ) %>%
   print()
@@ -97,7 +96,7 @@ jomosetable %>%
     escape = TRUE,
     booktabs = TRUE,
     align = "c",
-    col.names = c("N2", "Covdef", "Covalt", "SEdef", "SEalt", "empSEdef", "empSEalt")
+    col.names = c("N2", "Covd", "Cova", "SEd", "SEa", "empSEd", "empSEa")
   ) %>%
   pack_rows(index = c("MCAR" = 3, "MAR" = 3)) %>%
   column_spec(1:7, width = "1.8cm") %>%

@@ -60,8 +60,7 @@ format:
     toclinkcolor: black
     toc-depth: 2
     include-in-header:
-        \usepackage{caption}
-    text: |
+      text: |
         \usepackage{enumitem}
         \setlist[itemize]{label=--}
     
