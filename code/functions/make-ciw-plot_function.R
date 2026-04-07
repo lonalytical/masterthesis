@@ -23,8 +23,6 @@ plot_ci_width <- function(results) {
     geom_col(width = 0.7)+
     geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +
     labs(
-      title = bquote("Width of 95% CI for " ~ gamma["01"] ~
-                       "; ICC = 0.1, MAR," ~ gamma["01"] ~ "= 0.4"),
       x = "",
       y = "CI Width (± 2×MCSE)",
       fill = "Method"
@@ -33,7 +31,11 @@ plot_ci_width <- function(results) {
       N2 = \(x) paste0("N2 = ", x))) +
     theme(axis.text.x = element_blank(),
           axis.ticks.x = element_blank(),
-          axis.title.x = element_blank())
+          axis.title.x = element_blank())+
+    scale_fill_discrete(
+      name = "Estimation method",
+      labels = c("Complete data", "Listwise deletion", "MI-Rubin", "MI-adjusted", "Bayesian")
+    )
 
   return(ciw_plot)
 }

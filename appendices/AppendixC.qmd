@@ -1,21 +1,23 @@
 # Default priors and sensitivity analysis {#sec-appC}
 
 ## Default priors in `mdmb`
-Default priors in `mdmb` are noninformative. For regression coefficients, a uniform prior on the interval $(-\infty, \infty)$ is approximated by a normal distribution with large variance, i.e., $\mathcal{N}(0, 10^{10})$. For variance–covariance matrices, improper inverse-Wishart priors are used, i.e., $\mathcal{IW}(\mathbf{0}, -p - 1)$ [@mdmbprior].
+Default priors in `mdmb` are noninformative. For regression coefficients, a uniform prior on the interval $(-\infty, \infty)$ is approximated by a normal distribution with large variance, i.e., $\mathcal{N}(0, 10^{10})$.  
 
-## Default priors in `jomo`
-In `jomo`, inverse-Wishart priors are used for the covariance matrices on level 1 and 2 for imputation:
-
+For variance–covariance matrices on level 1 and 2, inverse-Wishart priors are used:
 $$
 \boldsymbol{\Sigma} \sim \mathcal{IW}(\nu, \mathbf{S})
 $$
-
 where  
+- $\boldsymbol{\Sigma}$ denotes a generic covariance matrix ($\boldsymbol{\sigma}$ at level 1 and $\boldsymbol{\tau}$ at level 2),  
 - $\nu$ denotes the degrees of freedom, and  
 - $\mathbf{S}$ is the scale matrix.
 
-The default is set to 'least informative' priors with largest dispersion, i.e., smallest possible degrees of freedom, scaled by the identity matrix [@jomo; @mitml]. For the three variables of imputation model ($X$, $Y$, $Z$):
+The default in `mdmb` is set to improper inverse-Wishart priors with negative degrees of freedom, which can be written as $\mathcal{IW}(-p-1, \mathbf{0})$ [@mdmbprior], where p denotes the dimension of the covariance matrix. 
+$\mathbf{S} = \mathbf{0}$ corresponds to a null matrix of appropriate dimension. 
 
+## Default priors in `jomo`
+In `jomo`, inverse-Wishart priors are used for the covariance matrices at level 1 and 2 for imputation. The default in the `mitml` implementation is set to "least informative" proper priors with largest dispersion, i.e., smallest possible degrees of freedom, scaled by the identity matrix [@jomo; @mitml].
+For the three variables of the imputation model ($X$, $Y$, $Z$) in this thesis the scale matrix is:
 $$
 \mathbf{S} = \mathbf{I} =
 \begin{bmatrix}
@@ -25,12 +27,10 @@ $$
 \end{bmatrix}
 $$
 
-
 ## Sensitivity analysis with weakly informative priors in `jomo`
 
-In this analysis, for the conditions when multiple imputation produced the highest bias, i.e. when $ICC = 0.1$ and $\gamma_{01} = .4$, alternative inverse Wishart priors were specified for the level-2 covariance matrix. This was done by specifying an informed guess of the covariance matrix. In the simulation study, this guess was based on the true parameter values; in empirical applications, it could be derived from previous research.
-This guess for the covariance matrix corresponds to the two standardized level-1 variables $X$ and $Y$ (ICC = .1) and the standardized level-2 variable $W$. 
-
+In this analysis, for the conditions when multiple imputation produced the highest bias, i.e. when $ICC = 0.1$ and $\gamma_{01} = .4$, alternative inverse Wishart priors were specified for the level-2 covariance matrix. This was done by specifying a plausible prior guess for the level-2 covariance matrix. In the simulation study, this guess was based on the true parameter values; in empirical applications, it could be derived from previous research.
+This guess for the covariance matrix corresponds to the two standardized level-1 variables $X$ and $Y$ (ICC = .1) and the standardized level-2 variable $W$:
 $$
 \tau_{\text{guess}} =
 \begin{bmatrix}
@@ -42,7 +42,6 @@ $$
 
 $\boldsymbol{\tau}$ denotes the level-2 covariance matrix of the random effects.
 The level-2 covariance prior was then defined as
-
 $$
 \boldsymbol{\tau} \sim \mathcal{IW}(\nu, \mathbf{S}),
 \qquad
@@ -50,7 +49,7 @@ $$
 $$
 Only the scale matrix was modified, while the degrees of freedom were kept at their default value, such that the prior remained weakly informative but was centered around more plausible variance values. The level-1 covariance matrix was kept at the default specification.
 
-Summarized results of this analysis can be found in @tbl-jomo.
+Bias was substantially reduced across all investigated conditions, with reductions ranging from approximately 35% to over 60% and increasing with larger number of groups (see @tbl-jomo). Coverage rates remained stable, while empirical standard deviations showed a small increase under the alternative prior specification.
 
 ```{r, results='asis', echo=FALSE, message=FALSE}
 #| label: tbl-jomo
@@ -76,39 +75,6 @@ jomotable %>%
   row_spec(0, bold=TRUE) %>%
   footnote(
     general = "d = default priors, a = alternative priors, Bias red. = Bias reduction",
-    threeparttable = TRUE
-  ) %>%
-  print()
-
-```
-
-```{r, results='asis', echo=FALSE, message=FALSE}
-#| label: tbl-jomo2
-#| tbl-cap: "Uncertainty measures with alternative priors"
-library(here)
-jomosetable <- read.table(here("results", "jomose_table.csv"))
-library(kableExtra)
-library(dplyr)
-jomosetable %>%
-  select(-beta) %>%
-  kable(
-    format = "latex",
-    escape = TRUE,
-    booktabs = TRUE,
-    align = "c",
-    col.names = c("N2", "Covd", "Cova", "SEd", "SEa", "empSEd", "empSEa")
-  ) %>%
-  pack_rows(index = c("MCAR" = 3, "MAR" = 3)) %>%
-  column_spec(1:7, width = "1.8cm") %>%
-  kable_styling(
-    full_width = FALSE, 
-    position = "center", 
-    latex_options = "hold_position"
-  ) %>%
-  landscape() %>%
-  row_spec(0, bold = TRUE) %>%
-  footnote(
-    general = "Note. Cov = coverage; SE = model-based standard error; empSE = empirical standard error.",
     threeparttable = TRUE
   ) %>%
   print()

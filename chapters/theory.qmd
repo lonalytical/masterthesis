@@ -215,7 +215,7 @@ This process is illustrated for the random intercept model in @fig-est. Provided
 Aspects of the observed data may pose challenges to this estimation process. Moreover, the inferential machinery itself (i.e., its formulas and underlying assumptions) may be inapt for the empirical data reality.
 Two common challenging aspects, namely small sample sizes and missing data, will be discussed in the following chapters.
 
-:::{#fig-est}
+:::{#fig-est fig-scap="Frequentist inferential process in a random intercept model"}
 ![](/figures/estimation.png)
 Simplified frequentist inferential process in a random intercept model, based on @snijders and @raudenbush.
 
@@ -260,7 +260,7 @@ Both issues can lead to underestimated standard errors.
 Several small-sample corrections have been proposed to address this problem, among which the Kenward–Roger procedure is one of the most widely used [@mcneishcoll].
 
 #### Approximation of the sampling distribution {#sec-df}
-The standardized test statistic used for inference (see @fig-est) can be regarded as 'small-sample-adjusted' at this point. The final step concerns the choice of a sampling distribution for p-values and confidence intervals. In small samples, a $t$-distribution is typically recommended instead of a standard normal distribution [@snijders, p. 95].
+The standardized test statistic used for inference (see @fig-est) can be regarded as 'small-sample-adjusted' at this point. The final step concerns the choice of a sampling distribution for p-values and confidence intervals. In small samples, a $t$-distribution is typically recommended instead of a standard normal distribution [@snijders, p. 95]. Compared to the standard normal distribution, the $t$-distribution has heavier tails, particularly when the degrees of freedom are small. As a result, it yields wider confidence intervals and larger p-values, making statistical inference more conservative in small samples.
 
 The shape of the $t$-distribution is determined by the number of degrees of freedom. With small degrees of freedom, even small changes noticeably affect the shape of the sampling distribution and therefore the resulting p-values and confidence intervals. The concept of degrees of freedom is difficult to define concisely, but it can be described as the number of independent pieces of information in the data that remain after accounting for restrictions such as estimated parameters [@pandey]. 
 
@@ -459,9 +459,10 @@ $$
 
 ##### Analyzing the completed data sets
 
-After the imputation step, researchers are in the comfortable position to have *m* completed data sets that can be analyzed using standard frequentist methods. To each of the data sets, the substantive analysis model of interest (e.g., the random intercept model) is now fitted. Each analysis proceeds according to the standard estimation procedure described in @sec-est, up to the computation of parameter estimates and their standard errors. Hypothesis testing is not conducted at this stage. The result of this step is a set of *m* parameter estimates and corresponding standard errors.
+After the imputation step, researchers are in the comfortable position to have *m* completed data sets that can be analyzed using standard frequentist methods. To each of the data sets, the substantive analysis model of interest (e.g., the random intercept model) is now fitted. Each analysis proceeds according to the standard estimation procedure described in @sec-est, up to the computation of parameter estimates and their standard errors.
+Hypothesis testing is not conducted at this stage. The result of this step is a set of *m* parameter estimates and corresponding standard errors.
 
-##### Pooling the results
+##### Pooling the results {#sec-pooling}
 
 These *m* estimates and standard errors are aggregated into a single set of results following Rubin's pooling rules [@rubinbook87].  
 He defined the point estimates of effects as the arithmetic average of the $m$ estimates:
@@ -529,7 +530,7 @@ Barnard and Rubin [@-barnard] thus proposed a small-sample-adjusted degrees-of-f
 
 Full information maximum likelihood (FIML) is a model-based approach in which parameter estimates are obtained directly by maximizing the likelihood of the observed data [@endersbook, p. 98]. Under the assumption that data are missing at random (MAR), FIML yields unbiased and efficient parameter estimates [@mcneish17].
 
-Incorporating auxiliary variables is less straightforward in FIML than in multiple imputation. Nevertheless, several approaches have been proposed to include auxiliary information in FIML estimation, such as the saturated correlates model or the extra dependent variable approach [@grahamFIML], as well as the factored regression framework described below, which forms the basis of Bayesian missing-data approaches.
+Incorporating auxiliary variables is less straightforward in FIML than in multiple imputation. Nevertheless, several approaches have been proposed to include auxiliary information in FIML estimation, such as the saturated correlates model or the extra dependent variable approach [@grahamFIML], as well as the factored regression framework described below for the Bayesian missing-data approaches.
 
 For the random intercept model with group-mean effects considered in this thesis, FIML is not always well suited when missingness occurs in predictor variables. In such cases, maximum likelihood estimation requires additional distributional assumptions about the distribution of the predictors in order to incorporate them into the likelihood function [@grundMI18]. In multilevel models with manifest group means, these assumptions may lead to biased estimates of between-group effects [@grundapa].
 

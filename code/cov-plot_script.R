@@ -37,11 +37,14 @@ cov_plot<- ggplot(datf, aes(x = method, y = covdev, fill = method)) +
              )) +
   geom_hline(yintercept = 0) +
   labs(
-    title = bquote("Coverage of 95% CI for" ~ gamma["01"] ~ "and" ~ N[2] == 15),
     x = "",
-    y = "Deviation from 95% (± 2×MCSE)",
+    y = "Deviation from 95%",
     fill = "Method"
   ) +
   theme(axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
-        axis.title.x = element_blank())
+        axis.title.x = element_blank())+
+  scale_fill_discrete(
+    name = "Estimation method",
+    labels = c("Complete data", "Listwise deletion", "MI-Rubin", "MI-adjusted", "Bayesian")
+  )

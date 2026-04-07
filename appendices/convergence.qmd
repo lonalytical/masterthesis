@@ -6,37 +6,82 @@ Convergence behaviour was tested in one run of the most challenging condition ($
 
 Convergence of the imputation model was assessed using potential scale reduction factors [@gelmanrhat]. Scale reduction factors that are substantially larger than 1 indicate that convergence was not yet reached fully; an acceptable threshold can be set at 1.1 [@gelmanbook, p. 285-287], while a stricter recommendation was recently set to be 1.01 [@vehtari]. Given the simulation setting with aggregated results over many replications, the first threshold was considered sufficient.
 
-All values were close to 1 (maximum $\hat{R} = 1.026$), indicating satisfactory convergence across all parameters.
+All values were close to 1, indicating satisfactory convergence across all parameters. A maximum $\hat{R}$ of $1.026$ was observed for $\beta_{Y,X}$. Diagnostic plots are shown in @fig-MIdiag1 - @-fig-MIdiag3 for this parameter and the most critical parameters, the level-2 residual variances of $Y$ and $X$.
 
-Trace plots showed no signs of substantial change after burn-in. Inspection of the autocorrelation plots indicated that autocorrelation diminished quickly across increasing lags and did not persist over longer distances between samples. The distance of 300 lags between imputation that was chosen in this simulation was therefore sufficient. Diagnostic plots are shown in @fig-MIpsi11 for the most critical parameter, the level-2 residual variance of $Y$.
+Trace plots showed no signs of substantial change after burn-in. Inspection of the autocorrelation plots indicated that autocorrelation diminished quickly across increasing lags and did not persist over longer distances between samples. The distance of 300 lags between imputation that was chosen in this simulation was therefore sufficient. 
 
-::: {#fig-MIpsi11}
-![](/figures/psi11MI.png)
+::: {#fig-MIdiag1}
+![](/figures/beta12MI.png){width=65%}
 
-Trace and autocorrelation plot in an exemplary simulation run for the level-2 covariance $\tau_0^2$ in MI
+Trace and autocorrelation plot in an exemplary simulation run for $\beta_{Y,X}$ (multiple imputation).
+:::
+
+::: {#fig-MIdiag2}
+![](/figures/psi11MI.png){width=65%}
+
+Trace and autocorrelation plot in an exemplary simulation run for the level-2 variance of Y $\tau_{y0}^2$ (multiple imputation).
+:::
+
+::: {#fig-MIdiag3}
+![](/figures/psi22.png){width=65%}
+
+Trace and autocorrelation plot in an exemplary simulation run for the level-2 variance of X $\tau_{x0}^2$ (multiple imputation).
 :::
 
 ## Diagnostics of fully Bayesian analysis
 
-$\hat{R}$-values were close to 1, except for the variance of X on level 2 ($\hat{R}=1.05$) and the regression coefficient of W on the group mean of X ($\hat{R}=1.03$).
-
-Trace plots showed no drifting, and autocorrelation plots indicated sufficiently low autocorrelation after few lags. They are shown here for the two parameters with the highest potential scale reduction factor, as well as for $\tau_0^2$ as it is a critical parameter in this simulation.
-
+$\hat{R}$-values were close to 1, except for the level-2 variance of X ($\hat{R}=1.05$) and the regression coefficient of the group mean of X on W ($\hat{R}=1.03$). Diagnostic plots of these parameters and the furthermore critical parameter $\tau_{y0}^2$ are shown in @fig-diagbayes. Trace plots showed no drifting, and autocorrelation plots indicated sufficiently low autocorrelation after few lags. 
 
 ```{r, echo=FALSE, message=FALSE}
-#| label: fig-plotbayes1
-#| fig.cap: "Trace and autocorrelation plot in an exemplary simulation run for the level-2 effect $\\gamma_{01}$ in fully Bayesian analysis"
+#| label: fig-diagbayes
+#| fig.cap: "Trace and autocorrelation plot for the parameter $\\beta_{wx}^{(imp)}$, representing the effect of the group mean of $x$ on $w$ in the imputation model (fully Bayesian estimation)."
 #| fig-asp: 1
-#| out-width: 90%
+#| out-width: 70%
 #| crop: false
 library(here)
 library(coda)
 fit.bayes<-readRDS(here("results", "fit_bayes_convergence.rds"))
-x <- fit.bayes$values_coda[, "Y_beta_gm(x, group)"]
+x <- fit.bayes$values_coda[, "w ON gm(x, group)"]
 par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
 
-traceplot(x, main = expression(paste("Traceplot and autocorrelation plot for ", gamma["01"])))
+traceplot(x)
 acf(as.numeric(x), lag.max = 300, main="")
+```
+
+```{r, echo=FALSE, message=FALSE}
+#| label: fig-plotbayes2
+#| fig.cap: "Trace and autocorrelation plot in an exemplary simulation run for the level-2 variance of X $\\tau_{x0}^2$ (fully Bayesian analysis)"
+#| fig-asp: 1
+#| out-width: 70%
+#| crop: false
+library(here)
+library(coda)
+fit.bayes<-readRDS(here("results", "fit_bayes_convergence.rds"))
+
+y <- fit.bayes$values_coda[, "x_vcov_group_(Intercept)-(Intercept)"]
+
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
+
+traceplot(y)
+acf(as.numeric(y), lag.max = 300, main="")
+```
+
+```{r, echo=FALSE, message=FALSE}
+#| label: fig-plotbayes3
+#| fig.cap: "Trace and autocorrelation plot in an exemplary simulation run for the level-2 variance of Y $\\tau_{x0}^2$ (fully Bayesian analysis)"
+#| fig-asp: 1
+#| out-width: 70%
+#| crop: false
+library(here)
+library(coda)
+fit.bayes<-readRDS(here("results", "fit_bayes_convergence.rds"))
+
+z <- fit.bayes$values_coda[, "Y_vcov_group_(Intercept)-(Intercept)"]
+
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
+
+traceplot(z)
+acf(as.numeric(z), lag.max = 300, main="")
 ```
 
 

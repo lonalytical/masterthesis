@@ -2,48 +2,47 @@
 title: "Discussion"
 ---
 
-## The role of small-sample-adjusted degrees of freedom in MI
-A misspecification of degrees of freedom — such as assuming infinite complete-data degrees of freedom instead of approximately 13 in the smallest condition at level 2 — would intuitively be expected to result in undercoverage and overly narrow confidence intervals. However, in the present simulation, coverage remained nominal or was even slightly above the nominal level despite this misspecification. This suggests that other sources of uncertainty within the multiple imputation framework may play a more dominant role in determining interval width and coverage. Overcoverage was furthermore not only observed in the multiple imputation framework, but also in the fully Bayesian approach, where it was even more pronounced. This emphasizes that the conservative behavior is not specific to Rubin’s rules or the pooling procedure, but rather reflects properties of the underlying MCMC algorithm.  
-Under the conditions investigated, a small-sample adjustment of degrees of freedom in multiple imputation for random intercept models with manifest group mean predictors may therefore not be critically important. This finding may provide some reassurance for researchers relying on default software implementations.
+This thesis was concerned with the treatment of missing data in predictor variables in small-sample multilevel models with group-mean predictors. It focused on a reduced setting with a single continuous predictor which was included at level 1 as an individual-level predictor and at level 2 as a manifest group-mean predictor, within a random intercept model. In addition, one auxiliary variable at level 2 was included to explain missingness under a MAR mechanism, without being directly related to the outcome.
+While applied settings are often more complex, this simplified design allowed for a more controlled investigation of the methods of interest. Furthermore, there is still limited literature addressing the combined challenges of multilevel data, small sample sizes, and missing data. Against this background, focusing on a simplified setting appears to be a reasonable starting point for examining the behavior of the methods before extending to more complex models.
+The analytical setup combined approaches that explicitly account for small-sample uncertainty with commonly used default settings (e.g., prior specifications), thereby approximating conditions that may also occur in applied research.
 
-## Other explanations for the results
-The average model-based standard errors consistently exceeded the empirical standard deviation of the estimates, indicating that variability was overestimated. As confidence interval width is directly determined by these standard errors, this provides a straightforward explanation for the observed overcoverage. Joint modeling with `jomo` was also found to be conservative in another study [@audigier]. The authors state there that the use of inverse Wishart priors with few degrees of freedom introduces too much variability in fixed effect estimates.
+## Interpretation of results
 
-*Andere Erklärungen:*
+The results for listwise deletion are consistent with theoretical expectations regarding systematic bias. However, contrary to expectations, listwise deletion did not perform worse under MAR than under MCAR conditions. The MAR mechanism in the present study was relatively weak, suggesting that it was not sufficiently strong to induce additional bias beyond that already observed under MCAR.
 
-### Schwacher MAR-Mechanismus
+A comparison of multiple imputation and the fully Bayesian approach suggests a trade-off between bias and interval width. In settings with low ICC, where unbiased estimation of level-2 effects is critical and default prior specifications are used, the fully Bayesian approach may be preferable to multiple imputation. Given the narrow scope of the simulation design, this should be interpreted as a cautious indication rather than a general recommendation. It is important to note that differences between Bayesian estimation and multiple imputation are often small in magnitude when based on comparable assumptions, and multiple imputation can be understood as an approximate Bayesian procedure, as it relies on draws from the posterior predictive distribution (e.g., @endersbook, p. 299; @SG2002). Against this background, the present results should not be interpreted as representing a general pattern between the two approaches.
+Prior specification seems to play an important role in this context, as the sensitivity analysis revealed. When reasonable prior information is available for level-2 variance components, these may reduce bias produced with multiple imputation while holding coverage at a nominal level. 
 
-eher wenig Struktur die Missingness erklärt (9% Varianz)-> Imputationsmodell "rät" mehr --> hohe Varianz in der Imputation --> hohe Varianz beim Pooling between-imputations
+One aspect of multiple imputation that was specifically investigated in this thesis was the behavior of inference based on uncorrected versus small-sample-adjusted degrees of freedom. The findings suggest that, in this setting, standard Rubin’s rules already yield approximately valid inference, and that additional small-sample corrections may not be necessary. This is somewhat surprising, as it is commonly recommended to use an appropriate sampling distribution in small samples to avoid overly narrow confidence intervals; a recommendation which also applies to multilevel analyses [@kenwardroger; @schaalje] and within multiple imputation [@barnard]. However, confidence intervals are influenced by multiple sources of uncertainty beyond the degrees-of-freedom approximation alone. In particular, REML estimation was used for analyzing the imputed data sets. Compared to ML, REML typically yields larger estimates of level-2 variance components, which have been shown to improve variance estimation substantially in small samples [@elff; @mcneishstaple14]. As these variance components directly affect standard errors, this may have contributed to wider intervals and thus higher coverage. In addition, multiple imputation was performed using joint modeling via `jomo`. Previous work has shown that inverse Wishart priors with few degrees of freedom, as implemented in `jomo`, can introduce additional variability into fixed-effect estimates [@audigier]. Overall, the present standard MI setup performed well in the random intercept model with group-mean predictors, which may be reassuring for applied researchers relying on default degrees-of-freedom specifications. 
 
---> aber diese Unsicherheit gibt es ja wirklich, sie ist also nicht "zu" hoch, oder?
+In terms of implementation, both fully Bayesian estimation and multiple imputation allow the inclusion of auxiliary variables, which were also part of the present setup. In multiple imputation, their inclusion is typically well-documented and supported by standard workflows. In fully Bayesian approaches, however, incorporating auxiliary variables without altering the analysis model requires additional modeling decisions that are less explicitly supported by standardized workflows and software guidance, and may therefore not be immediately apparent without prior methodological experience.
 
-### Missingness in X
+Furthermore, the choice between approaches is likely to depend not only on statistical performance but also on the research context and analytical goals.
+Multiple imputation may be advantageous in settings where standardized workflows and comparability across analyses are desired, as completed data sets can be shared and reused across different analyses. However, reproducibility can in principle be achieved with both approaches when data, code, and model specifications are transparently reported.
 
-Da die Parameter ja mithilfe von X geschätzt werden, sind sie unsicher, wenn X unsicher ist (und das wird ja durch fehlende Werte höher) -> ist das ein Grund?
-
-kleiner ICC-> wenig Varianz auf Level 2
-
-### Prior choice 
-
-die Priors lassen zu viel Varianz zu, sodass die Imputationen sehr weit streuen; weiter als die "echten" Werte streuen würden (?)
-
-The more pronounced overcoverage observed in the fully Bayesian analyses may also be related to the prior specification used in `mdmb`. Their default priors allow for even more variability in the parameter estimates than in `jomo`.
-
-These findings suggest that the degree of prior regularization plays an important role in determining inferential properties such as coverage.
-
-## A trade-off between bias and variance
-
-Wie entsteht der Bias in MI eigentlich? Vielleicht dadurch, dass die group mean aggregation erst nach der Imputation durchgeführt wird? Ist das dadurch "unsauber", verzerrt?
-...
-
-MI Diskussion Priors
-ICC .4 gewinnt doppelt:
-
-Prior passt besser
-
-mehr echte Information (weil weniger within-Varianz)
+In contrast, fully Bayesian approaches may be particularly useful in cumulative research settings, where prior information can be updated across studies, allowing evidence to be built progressively.
 
 ## Limitations and further research
+`mdmb`'s default priors allow for even more variability in the parameter estimates than in `jomo`. Thus, it would be interesting to look at different prior specifications in both approaches to investigate this further. 
+
+Future research is needed to disentangle the relative contributions of these components. In particular, simulation studies that systematically vary estimation method (ML vs. REML), degrees-of-freedom corrections, prior specifications, and imputation frameworks (e.g., joint modeling vs. fully conditional specification) would help to clarify their individual and combined effects on inferential performance of multiple imputation.
+
+This study comes with many limitations. Firstly, only continuous variables were considered.
+
+Furthermore, in some practical examples the number of clusters might be even smaller than 15.
+
+The missing data mechanisms lacked the inclusion of missing not at random processes, which also are to be expected in practical research scenarios.
+
+The simulation model was fairly simple, with no random slopes or cross-level interactions. This seemed a good start to investigate the performance of the methods of interest in a simple setting at first, but should be expanded from here.
+
+Importantly, prior choice was not the focus of the present thesis, but is of great importance in small samples. As the sensitivity analysis revealed, it influences the results noticeably. The systematic manipulation of different priors to further compare multiple imputation and Bayesian techniques would be useful. 
+
+To note is also, that the present study only looked at artificial, simulated data that satisfy the supposed model assumptions (e.g., normality, homoscedasticity of residuals). It would be illuminating to look at the methods´ behavior in a comparable real data set and/or look at the consequences of misspecifications of the imputation or analysis models.
+
 nur geringes MAR, nur kontinuierliche Variablen, keine Random Slopes, einfaches Modell, keine geringsten Gruppengrößen, immer gleich große Gruppen (macht das was aus?), kein MNAR, keine priors angeguckt oder manipuliert, simulierte Daten die die Normalitätsannahmen erfüllen; manifeste vs. latente group means (lüdkte)
 
 
+It is important to note that firstly, distinct software packages were used to emply the two approaches
+
+
+Diverging behavior zwischen Bayes und MI würde vuielleicht auch Sinn machen in kleinen Stichproben, aber das könnte man nur untersuchen, wenn man alles andere konstant hält. Oder doch nicht? Wirken die Priors durch die imputierten Daten dann bei MI doch auf die Parameterschätzungen? 

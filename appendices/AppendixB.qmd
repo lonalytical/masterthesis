@@ -1,4 +1,4 @@
-# Full summary of results for the performance measures {#sec-appB}
+# Complete simulation results for all performance measures {#sec-appB}
 ```{r}
 #| label: setup
 #| include: false
@@ -23,18 +23,33 @@ results15_00 %>%
     booktabs = TRUE,
     digits = 3,
     caption = "Simulation results (N2 = 15, $\\gamma_{01}$ = 0.0)",
-    col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
+    col.names = c("Parameter", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
     " " = 1,
-    "CD" = 3, "LD" = 3, "MI-R" = 3, "MI-a" = 3, "Bayes" = 3
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
     "ICC = 0.1" = 2, "ICC = 0.3" = 2,
     "ICC = 0.1" = 2, "ICC = 0.3" = 2
   )) %>%
-  kable_styling(full_width = FALSE, position = "center") %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+    footnote(
+    general = paste(
+    "Bias = average deviation from the true parameter; ",
+    "Cov = empirical coverage probability; ",
+    "SD = empirical standard deviation; ",
+    "CIW = mean confidence/credible interval width. ",
+    "MCAR = missing completely at random; MAR = missing at random. ",
+    "CD = complete data; LD = listwise deletion; ",
+    "MI-R = multiple imputation with Rubin's rules; ",
+    "MI-a = multiple imputation with adjusted degrees of freedom; ",
+    "Bayes = fully Bayesian estimation."
+  ),
+    threeparttable = TRUE
+  ) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
   landscape() %>%
   print()
 ```
@@ -51,18 +66,20 @@ results15_04 %>%
     booktabs = TRUE,
     digits = 3,
     caption = "Simulation results (N2 = 15, $\\gamma_{01}$ = 0.4)",
-    col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
     " " = 1,
-    "CD" = 3, "LD" = 3, "MI-R" = 3, "MI-a" = 3, "Bayes" = 3
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
     "ICC = 0.1" = 2, "ICC = 0.3" = 2,
     "ICC = 0.1" = 2, "ICC = 0.3" = 2
   )) %>%
-  kable_styling(full_width = FALSE, position = "center") %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+  footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
   landscape() %>%
   print()
 ```
@@ -79,18 +96,20 @@ results30_00 %>%
     booktabs = TRUE,
     digits = 3,
     caption = "Simulation results (N2 = 30, $\\gamma_{01}$ = 0.0)",
-    col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
     " " = 1,
-    "CD" = 3, "LD" = 3, "MI-R" = 3, "MI-a" = 3, "Bayes" = 3
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
     "ICC = 0.1" = 2, "ICC = 0.3" = 2,
     "ICC = 0.1" = 2, "ICC = 0.3" = 2
   )) %>%
-  kable_styling(full_width = FALSE, position = "center") %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+  footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
   landscape() %>%
   print()
 ```
@@ -107,18 +126,20 @@ results30_04 %>%
     booktabs = TRUE,
     digits = 3,
     caption = "Simulation results (N2 = 30, $\\gamma_{01}$ = 0.4)",
-    col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
     " " = 1,
-    "CD" = 3, "LD" = 3, "MI-R" = 3, "MI-a" = 3, "Bayes" = 3
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
     "ICC = 0.1" = 2, "ICC = 0.3" = 2,
     "ICC = 0.1" = 2, "ICC = 0.3" = 2
   )) %>%
-  kable_styling(full_width = FALSE, position = "center") %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+  footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
   landscape() %>%
   print()
 ```
@@ -135,18 +156,20 @@ results60_00 %>%
     booktabs = TRUE,
     digits = 3,
     caption = "Simulation results (N2 = 60, $\\gamma_{01}$ = 0.0)",
-    col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
     " " = 1,
-    "CD" = 3, "LD" = 3, "MI-R" = 3, "MI-a" = 3, "Bayes" = 3
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
     "ICC = 0.1" = 2, "ICC = 0.3" = 2,
     "ICC = 0.1" = 2, "ICC = 0.3" = 2
   )) %>%
-  kable_styling(full_width = FALSE, position = "center") %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+  footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
   landscape() %>%
   print()
 ```
@@ -163,18 +186,242 @@ results60_04 %>%
     booktabs = TRUE,
     digits = 3,
     caption = "Simulation results (N2 = 60, $\\gamma_{01}$ = 0.4)",
-    col.names = c("", rep(c("Bias", "Cov", "SD"), times = 5))
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
     " " = 1,
-    "CD" = 3, "LD" = 3, "MI-R" = 3, "MI-a" = 3, "Bayes" = 3
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
     "ICC = 0.1" = 2, "ICC = 0.3" = 2,
     "ICC = 0.1" = 2, "ICC = 0.3" = 2
   )) %>%
-  kable_styling(full_width = FALSE, position = "center") %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+  footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
+  landscape() %>%
+  print()
+```
+
+
+
+```{r}
+#| results: asis
+#| echo: false
+#| message: false
+
+results15_00_m %>%
+  kable(
+    format = "latex",
+    escape = FALSE,
+    booktabs = TRUE,
+    digits = 3,
+    caption = "Monte Carlo standard errors of performance measures (N2 = 15, $\\gamma_{01}$ = 0.0)",
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
+  ) %>%
+  add_header_above(c(
+    " " = 1,
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
+  )) %>%
+  pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
+  pack_rows(index = c(
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+  )) %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+    footnote(
+    general = paste(
+  "All entries are Monte Carlo standard errors (MCSEs). ",
+  "Abbreviations as listed in Table C.1."
+  ),
+    threeparttable = TRUE
+  ) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
+  landscape() %>%
+  print()
+```
+
+
+
+```{r}
+#| results: asis
+#| echo: false
+#| message: false
+
+results15_04_m %>%
+  kable(
+    format = "latex",
+    escape = FALSE,
+    booktabs = TRUE,
+    digits = 3,
+    caption = "Monte Carlo standard errors of performance measures (N2 = 15, $\\gamma_{01}$ = 0.4)",
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
+  ) %>%
+  add_header_above(c(
+    " " = 1,
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
+  )) %>%
+  pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
+  pack_rows(index = c(
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+  )) %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+    footnote(
+    general = paste(
+  "All entries are Monte Carlo standard errors (MCSEs). ",
+  "Abbreviations as listed in Table C.1."
+  ),
+    threeparttable = TRUE
+  ) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
+  landscape() %>%
+  print()
+```
+
+
+
+```{r}
+#| results: asis
+#| echo: false
+#| message: false
+
+results30_00_m %>%
+  kable(
+    format = "latex",
+    escape = FALSE,
+    booktabs = TRUE,
+    digits = 3,
+    caption = "Monte Carlo standard errors of performance measures (N2 = 30, $\\gamma_{01}$ = 0.0)",
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
+  ) %>%
+  add_header_above(c(
+    " " = 1,
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
+  )) %>%
+  pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
+  pack_rows(index = c(
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+  )) %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+    footnote(
+    general = paste(
+  "All entries are Monte Carlo standard errors (MCSEs). ",
+  "Abbreviations as listed in Table C.1."
+  ),
+    threeparttable = TRUE
+  ) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
+  landscape() %>%
+  print()
+```
+
+```{r}
+#| results: asis
+#| echo: false
+#| message: false
+
+results30_04_m %>%
+  kable(
+    format = "latex",
+    escape = FALSE,
+    booktabs = TRUE,
+    digits = 3,
+    caption = "Monte Carlo standard errors of performance measures (N2 = 30, $\\gamma_{01}$ = 0.4)",
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
+  ) %>%
+  add_header_above(c(
+    " " = 1,
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
+  )) %>%
+  pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
+  pack_rows(index = c(
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+  )) %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+    footnote(
+    general = paste(
+  "All entries are Monte Carlo standard errors (MCSEs). ",
+  "Abbreviations as listed in Table C.1."
+  ),
+    threeparttable = TRUE
+  ) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
+  landscape() %>%
+  print()
+```
+
+```{r}
+#| results: asis
+#| echo: false
+#| message: false
+
+results60_00_m %>%
+  kable(
+    format = "latex",
+    escape = FALSE,
+    booktabs = TRUE,
+    digits = 3,
+    caption = "Monte Carlo standard errors of performance measures (N2 = 60, $\\gamma_{01}$ = 0.0)",
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
+  ) %>%
+  add_header_above(c(
+    " " = 1,
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
+  )) %>%
+  pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
+  pack_rows(index = c(
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+  )) %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+    footnote(
+    general = paste(
+  "All entries are Monte Carlo standard errors (MCSEs). ",
+  "Abbreviations as listed in Table C.1."
+  ),
+    threeparttable = TRUE
+  ) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
+  landscape() %>%
+  print()
+```
+
+```{r}
+#| results: asis
+#| echo: false
+#| message: false
+
+results60_04_m %>%
+  kable(
+    format = "latex",
+    escape = FALSE,
+    booktabs = TRUE,
+    digits = 3,
+    caption = "Monte Carlo standard errors of performance measures (N2 = 60, $\\gamma_{01}$ = 0.4)",
+    col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
+  ) %>%
+  add_header_above(c(
+    " " = 1,
+    "CD" = 4, "LD" = 4, "MI-R" = 4, "MI-a" = 4, "Bayes" = 4
+  )) %>%
+  pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
+  pack_rows(index = c(
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
+    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+  )) %>%
+  kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
+    footnote(
+    general = paste(
+  "All entries are Monte Carlo standard errors (MCSEs). ",
+  "Abbreviations as listed in Table C.1."
+  ),
+    threeparttable = TRUE
+  ) %>%
+  column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
   landscape() %>%
   print()
 ```

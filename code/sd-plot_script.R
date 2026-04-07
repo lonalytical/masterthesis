@@ -34,10 +34,13 @@ sd_plot <- ggplot(df, aes(x = gamma01, y = empSE, group = method,
   theme_minimal() +
   scale_x_discrete() +
   labs(
-    title = bquote("Empirical standard deviation of estimates for" ~ gamma["01"] ~ "and MAR"),
-    x = expression(gamma["01"]),
+    x = "Effect Size",
     y = "Empirical SD",
     fill = "Method"
   ) +
-  theme_grey()
+  theme_grey()+
+  scale_fill_discrete(
+    name = "Estimation method",
+    labels = c("Complete data", "Listwise deletion", "Multiple Imputation", "Bayesian")
+  )
 sd_plot

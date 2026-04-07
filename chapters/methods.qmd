@@ -142,7 +142,6 @@ For the fully Bayesian method, the posterior means of $\gamma_{10}$ and $\gamma_
 
 Performance was evaluated with standard performance measures for simulation studies [@siepe; @morris]; namely bias, coverage, standard deviation of the estimates across simulation replications and the average width of confidence/credible intervals.
 
-Monte Carlo uncertainty of the estimated performance measures was calculated using Monte Carlo Standard Errors (MCSE), using the formulas provided in Siepe et al. [-@siepe].  
-For each condition, 1000 simulation replications were used, based on comparable simulation studies [@grundMI18; @enders16] and yielding sufficiently small MCSEs for coverage. 
-
-Simulations were conducted in RStudio using a reproducible workflow (e.g., fixed random seeds and controlled package environments). The full code and all relevant materials for reproduction are available in the digital version of this thesis (*LINK*).
+Monte Carlo uncertainty of the estimated performance measures was quantified using Monte Carlo Standard Errors (MCSE), using the formulas provided in Siepe et al. [-@siepe].  
+For each condition, 1000 simulation replications were conducted, in line with comparable simulation studies [@grundMI18; @enders16] and resulting in sufficiently small MCSEs for coverage. 
+All simulations were conducted in R (version 4.5.2, @r) using a reproducible workflow (e.g., fixed random seeds and controlled package environments). The full code and all relevant materials to reproduce the results are available in the digital version of this thesis (*LINK*).
