@@ -29,14 +29,12 @@ $endif$
 \end{minipage}
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushright} \large
-\emph{Supervisor:} \\
-$if(thesis.supervisor.url)$%
-\href{$thesis.supervisor.url$}{\supname} % Supervisor name - remove the \href bracket to remove the link  
-$else$%
-\supname
-$endif$
+\emph{Supervisors:}\\
+$for(thesis.supervisor)$
+$it.name$$sep$ \\
+$endfor$
 \end{flushright}
-\end{minipage}\\[3cm]
+\end{minipage}\\[2cm]
  
 \vfill
 

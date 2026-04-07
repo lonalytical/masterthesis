@@ -3,8 +3,8 @@ project:
   output-dir: .
 
 book:
-  title: Masterthesis_doc
-  date: May 05, 2026
+  title: "Handling Missing Data in Multilevel Models with Few Clusters: A Simulation Study"
+  date: "Submission date: May 05, 2026"
   author:
     name: Lona Frießner
   downloads: [pdf]
@@ -27,12 +27,13 @@ book:
 
 thesis:
   supervisor: 
-    name: Prof. Dr. Simon Grund
+    - name: Prof. Dr. Simon Grund 
+    - name: Mark Lustig
   degree-name: Master of Science
   university: University of Hamburg
-  department: Department of Psychology with focus on Quantitative Methods
+  department: Quantitative Methods
   group: Institute of Psychology
-  faculty: Institute of Psychology
+  faculty: Faculty of Psychology and Human Movement Science
   #declaration: "frontmatter/declaration.tex"
   #quotation:
   #  text: "Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism."
@@ -59,8 +60,15 @@ format:
     urlcolor: blue
     toclinkcolor: black
     toc-depth: 2
+    classoption:
+      - 11pt
+      - english
+      - singlespacing
+      - headsepline
+      - openany
     include-in-header:
       text: |
         \usepackage{enumitem}
         \setlist[itemize]{label=--}
+        
     
