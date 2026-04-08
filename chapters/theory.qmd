@@ -10,47 +10,50 @@ title: "Theory"
 Imagine you are interested in the musical self-concept of young adults and whether it is related to how many hours they practice their instrument each week.
 
 To investigate this question, you collect data from several youth ensembles. You recruit 15 ensembles, each consisting of approximately 10 players. Every player completes a questionnaire assessing their musical self-concept as well as their weekly practice time.  
-At first glance, this seems like a simple dataset of 150 individuals. But is it really that simple?  
+At first glance, this seems like a simple data set of 150 individuals. But is it really that simple?  
 Players from the same ensemble rehearse together, share teachers, and experience similar social and musical environments. Their responses may therefore be more similar within ensembles than between ensembles.
 :::
 
 Populations like this are common in the social sciences. Units of interest (e.g., students, employees, musicians) are grouped into higher-level units such as classes, firms, or ensembles.
 The resulting data is called *nested* or *clustered* [@snijders, p. 7].  
-From a sampling perspective, a so-called *multistage sampling process* (sample groups first, then individuals inside these groups^[In this thesis, the term 'groups' refers to the higher-level units of the data and level-1 units are referred to as 'persons'. However, it is important to note that these models can also be used for longitudinal research, where measurement points are on level 1 and individuals are the level-2 units. Furthermore, more than two levels are also possible, but are not discussed here.]) is not independent: After selecting a group, you will try to sample all of the members of this group, making it more likely to select one person in this group over others in non-selected groups [@snijders, p. 7].  More importantly, individuals inside the same group typically share contextual influences (e.g., the same ensemble teacher, the same class room) and thus will give more similar responses in surveys and behavior. As a consequence, the basic assumption of independence in traditional linear modeling is violated, because error terms will be correlated [@raudenbush, p. xx].  
-One well-suited and popular possibility to account for this fact is the use of *multilevel models* (also called *hierarchical linear models* or *mixed models*). 
+From a sampling perspective, such data often arise from a *multistage sampling process*, in which groups are sampled first and individuals are subsequently sampled within these groups^[In this thesis, the terms 'groups' or 'clusters' refer to higher-level units, while lower-level units are referred to as 'persons', 'individuals' or 'observations'. These models can also be applied to longitudinal data, where measurement occasions are nested within individuals, and to data structures with more than two levels.]. This process induces dependencies in the data, as observations within the same group are not selected independently.  
+Beyond the sampling process, individuals within the same group typically share contextual influences (e.g., the same ensemble teacher or classroom environment), which leads to increased similarity in their responses. As a consequence, the assumption of independent errors in traditional linear models is violated, because residuals within groups are correlated [@raudenbush, p. xx]. 
+A widely used approach to account for this structure is the use of *multilevel models* (also referred to as *hierarchical linear models* or *mixed models*), which are introduced in the following section.
 
 ### The concept of multilevel regression models
-The aim of regression analysis, whether single- or multilevel, is to explain variance in an outcome variable by including associated variables in the model as predictors [@snijders, p. 80]. In single-level regression, the residual $e_{i}$ captures the *unexplained variance* in $Y$, that is differences in the outcome from the prediction that the model made [@leonhart, p. 319]. The assumption of the classical linear model is that after inclusion of all *systematic* influences on $Y$, the residuals are *random*. Specifically, they are assumed to have expectation zero ($E(e_i)=0$), constant variance across observations (homoscedasticity; $Var(e_i)=\sigma^2$), and to be independent across observations ($Cov(e_i, e_{i'})=0$ for $i \neq i'$) [@fahrmeir, p.87].  
+The aim of regression analysis, whether single- or multilevel, is to explain variance in an outcome variable by including associated variables in the model as predictors [@snijders, p. 80]. In single-level regression, the residual $e_{i}$ captures the unexplained variance in $Y$, that is differences in the outcome from the prediction that the model made [@leonhart, p. 319]. The assumption of the classical linear model is that after inclusion of all systematic influences on $Y$, the residuals are random. Specifically, they are assumed to have expectation zero ($E(e_i)=0$), constant variance across observations (homoscedasticity; $Var(e_i)=\sigma^2$), and to be independent across observations ($Cov(e_i, e_{i'})=0$ for $i \neq i'$) [@fahrmeir, p.87].  
 
-Multilevel models (MLM) extend regular linear regression by adding level-2 *random effects* to explain the variability between groups that cannot be accounted for by predictors [@snijders, p. 80]. This partition of variance can be expressed in the multilevel regression model without predictors, the *empty model*:
+Multilevel models extend regular linear regression by adding level-2 random effects to explain the variability between groups that cannot be accounted for by predictors [@snijders, p. 80]. This partition of variance can be expressed in the multilevel regression model without predictors, the *empty model*:
 
 $$
 Y_{ij} = \gamma_{00} + u_{0j} + e_{ij}
 $$
-Here, the outcome value of person $i$ in group $j$ is modeled as the sum of the overall mean $\gamma_{00}$, a group level random effect $u_{0j}$ and a random effect on the individual level, $e_{ij}$ [@snijders, p. 49]. The random intercept $u_{0j}$ captures the dependency of individuals within one group statistically, as all individuals in group $j$ have the same $u_{0j}$ value and their outcome values are therefore correlated. Conditional on this group component, however, the remaining level-1 residuals $e_{ij}$ are assumed to be independent, addressing the issue of dependency that would arise if a single-level regression model were applied to nested data.
+Here, the outcome value of person $i$ in group $j$ is modeled as the sum of the overall mean $\gamma_{00}$, a group level random effect $u_{0j}$ and an individual-level residual, $e_{ij}$ [@snijders, p. 49]. The random intercept $u_{0j}$ captures the dependency of individuals within one group statistically, as all individuals in group $j$ have the same $u_{0j}$ value and their outcome values are therefore correlated. Conditional on this group component, however, the remaining level-1 residuals $e_{ij}$ are assumed to be independent, addressing the issue of dependency that would arise if a single-level regression model were applied to nested data.
 
-This and the models explained below are illustrated in Figure \ref{fig:mlmplots}.
+This and the models explained below are illustrated in @fig-mlmplots.
 
-```{=latex}
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{figures/plotmlm.png}
-  \caption{Illustration of common multilevel model specifications.}
-  \label{fig:mlmplots}
-  \caption*{\textit{Note.} Top row: empty model, random intercept model, and random slope model. Bottom row: group-level relationships between group means of the predictor $\bar{X}_{.j}$ and the group-specific intercepts $\beta_{0j}$.}
-\end{figure}
-```
+::: {#fig-mlmplots layout-ncol=3}
+
+![](../figures/empty.png){}
+
+![](../figures/RI.png){}
+
+![](../figures/RS.png){}
+
+Schematic illustration of common multilevel model specifications in coordinate space: empty model, random intercept model, and random slope model.
+
+:::
 
 ### Within- and between- group regressions and inclusion of predictors
 
 Predictors can then be included to explain variability within groups (level 1) and between groups (level 2).  
-**At level 1**, the outcome of a person $i$ in group $j$ is modeled as a function of individual-level explanatory variables $X_{ij}$ to obtain the within-group regression model. For simplicity, the model is illustrated with a single level-1 predictor:
+At level 1, the outcome of a person $i$ in group $j$ is modeled as a function of individual-level explanatory variables $X_{ij}$ to obtain the within-group regression model. For simplicity, the model is illustrated with a single level-1 predictor:
 
 $$
 Y_{ij} =  \beta_{0j} + \beta_{1j}X_{ij} + e_{ij}
 $$ {#eq-mlm}
 
-**At level 2**, the variation between groups in the group-dependent coefficients $\beta_{0j}$ and $\beta_{1j}$ is modeled. Each group may have its own intercept and slope. These coefficients can be separated into a fixed part (the average coefficient across groups) and a random deviation from this average [@snijders, p. 75]. Without level-2 predictors:
+At level 2, the variation between groups in the group-dependent coefficients $\beta_{0j}$ and $\beta_{1j}$ is modeled. In a random coefficients model, each group is allowed to have its own intercept and slope. These coefficients can be separated into a fixed part (the average coefficient across groups) and a random deviation from this average [@snijders, p. 75]. Without level-2 predictors:
 $$
 \beta_{0j}
 =
@@ -104,11 +107,11 @@ $u_{0j}$: Random intercept (group-specific deviation from $\gamma_{00}$)
 $u_{1j}$: Random slope (group-specific deviation from $\gamma_{10}$)  
 $e_{ij}$: Level-1 residual
 
-If no level-2 predictors are included ($Z_j = 0$), the model reduces to the simpler random-coefficients model without contextual predictors.
+If no level-2 predictors are included, the model reduces to a random-coefficients model without contextual predictors.
 
 ### Distributional assumptions of the multilevel regression model
 
-Similar distributional assumptions are made for the level-2 random effects as for the residuals in single-level regression: they have mean zero, constant variances across groups, and are independent across clusters and independent of the level-1 residuals. However, random effects within the same cluster may be correlated and are often expected to do so [@snijders, p. 76]. Additionally, residuals and random effects are commonly assumed to follow a normal distribution for convenience, as it facilitates the likelihood-based estimation of the unknown parameters [@fahrmeir, p. 388]. In summary:
+Similar distributional assumptions are made for the level-2 random effects as for the residuals in single-level regression: they have mean zero, constant variance across clusters, and are independent of each other across clusters and independent of the level-1 residuals. However, random effects within the same cluster - i.e. the random intercept $u_{0j}$ and random slope $u_{1j}$ - may be correlated and are often expected to do so [@snijders, p. 76]. Additionally, residuals and random effects are commonly assumed to follow a normal distribution for convenience, as it facilitates the likelihood-based estimation of the unknown parameters [@fahrmeir, p. 388]. In summary:
 $$
 \begin{aligned}
 \begin{pmatrix}
@@ -140,11 +143,11 @@ e_{ij} &\sim \mathcal{N}(0,\sigma^2) \\[6pt]
 $$
 
 ### The random intercept model
-In many empirical applications of multilevel models the slope $\beta_{1j}$ is assumed to be constant across groups ($u_{1j} = 0$), leading to the *random intercept model* [@snijders, p. 45]. This model allows for baseline differences in the outcome between groups, whereas the strength of the relationship between predictors and the outcome is assumed to be constant:
+In many empirical applications of multilevel models the slope $\beta_{1j}$ is assumed to be constant across groups (i.e., no random slope component, $u_{1j} = 0$), leading to the *random intercept model* [@snijders, p. 45]. This model allows for baseline differences in the outcome between groups, whereas the strength of the relationship between predictors and the outcome is assumed to be constant across groups:
 $$ 
 Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + \gamma_{01}Z_j + u_{0j} + e_{ij}
 $$
-The random intercept model also provides a convenient framework for examining the use of *group means* of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. The following example illustrates how processes operating within ensembles may differ from those operating between ensembles.
+The random intercept model also provides a convenient framework for examining the use of group means of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. The following example illustrates how processes operating within ensembles may differ from those operating between ensembles.
 
 ::: {.callout-tip icon=false}
 
@@ -161,7 +164,7 @@ This leads to two possible hypotheses:
 :::
 
 
-To separate within- and between-group effects, the level-1 predictor is then often *group-mean-centered*: Instead of using $X_{ij}$ directly, the centered predictor $(X_{ij} - \bar{X}_j)$ is entered into the model. This decomposes within- and between- group effects and facilitates their interpretation [@snijders, p.58]. A random intercept model including such a decomposition can be written like this: 
+To separate within- and between-group effects, the level-1 predictor is then often group-mean-centered: Instead of using $X_{ij}$ directly, the centered predictor $(X_{ij} - \bar{X}_j)$ is entered into the model. This decomposes within- and between- group effects and facilitates their interpretation [@snijders, p.58]. A random intercept model including such a decomposition can be written like this: 
 
 $$ 
 Y_{ij} = \gamma_{00} + \gamma_{10}(X_{ij} - \bar{X}_{.j}) + \gamma_{01}\bar{X}_{.j} + u_{0j} + e_{ij}
@@ -177,11 +180,11 @@ In this random intercept model with a contextual effect, the musical self-concep
 The regression coefficients represent two conceptually different effects:
 
 - $\gamma_{10}$: the *within-group effect*, indicating how a student's own practice time relates to their musical self-concept while controlling for the ensemble context  
-- $\gamma_{01}$: the *contextual effect*, indicating how the ensemble's average practice time relates to students' musical self-concept  
+- $\gamma_{01}$: the *between-group effect*, indicating how the ensemble's average practice time relates to students' musical self-concept, controlling for individual deviations from the group mean
+
+The difference between these two coefficients, $\gamma_{01} - \gamma_{10}$, represents the *contextual effect*.
 
 For the remainder of this thesis, the focus lies on this particular random intercept model.
-
-
 
 ### The intraclass correlation coefficient (ICC)
 
@@ -201,7 +204,7 @@ $$
 ICC = \frac{\tau_0^2}{\tau_0^2 + \sigma^2}
 $$
 
-The ICC is an important diagnostic metric because it indicates whether the use of a multilevel model is advantageous. If ICC = 0, no between-group variance is present and a conventional single-level regression model would typically be sufficient.
+The ICC is an important diagnostic metric because it indicates whether the use of a multilevel model is advantageous. If ICC = 0, no between-group variance is present and a conventional single-level regression model is often sufficient.
 Conversely, larger ICC values indicate increasing similarity within groups and thus statistical dependency of observations. Ignoring this dependency and applying a classical linear model leads to biased standard errors, confidence intervals, and hypothesis tests [@fahrmeir, p.370].
 
 ## Estimation of multilevel models {#sec-est}
@@ -212,12 +215,12 @@ This process is illustrated for the random intercept model in @fig-est. Provided
 2. Estimation of variance–covariance components of the random effects ($u$) and residual errors ($e$)
 3. Selection of an appropriate approximation of the sampling distribution of the test statistic.  
 
-Aspects of the observed data may pose challenges to this estimation process. Moreover, the inferential machinery itself (i.e., its formulas and underlying assumptions) may be inapt for the empirical data reality.
+Aspects of the observed data may pose challenges to this estimation process. Moreover, the inferential machinery itself (i.e., its formulas and underlying assumptions) may not adequately reflect the properties of the observed data.
 Two common challenging aspects, namely small sample sizes and missing data, will be discussed in the following chapters.
 
 :::{#fig-est fig-scap="Frequentist inferential process in a random intercept model"}
 ![](/figures/estimation.png)
-Simplified frequentist inferential process in a random intercept model, based on @snijders and @raudenbush.
+Schematic representation of the frequentist inferential process in a random intercept model, based on @snijders and @raudenbush.
 
 \small
 
@@ -365,7 +368,7 @@ While during this process many thousand posterior draws are generated, only a sm
 The distribution of missing values (i.e., the imputation model) is either conceptualized jointly for all variables (*joint imputation*) or individually (*fully conditional specification*). Both approaches are also suitable for multilevel data structures [@enders16]. In joint modeling, a single multivariate distribution for all variables with missing values is specified, often the multivariate normal distribution in case of continuous variables [@endersbook, p.263]. *Fully Conditional Specification* approximates the joint distribution by cycling through a sequence of univariate models for each variable with missings, conditional on the others. This approach is suitable if many ordinal or nominal variables are included in the data, as for every variable the researcher specifies a separate imputation model [@luedtke].
 
 **Compatibility of imputation and analysis model**
-A crucial point in the choice of a valid imputation model is compatibility with the focal analysis model that is used later on. That is, the imputation model must reflect the key structural features of this analysis model [@grundMI18]. If it fails to do so, parameter estimates may become biased because the imputed values no longer preserve the structure of the data. Consider, for example, the random intercept model with group means (@eq-RI). In this setting, the imputation model must account for the nested data structure (i.e., random effects at the group level) and allow for different effects at the individual and the group level [@grundMI18]. 
+A crucial point in the choice of a valid imputation model is compatibility with the focal analysis model that is used later on. That is, the imputation model must reflect the key structural features of this analysis model [@grundMI18]. If it fails to do so, parameter estimates may become biased because the imputed values no longer preserve the structure of the data. Consider, for example, the random intercept model with group means (@eq-RI). In this setting, the imputation model must account for the nested data structure (i.e., random effects at the group level) and allow for different effects at the individual and the group level [@grundMI18].  
 **Auxiliary variables**
 Importantly, the imputation model is allowed to be 'richer' than the analysis model. Including additional effects or variables that are not part of the analysis model as *auxiliary variables*^[Auxiliary variables are referred to as variables whose only purpose it is to improve the missing data imputation [@collins].] is considered beneficial for parameter estimation [@collins]. These variables could either be a cause of missingness, thereby making the assumption of missing at random (MAR) more plausible. Furthermore, they may correlate with variables that contain missing values, which increases the precision of the imputations and reduces bias in parameter estimates [@collins].  
 

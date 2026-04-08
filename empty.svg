@@ -7,6 +7,9 @@
    id="svg9"
    sodipodi:docname="empty.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   inkscape:export-filename="empty.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,12 +26,12 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
      inkscape:zoom="1.9032427"
-     inkscape:cx="218.04891"
-     inkscape:cy="92.736465"
+     inkscape:cx="246.15883"
+     inkscape:cy="170.49849"
      inkscape:window-width="2560"
      inkscape:window-height="1494"
      inkscape:window-x="-11"
-     inkscape:window-y="-11"
+     inkscape:window-y="1609"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg9"
      showguides="false"
@@ -266,7 +269,7 @@
   </g>
   <path
      style="fill:none;stroke:#78a73d;stroke-width:4.34642;stroke-linecap:square;stroke-dasharray:8.69287, 8.69287;stroke-dashoffset:0.434642"
-     d="m 31.151448,141.07502 c 282.381962,0 282.381962,0 282.381962,0"
+     d="m 29.75822,132.9943 c 282.38196,0 282.38196,0 282.38196,0"
      id="path10" />
   <g
      id="g8076"
@@ -342,7 +345,7 @@
      id="path11-4" />
   <path
      style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.595;stroke-opacity:1"
-     d="M 28.232895,126.00041 H 319.05234"
+     d="M 29.021024,144.9155 H 319.84047"
      id="path11-2" />
   <g
      id="g7558"
@@ -423,7 +426,7 @@
      ns3:preamble="C:\Users\lonaf\AppData\Roaming\inkscape\extensions\textext\default_packages.tex"
      ns3:scale="1.5"
      ns3:alignment="middle center"
-     transform="matrix(1.6662389,0,0,1.6662389,115.38808,112.47745)"
+     transform="matrix(1.6662389,0,0,1.6662389,143.53128,148.70137)"
      ns3:jacobian_sqrt="1.5">
     <defs
        id="defs2633">
@@ -493,7 +496,7 @@
      ns3:scale="1.274841"
      ns3:alignment="middle center"
      ns3:inkscapeversion="1.4.2"
-     transform="matrix(1.6790085,0,0,1.6790085,176.11835,106.29794)"
+     transform="matrix(1.6790085,0,0,1.6790085,175.56106,108.5271)"
      ns3:jacobian_sqrt="1.27484">
     <defs
        id="defs1209">
@@ -555,14 +558,17 @@
   </g>
   <path
      style="fill:none;stroke:#000000;stroke-width:0.961548;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.1;stroke-opacity:1;marker-end:url(#RoundedArrow)"
-     d="m 126.88871,141.61467 v 33.88377"
-     id="path19" />
+     d="m 126.88871,135.50667 0,39.99177"
+     id="path19"
+     sodipodi:nodetypes="cc" />
   <path
      style="fill:none;stroke:#000000;stroke-width:1.02368;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.1;stroke-opacity:1;marker-end:url(#RoundedArrow-7)"
-     d="M 172.12204,138.60169 V 95.354459"
-     id="path19-3" />
+     d="M 172.12204,130.45131 V 97.93193"
+     id="path19-3"
+     sodipodi:nodetypes="cc" />
   <path
      style="fill:none;stroke:#000000;stroke-width:0.904543;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:0.1;stroke-opacity:1;marker-end:url(#RoundedArrow-3)"
-     d="M 139.23739,141.16421 V 130.73557"
-     id="path19-4" />
+     d="m 140.63062,135.6111 v 4.18745"
+     id="path19-4"
+     sodipodi:nodetypes="cc" />
 </svg>
