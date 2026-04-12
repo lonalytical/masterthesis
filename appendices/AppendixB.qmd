@@ -217,7 +217,7 @@ results15_00_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Monte Carlo standard errors of performance measures (N2 = 15, $\\gamma_{01}$ = 0.0)",
+    caption = "MCSEs of performance measures (N2 = 15, $\\gamma_{01}$ = 0.0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -255,7 +255,7 @@ results15_04_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Monte Carlo standard errors of performance measures (N2 = 15, $\\gamma_{01}$ = 0.4)",
+    caption = "MCSEs of performance measures (N2 = 15, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -293,7 +293,7 @@ results30_00_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Monte Carlo standard errors of performance measures (N2 = 30, $\\gamma_{01}$ = 0.0)",
+    caption = "MCSEs of performance measures (N2 = 30, $\\gamma_{01}$ = 0.0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -329,7 +329,7 @@ results30_04_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Monte Carlo standard errors of performance measures (N2 = 30, $\\gamma_{01}$ = 0.4)",
+    caption = "MCSEs of performance measures (N2 = 30, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -365,7 +365,7 @@ results60_00_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Monte Carlo standard errors of performance measures (N2 = 60, $\\gamma_{01}$ = 0.0)",
+    caption = "MCSEs of performance measures (N2 = 60, $\\gamma_{01}$ = 0.0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -401,7 +401,7 @@ results60_04_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Monte Carlo standard errors of performance measures (N2 = 60, $\\gamma_{01}$ = 0.4)",
+    caption = "MCSEs of performance measures (N2 = 60, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(

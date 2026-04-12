@@ -88,5 +88,6 @@ source(file = here("code", "ciw-plot_script.R"))
 print(ciw_plot)
 
 ```
+
 ## Summary of results
 The methods showed meaningfully different performance profiles for the group-level effect. Listwise deletion resulted in increased bias, while other performance measures were generally similar to complete-data results. Multiple imputation produced substantial downward bias in the estimation of the level-2 effect under conditions of low ICC and MAR missingness. At the same time, the standard variant (MI-R) yielded coverage rates close to the nominal level across conditions. Applying a small-sample correction to the degrees of freedom led to increased coverage beyond the nominal level and wider confidence intervals. The fully Bayesian approach showed small to negligible bias across conditions, but resulted in the widest intervals among all methods and a tendency toward overcoverage.

@@ -3,20 +3,16 @@ title: "Theory"
 ---
 
 ## Theoretical foundation of multilevel models
-::: {.callout-tip icon=false}
 
-### Example
-
-Imagine you are interested in the musical self-concept of young adults and whether it is related to how many hours they practice their instrument each week.
-
-To investigate this question, you collect data from several youth ensembles. You recruit 15 ensembles, each consisting of approximately 10 players. Every player completes a questionnaire assessing their musical self-concept as well as their weekly practice time.  
+::: {.callout-tip title="Example" appearance="default" icon=false}
+Imagine you are interested in the musical self-concept of young adults and whether it is related to how many hours they practice their instrument each week. To investigate this question, you collect data from several youth ensembles. You recruit 15 ensembles, each consisting of approximately 10 players. Every player completes a questionnaire assessing their musical self-concept as well as their weekly practice time.  
 At first glance, this seems like a simple data set of 150 individuals. But is it really that simple?  
 Players from the same ensemble rehearse together, share teachers, and experience similar social and musical environments. Their responses may therefore be more similar within ensembles than between ensembles.
 :::
 
 Populations like this are common in the social sciences. Units of interest (e.g., students, employees, musicians) are grouped into higher-level units such as classes, firms, or ensembles.
 The resulting data is called *nested* or *clustered* [@snijders, p. 7].  
-From a sampling perspective, such data often arise from a *multistage sampling process*, in which groups are sampled first and individuals are subsequently sampled within these groups^[In this thesis, the terms 'groups' or 'clusters' refer to higher-level units, while lower-level units are referred to as 'persons', 'individuals' or 'observations'. These models can also be applied to longitudinal data, where measurement occasions are nested within individuals, and to data structures with more than two levels.]. This process induces dependencies in the data, as observations within the same group are not selected independently.  
+From a sampling perspective, such data often arise from a multistage sampling process, in which groups are sampled first and individuals are subsequently sampled within these groups^[In this thesis, the terms 'groups' or 'clusters' refer to higher-level units, while lower-level units are referred to as 'persons', 'individuals' or 'observations'. These models can also be applied to longitudinal data, where measurement occasions are nested within individuals, and to data structures with more than two levels.]. This process induces dependencies in the data, as observations within the same group are not selected independently.  
 Beyond the sampling process, individuals within the same group typically share contextual influences (e.g., the same ensemble teacher or classroom environment), which leads to increased similarity in their responses. As a consequence, the assumption of independent errors in traditional linear models is violated, because residuals within groups are correlated [@raudenbush, p. xx]. 
 A widely used approach to account for this structure is the use of *multilevel models* (also referred to as *hierarchical linear models* or *mixed models*), which are introduced in the following section.
 
@@ -149,17 +145,14 @@ Y_{ij} = \gamma_{00} + \gamma_{10}X_{ij} + \gamma_{01}Z_j + u_{0j} + e_{ij}
 $$
 The random intercept model also provides a convenient framework for examining the use of group means of a given level-1 predictor as additional level-2 predictors. Including the group mean as a contextual variable allows the within-group regression coefficient to vary from the between-group regression coefficient [@snijders, p. 57]. This makes the model more flexible and often more realistic, as so-called *contextual effects* are frequently observed in empirical settings [@snijders, p. 27]. In such cases, the effect of an individual-level predictor differs from the effect of the average value of this predictor. The following example illustrates how processes operating within ensembles may differ from those operating between ensembles.
 
-::: {.callout-tip icon=false}
-
-### Example
-
+::: {.callout-tip title="Example" appearance="default" icon=false}
 Students often compare their own practice behavior with that of other ensemble members.  
 A student who practices more than their peers may feel more competent and report a higher musical self-concept.  
 At the same time, students in ensembles where everyone practices a lot may feel less competent because upward social comparisons become more likely.
 
 This leads to two possible hypotheses:
 
-- Students who practice more than others in their ensemble tend to report a higher musical self-concept.  
+- Students who practice more than others in their ensemble tend to report a higher musical self-concept.
 - Students in ensembles with a higher average practice time may report a lower musical self-concept.
 :::
 
@@ -171,20 +164,18 @@ Y_{ij} = \gamma_{00} + \gamma_{10}(X_{ij} - \bar{X}_{.j}) + \gamma_{01}\bar{X}_{
 $$ {#eq-RI}
 In this random intercept model with a contextual effect, the musical self-concept of student $i$ in ensemble $j$ is predicted by the sum of several components:
 
-- $\gamma_{00}$: the average musical self-concept across all ensembles  
-- $\gamma_{10}(X_{ij} - \bar{X}_{.j})$: the effect of the student's practice time relative to the average practice time in their ensemble  
-- $\gamma_{01}\bar{X}_{.j}$: the effect of the ensemble's average practice time  
-- $u_{0j}$: a random deviation of ensemble $j$'s average musical self-concept from the overall mean (unexplained differences between ensembles)  
-- $e_{ij}$: a random deviation of the student's musical self-concept from the predicted value within their ensemble  
+- $\gamma_{00}$: the average musical self-concept across all ensembles 
+- $\gamma_{10}(X_{ij} - \bar{X}_{.j})$: the effect of the student's practice time relative to the average practice time in their ensemble 
+- $\gamma_{01}\bar{X}_{.j}$: the effect of the ensemble's average practice time 
+- $u_{0j}$: a random deviation of ensemble $j$'s average musical self-concept from the overall mean (unexplained differences between ensembles) 
+- $e_{ij}$: a random deviation of the student's musical self-concept from the predicted value within their ensemble 
 
 The regression coefficients represent two conceptually different effects:
 
-- $\gamma_{10}$: the *within-group effect*, indicating how a student's own practice time relates to their musical self-concept while controlling for the ensemble context  
-- $\gamma_{01}$: the *between-group effect*, indicating how the ensemble's average practice time relates to students' musical self-concept, controlling for individual deviations from the group mean
+- $\gamma_{10}$: the *within-group effect*, indicating how a student's own practice time relates to their musical self-concept while controlling for the ensemble context 
+- $\gamma_{01}$: the *between-group effect*, indicating how the ensemble's average practice time relates to students' musical self-concept, controlling for individual deviations from the group mean 
 
-The difference between these two coefficients, $\gamma_{01} - \gamma_{10}$, represents the *contextual effect*.
-
-For the remainder of this thesis, the focus lies on this particular random intercept model.
+The difference between these two coefficients, $\gamma_{01} - \gamma_{10}$, represents the *contextual effect*. For the remainder of this thesis, the focus lies on this particular random intercept model.
 
 ### The intraclass correlation coefficient (ICC)
 
@@ -226,22 +217,19 @@ Schematic representation of the frequentist inferential process in a random inte
 
 **Notes on notation**
 
-- $X$: design matrix for the fixed effects. Each row corresponds to an observation (e.g., a person) and each column to a predictor included in the fixed part of the model.
-
-- $Z$: design matrix for the random effects. In the random intercept model it encodes group membership (1 = observation belongs to the group, 0 = otherwise), so observations from the same group share the same random intercept.
-
-- $Y$: outcome vector containing the observed values of the dependent variable.
-
-- $\hat V$: estimated variance--covariance matrix of the outcome vector $Y$. In the random intercept model it is determined by the estimated variance components of the random intercept ($\hat{\tau}_0^2$) and the residual variance ($\hat{\sigma}^2$), reflecting that observations within the same group are correlated.
-
+- $X$: design matrix for the fixed effects. Each row corresponds to an observation (e.g., a person) and each column to a predictor included in the fixed part of the model. 
+- $Z$: design matrix for the random effects. In the random intercept model it encodes group membership (1 = observation belongs to the group, 0 = otherwise), so observations from the same group share the same random intercept. 
+- $Y$: outcome vector containing the observed values of the dependent variable. 
+- $\hat V$: estimated variance--covariance matrix of the outcome vector $Y$. In the random intercept model it is determined by the estimated variance components of the random intercept ($\hat{\tau}_0^2$) and the residual variance ($\hat{\sigma}^2$), reflecting that observations within the same group are correlated. 
 - $\hat{\gamma}_k$: the $k$-th element of the estimated fixed-effect vector $\boldsymbol{\hat{\gamma}}$.
-
 \normalsize
 :::
 
-
-
 ## Small sample sizes in multilevel models
+
+::: {.callout-tip title="Example" appearance="default" icon=false}
+Consider again the musical self-concept study with 150 students nested in 15 ensembles. Although 150 participants may seem like a reasonably large sample, the number of ensembles is still small. Information about between-ensemble variation and level-2 effects is therefore based on only 15 higher-level units. For this reason, such a design would typically be considered a small-sample multilevel study. What are the implications for statistical inference in such a study?
+:::
 
 Frequentist estimation procedures for linear multilevel models typically rely on large-sample (asymptotic) theory. In multilevel models, the number of groups is particularly important. Simulation studies suggest that approximately 25–30 clusters are often required for reliable estimation, depending on the model specification and the parameters of interest [@mcneishstaple14; @mcneish17]. In practice, however, such numbers are often difficult to achieve because recruiting a large number of groups can be challenging and costly. 
 
@@ -291,10 +279,7 @@ First, Bayesian inference does not rely on large-sample asymptotic approximation
 Second, Bayesian methods allow the incorporation of prior information about parameters. Informative or weakly informative priors may improve estimation accuracy by adding information when the likelihood is relatively flat in small samples [@gelmanbook, p. 355]. At the same time, prior specification becomes particularly influential under such conditions. Vague or software default priors may therefore have unintended effects and can perform poorly in small samples [@mcneishbay; @mcneishpriors; @gelmanprior]. Nevertheless, Bayesian estimation has in some settings been found to outperform maximum likelihood estimation in terms of RMSE, even when noninformative priors are used [@zitzmann]. In addition, prior distributions may prevent inadmissible parameter estimates that could otherwise lead to convergence problems, such as negative variance estimates [@vandeschoot]. Thus, the inclusion of prior distributions may be regarded either as a methodological advantage or as “a price to be paid” [@raudenbush, p. 411] for Bayesian inference.
 
 ## Missing data in multilevel models
-::: {.callout-tip icon=false}
-
-### Example
-
+::: {.callout-tip title="Example" appearance="default" icon=false}
 In the study about musical self-concept, you find after data collection that some students in several ensembles did not report how many hours they practice per week. They completed the questionnaire on musical self-concept but left the practice question blank. 
 
 The reason for this is unknown: they might have forgotten to answer the question, skipped it intentionally, or misunderstood it. Regardless of the reason, the data set now contains missing values. How should these missing observations be handled in the analysis?
@@ -325,7 +310,7 @@ Missingness is therefore not random, as the name would suggest, but *conditional
 
 For example, students who practice less might be more likely to skip the question about weekly practice duration. If this behavior can be predicted from other observed variables (musical self-concept or ensemble membership), the MAR assumption could be plausible.
 
-**Missing not at random (MNAR)**. If missingness depends on unobserved values, this is called a missing not at random process^[The special case $P(R \mid Y_{com}) = P (R \mid Y_{mis})$ is referred to as **focused MNAR** [@endersbook, p. 11].]:
+**Missing not at random (MNAR)**. If missingness depends on unobserved values, this is called a missing not at random process^[ The special case $P(R \mid Y_{com}) = P (R \mid Y_{mis})$ is referred to as *focused MNAR* [@endersbook, p. 11].]:
 $$
 P(R \mid Y_{com}) = P (R \mid Y_{obs}, Y_{mis})
 $$
@@ -339,7 +324,7 @@ Many estimation procedures require complete data. Therefore, missing data must b
 This simple ad hoc procedure is called *listwise deletion* (LD) or *complete case analysis* and is a widely used approach to handling missing data. Cases with at least one missing value are discarded, and the model is estimated using only complete observations [@graham09]. In multilevel settings, missingness on the group level implies that all individuals in this group are excluded as well.   
 Listwise deletion has two major disadvantages [@endersbook, p.24]:
 
-- Because partial data is unused, statistical power is reduced.  
+- Because partial data is unused, statistical power is reduced. 
 - If the missing data mechanism is not MCAR, parameter estimates may be highly biased.   
 
 LD can still be adequate under some conditions [@graham09; @endersbook, p.25], but in already small samples, additional data deletion should be avoided as power is already limited [@mcneish17]. 
@@ -367,12 +352,10 @@ From the joint distribution of regression parameters $\theta$ and the missing va
 While during this process many thousand posterior draws are generated, only a small number (usually between $m$ = 20 and $m = 100$ is recommended, @graham07) of imputations is saved, leading to $m$ complete data sets. The posterior draws of the parameters are discarded [@gelmanbook, p. 451].  
 The distribution of missing values (i.e., the imputation model) is either conceptualized jointly for all variables (*joint imputation*) or individually (*fully conditional specification*). Both approaches are also suitable for multilevel data structures [@enders16]. In joint modeling, a single multivariate distribution for all variables with missing values is specified, often the multivariate normal distribution in case of continuous variables [@endersbook, p.263]. *Fully Conditional Specification* approximates the joint distribution by cycling through a sequence of univariate models for each variable with missings, conditional on the others. This approach is suitable if many ordinal or nominal variables are included in the data, as for every variable the researcher specifies a separate imputation model [@luedtke].
 
-**Compatibility of imputation and analysis model**
-A crucial point in the choice of a valid imputation model is compatibility with the focal analysis model that is used later on. That is, the imputation model must reflect the key structural features of this analysis model [@grundMI18]. If it fails to do so, parameter estimates may become biased because the imputed values no longer preserve the structure of the data. Consider, for example, the random intercept model with group means (@eq-RI). In this setting, the imputation model must account for the nested data structure (i.e., random effects at the group level) and allow for different effects at the individual and the group level [@grundMI18].  
-**Auxiliary variables**
-Importantly, the imputation model is allowed to be 'richer' than the analysis model. Including additional effects or variables that are not part of the analysis model as *auxiliary variables*^[Auxiliary variables are referred to as variables whose only purpose it is to improve the missing data imputation [@collins].] is considered beneficial for parameter estimation [@collins]. These variables could either be a cause of missingness, thereby making the assumption of missing at random (MAR) more plausible. Furthermore, they may correlate with variables that contain missing values, which increases the precision of the imputations and reduces bias in parameter estimates [@collins].  
+**Compatibility of imputation and analysis model.** A crucial point in the choice of a valid imputation model is compatibility with the focal analysis model that is used later on. That is, the imputation model must reflect the key structural features of this analysis model [@grundMI18]. If it fails to do so, parameter estimates may become biased because the imputed values no longer preserve the structure of the data. Consider, for example, the random intercept model with group means (@eq-RI). In this setting, the imputation model must account for the nested data structure (i.e., random effects at the group level) and allow for different effects at the individual and the group level [@grundMI18].  
+**Auxiliary variables.** Importantly, the imputation model is allowed to be 'richer' than the analysis model. Including additional effects or variables that are not part of the analysis model as *auxiliary variables*^[Auxiliary variables are referred to as variables whose only purpose it is to improve the missing data imputation [@collins].] is considered beneficial for parameter estimation [@collins]. These variables could either be a cause of missingness, thereby making the assumption of missing at random (MAR) more plausible. Furthermore, they may correlate with variables that contain missing values, which increases the precision of the imputations and reduces bias in parameter estimates [@collins].  
 
-::: {.callout-tip icon=false}
+::: {.callout-tip title="Example" appearance="default" icon=false}
 In the musical self-concept study, the years of teaching experience of the ensemble teachers might also be available. Although this variable is not part of the analysis model, it may correlate with practice behavior or musical self-concept and can therefore serve as an auxiliary level-2 variable.
 :::
 
