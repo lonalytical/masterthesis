@@ -1,4 +1,4 @@
-# Complete simulation results for all performance measures {#sec-appB}
+# Complete simulation results {#sec-appB}
 ```{r}
 #| label: setup
 #| include: false
