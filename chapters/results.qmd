@@ -2,18 +2,20 @@
 title: "Results"
 ---
 
-Convergence diagnostics for the MCMC algorithm were evaluated under a challenging condition (low ICC and small Level-2 sample size) and indicated satisfactory convergence with no problematic autocorrelation (see @sec-convergence for details). Monte Carlo uncertainty was quantified using intervals of $\pm 2$ Monte Carlo standard errors (MCSEs), approximately corresponding to 95% confidence intervals for the estimated performance measures. For multiple imputation, results for bias and empirical standard deviations are identical for the MI-R and MI-a variants, as both approaches are based on the same point estimates and differ only in the estimation of standard errors and degrees of freedom.  
-For the individual-level effect $\gamma_{10}$, bias was consistently negligible relative to the corresponding Monte Carlo standard errors, and coverage, empirical standard deviations and confidence/credible interval widths were comparable across methods and closely aligned with the corresponding complete-data estimates. Results are therefore reported here only for the group-level effect $\gamma_{01}$. Full results for all parameters of interest and performance measures are provided in @sec-appB.
+For multiple imputation, bias and empirical standard deviations are identical for the MI-R and MI-a variants, because both approaches are based on the same pooled point estimates and differ only in the degrees-of-freedom calculation used for inference. Therefore, MI-R and MI-a are reported separately only for coverage and confidence interval width.
+
+For the level-1 effect $\gamma_{10}$, bias was consistently negligible relative to the corresponding MCSEs. Coverage, empirical standard deviations, and confidence/credible interval widths were comparable across methods and closely aligned with the corresponding CD results. Results are therefore reported here only for the level-2 effect $\gamma_{01}$. Full results for all parameters of interest and performance measures are provided in @sec-appB.
 
 ## Bias of point estimation
-The findings for $\gamma_{01}$ are depicted in [@fig-bias] for all conditions with missingness at random (MAR). Results under MCAR followed very similar patterns and are therefore not shown separately. A bias of 10% of the true parameter value is considered substantial for non-zero effects. For a true null effect, bias is considered substantial if it lies outside the interval of $\pm 2$ Monte Carlo Standard Errors (MCSE).  
-Listwise deletion resulted in substantial bias, especially in conditions with low ICC. For a true null effect, estimates were positively biased, with a maximum of 0.042. For a positive between-group effect, estimates were negatively biased, with a maximum of -0.050. The magnitude of bias was similar across sample sizes and did not differ markedly between MAR and MCAR conditions.  
-Multiple imputation resulted in larger bias than listwise deletion in several low-ICC conditions with a substantial true effect, where bias ranged from -0.044 to -0.078, corresponding to approximately 10-20% of the true effect^[However, in a sensitivity analysis, the use of alternative weakly informative priors in these conditions consistently reduced bias by approximately 30–60% (see [@sec-appC] for details).]. In all other conditions, bias estimates for multiple imputation were small relative to their Monte Carlo standard errors (all $|\text{bias}| \leq 0.02$).  
-In contrast, the Bayesian approach showed only small bias across all simulation conditions except the most challenging conditions ($N_2 = 15$, $ICC = .1$, $\gamma_{01} = .4$), where bias was -0.039 (MAR) and -0.036 (MCAR). These values remain below 10% of the true effect. All other biases were small ($|\text{bias}| \leq 0.015$).
+The findings for $\gamma_{01}$ are depicted in [@fig-bias] for all conditions with missingness at random (MAR). Results under MCAR followed very similar patterns and are therefore not shown separately.
+
+LD resulted in substantial bias, especially in conditions with low ICC. For a true null effect, estimates were positively biased, with a maximum of $0.042$. For a positive level-2 effect, estimates were negatively biased, with a maximum of $-0.050$. The magnitude of bias was similar across sample sizes and did not differ markedly between MAR and MCAR conditions.  
+MI resulted in larger bias than LD in several low-ICC conditions with a substantial true effect, where bias ranged from $-0.044$ to $-0.078$, corresponding to approximately 10-20% of the true effect^[However, in a sensitivity analysis, the use of alternative weakly informative priors in these conditions consistently reduced bias by approximately 30–60% (see [@sec-appC] for details).]. In all other conditions, bias estimates for MI were small relative to their MCSEs (all $|\text{bias}| \leq 0.02$).  
+In contrast, the Bayesian approach showed only small bias across all simulation conditions except the most challenging conditions ($N_2 = 15$, $ICC = .1$, $\gamma_{01} = 0.4$), where bias was $-0.039$ (MAR) and $-0.036$ (MCAR). These values remained below 10% of the true effect. All other biases were small ($|\text{bias}| \leq 0.015$).
 
 ```{r, echo=FALSE, message=FALSE}
 #| label: fig-bias
-#| fig.cap: "Bias of the between-group effect ($\\gamma_{01}$) across simulation conditions under missing at random (MAR). Error bars represent ±2 Monte Carlo standard errors. ES = Effect size."
+#| fig.cap: "Bias of the between-group effect $\\gamma_{01}$ across simulation conditions under missing at random (MAR). Error bars represent ±2 Monte Carlo standard errors (MCSE). ES = effect size; ICC = intraclass correlation coefficient used for both the residual ICC of $Y$ and the ICC of $X$; $N_2$ = number of groups."
 #| fig.scap: "Bias of $\\gamma_{01}$ across simulation conditions under MAR."
 #| fig-asp: 0.9
 #| out-width: 100%
@@ -23,16 +25,12 @@ print(bias_plot)
 
 ```
 
-## Coverage of confidence/credible intervals
-Coverage of the confidence and credible intervals for $\gamma_{01}$ is shown for $N_2 = 15$ in @fig-cov, as larger sample sizes exhibited similar but attenuated patterns. Overall, coverage rates were close to the nominal level (95%) for $N_2 = 30$ and $N_2 = 60$ across all methods.  
-Listwise deletion yielded coverage rates close to the nominal level in all conditions. 
-For multiple imputation, coverage in the MI-R variant was close to the nominal level in high-ICC conditions, with a tendency toward overcoverage in low-ICC conditions. For $ICC = .1$, coverage ranged from 0.952 ($N_2 = 30$, $\gamma_{01} = .4$, MAR) to 0.971 ($N_2 = 60$, $\gamma_{01} = 0$, MCAR). The approach using small-sample adjusted degrees of freedom resulted in increased overcoverage compared to the standard degrees of freedom, particularly for $N_2 = 15$. Overcoverage was again more pronounced in low-ICC conditions, ranging from 0.960 ($N_2 = 60$, $\gamma_{01} = .4$, MCAR) to 0.986 ($N_2 = 15$, $\gamma_{01} = 0$, MCAR) for $ICC = .1$.  
-The Bayesian approach exhibited overcoverage for $N_2 = 15$, ranging from 0.963 ($\gamma_{01} = 0$, MCAR, $ICC = .1$) to 0.985 ($\gamma_{01} = .4$, MCAR, $ICC = .1$). This method yielded the highest (most conservative) coverage rates at the smallest Level-2 sample size, except in the condition with MCAR, $ICC = .1$, and $\gamma_{01} = 0$. With increasing Level-2 sample size, this pattern attenuated. For $N_2 = 30$, coverage estimates were largely within the bounds of Monte Carlo error, and for $N_2 = 60$, they fell entirely within these bounds across all conditions.
-
-
+## Coverage of confidence and credible intervals
+The results for coverage of the confidence and credible intervals for $\gamma_{01}$ are shown for $N_2 = 15$ in @fig-cov, as larger sample sizes exhibited similar but attenuated patterns. Overall, coverage rates were close to the nominal level (95%) for $N_2 = 30$ and $N_2 = 60$ across all methods. LD yielded coverage rates close to the nominal level in all conditions. For multiple imputation, coverage in the MI-R variant was close to the nominal level in high-ICC conditions, with a tendency toward overcoverage in low-ICC conditions. For $ICC = .1$, coverage ranged from 0.952 ($N_2 = 30$, $\gamma_{01} = 0.4$, MAR) to 0.971 ($N_2 = 60$, $\gamma_{01} = 0$, MCAR). The approach using small-sample adjusted degrees of freedom resulted in increased overcoverage compared to the standard degrees of freedom, particularly for $N_2 = 15$. Overcoverage was again more pronounced in low-ICC conditions, ranging from 0.960 ($N_2 = 60$, $\gamma_{01} = 0.4$, MCAR) to 0.986 ($N_2 = 15$, $\gamma_{01} = 0$, MCAR) for $ICC = .1$.  
+The Bayesian approach exhibited overcoverage for $N_2 = 15$, ranging from 0.963 ($\gamma_{01} = 0$, MCAR, $ICC = .1$) to 0.985 ($\gamma_{01} = 0.4$, MCAR, $ICC = .1$). This method yielded the highest (most conservative) coverage rates at the smallest level-2 sample size, except in the condition with MCAR, $ICC = .1$, and $\gamma_{01} = 0$. With increasing level-2 sample size, this pattern attenuated. For $N_2 = 30$, coverage estimates were largely within the bounds of Monte Carlo error, and for $N_2 = 60$, they fell entirely within these bounds across all conditions.
 ```{r, echo=FALSE, message=FALSE}
 #| label: fig-cov
-#| fig.cap: "Deviation from nominal (95%) coverage of confidence/credible intervals across methods and simulation conditions for $N_2=15$. Error bars represent ±2 Monte Carlo standard errors. MI = Multiple Imputation; ES = Effect size."
+#| fig.cap: "Deviation from nominal (95%) coverage of confidence/credible intervals across methods and simulation conditions for $N_2 = 15$. Error bars represent ±2 Monte Carlo standard errors (MCSE). ES = effect size; MAR = missing at random; MCAR = missing completely at random; ICC = intraclass correlation coefficient used for both the residual ICC of $Y$ and the ICC of $X$; MI-Rubin = multiple imputation using Rubin's degrees of freedom; MI-adjusted = multiple imputation using adjusted degrees of freedom."
 #| fig.scap: "Coverage performance for $N_2=15$"
 #| fig-asp: 0.45
 #| out-width: 100%
@@ -41,15 +39,13 @@ source(here("code", "cov-plot_script.R"))
 print(cov_plot)
 
 ```
-
 ## Standard deviation of point estimates
-Standard deviations of point estimates across conditions and methods are illustrated in @fig-sd for missingness at random (MAR), as differences between missingness mechanisms were small.  
-Listwise deletion produced standard deviations very close to those obtained under complete-data analysis, ranging from 0.124 ($N_2 = 60$, MCAR, $\gamma_{01} = 0.4$) to 0.300 ($N_2 = 15$, MCAR, $\gamma_{01} = 0.0$).   For multiple imputation, standard deviations were comparable to complete-data analysis across conditions, with a tendency toward smaller values in some low-ICC conditions. For example, for $N_2 = 15$, $\gamma_{01} = 0.0$, and MAR missingness, multiple imputation yielded a standard deviation of 0.247, compared to 0.283 under complete-data analysis.  
-The Bayesian approach yielded standard deviations that were generally slightly larger than those from complete-data analysis, typically by approximately 0.006 to 0.020. Standard deviations were generally smaller under high ICC conditions than under low ICC conditions in the Bayesian framework, except in the conditions with $\gamma_{01} = 0.4$ and $N_2 = 15$. In contrast, multiple imputation consistently yielded slightly larger standard deviations under high-ICC conditions. Although these differences were small, they were larger than would be expected from Monte Carlo error alone.
+Standard deviations of point estimates across conditions and methods are illustrated in @fig-sd for MAR, as differences between missingness mechanisms were small.
 
+LD produced standard deviations very close to those obtained under CD, ranging from 0.124 ($N_2 = 60$, MCAR, $\gamma_{01} = 0.4$) to 0.300 ($N_2 = 15$, MCAR, $\gamma_{01} = 0$). For MI, standard deviations were comparable to CD across conditions, with a tendency toward smaller values in some low-ICC conditions. For example, for $N_2 = 15$, $\gamma_{01} = 0$, and MAR missingness, MI yielded a standard deviation of 0.247, compared to 0.283 under CD. The Bayesian approach yielded standard deviations that were generally slightly larger than those from complete-data analysis, typically by approximately 0.006 to 0.020. Standard deviations were generally smaller under high ICC conditions than under low ICC conditions in the Bayesian framework, except in the conditions with $\gamma_{01} = 0.4$ and $N_2 = 15$. In contrast, MI consistently yielded slightly larger standard deviations under high-ICC conditions. Although these differences were small, they were larger than would be expected from Monte Carlo error alone.
 ```{r echo=FALSE, message=FALSE}
 #| label: fig-sd
-#| fig.cap: "Empirical standard deviation of point estimates for $\\gamma_{01}$ for conditions with missingness at random (MAR). Error bars represent ±2 Monte Carlo standard errors."
+#| fig.cap: "Empirical standard deviation (SD) of point estimates for $\\gamma_{01}$ for conditions with missingness at random (MAR). Error bars represent ±2 Monte Carlo standard errors (MCSE). $N_2$ = number of groups; ICC = intraclass correlation coefficient used for both the residual ICC of $Y$ and the ICC of $X$."
 #| fig.scap: "Empirical standard deviations for $\\gamma_{01}$ under MAR"
 #| fig-asp: 0.45
 #| out-width: 100%
@@ -63,17 +59,16 @@ source(file = here("code", "sd-plot_script.R"))
 print(sd_plot)
 
 ```
-
-## Width of confidence / credible intervals
-Results are illustrated in @fig-ciw, as similar patterns were observed across conditions. Overall, the Bayesian approach yielded the widest credible intervals, followed by multiple imputation with adjusted degrees of freedom (MI-a). For $N_2 = 15$, the MI-R variant produced interval widths that were slightly smaller than those obtained under complete-data analysis (e.g., 1.115 vs. 1.170 for MCAR, $ICC = .1$, $\gamma_{01} = 0.0$). For $N_2 = 30$ and $N_2 = 60$, MI-R interval widths were slightly larger than those from complete-data analysis, while still remaining smaller than those from MI-a and the Bayesian approach. Confidence intervals from listwise deletion were similar to those obtained with complete data analysis across conditions.  
-At the smallest Level-2 sample size, $N_2 = 15$, differences between methods were most pronounced. For example, when $\gamma_{01} = 0.0$ and $ICC = .1$ under MCAR, interval width for $\gamma_{01}$ was 1.115 under MI-R, 1.284 with MI-a and 1.456 under the Bayesian approach. With increasing Level-2 sample size, differences between methods became less pronounced, although interval widths for the Bayesian approach remained slightly larger. For instance, when $\gamma_{01} = 0.0$, $ICC = .1$, and MCAR at $N_2 = 60$, interval width was 0.517 for complete-data analysis, 0.520 for listwise deletion, 0.545 for MI-R, 0.559 for MI-a, and 0.582 for the Bayesian approach. Within the fully Bayesian approach, interval widths were generally slightly smaller under high-ICC conditions than under low-ICC conditions. In contrast, the other methods did not show a consistent ICC-related pattern. 
+## Width of confidence and credible intervals
+Results for the width of confidence and credible intervals are illustrated in @fig-ciw, as similar patterns were observed across conditions. Overall, the Bayesian approach yielded the widest credible intervals, followed by multiple imputation with adjusted degrees of freedom (MI-a). For $N_2 = 15$, the MI-R variant produced interval widths that were slightly smaller than those obtained under CD (e.g., 1.115 vs. 1.170 for MCAR, $ICC = .1$, $\gamma_{01} = 0$). For $N_2 = 30$ and $N_2 = 60$, MI-R interval widths were slightly larger than those from CD, while still remaining smaller than those from MI-a and the Bayesian approach. Confidence intervals from LD were similar to those obtained with CD across conditions.  
+At the smallest level-2 sample size, $N_2 = 15$, differences between methods were most pronounced. For example, when $\gamma_{01} = 0$ and $ICC = .1$ under MCAR, interval width for $\gamma_{01}$ was 1.115 under MI-R, 1.284 with MI-a and 1.456 under the Bayesian approach. With increasing level-2 sample size, differences between methods became less pronounced, although interval widths for the Bayesian approach remained slightly larger. For instance, when $\gamma_{01} = 0$, $ICC = .1$, and MCAR at $N_2 = 60$, interval width was 0.517 for complete-data analysis, 0.520 for LD, 0.545 for MI-R, 0.559 for MI-a, and 0.582 for the Bayesian approach. Within the fully Bayesian approach, interval widths were generally slightly smaller under high-ICC conditions than under low-ICC conditions. In contrast, the other methods did not show a consistent ICC-related pattern. 
 
 ```{r echo=FALSE, message=FALSE}
 #| label: fig-ciw
-#| fig.cap: "Width of confidence/credible intervals for $\\gamma_{01}=.4$ under missingness at random (MAR) and $ICC=.1$. Error bars represent ±2 Monte Carlo standard errors."
-#| fig.scap: "Width of confidence/credible intervals for $\\gamma_{01}=.4$"
+#| fig.cap: "Width of confidence/credible intervals for $\\gamma_{01} = 0.40$ under missing at random (MAR) and $ICC = .10$, where ICC denotes the intraclass correlation coefficient used for both the residual ICC of $Y$ and the ICC of $X$. Error bars represent ±2 Monte Carlo standard errors (MCSE). $N_2$ = number of groups; MI-Rubin = multiple imputation with Rubin's degrees of freedom; MI-adjusted = multiple imputation with small-sample-adjusted degrees of freedom."
+#| fig.scap: "Width of confidence/credible intervals for $\\gamma_{01}=0.40$"
 #| fig-asp: 0.45
-#| out-width: 80%
+#| out-width: 100%
 
 
 # read in script
@@ -85,4 +80,4 @@ print(ciw_plot)
 ```
 
 ## Summary of results
-The methods showed different performance profiles for the group-level effect. Listwise deletion resulted in increased bias, while other performance measures were generally similar to complete-data results. Multiple imputation produced substantial downward bias in the estimation of the level-2 effect under conditions of low ICC and MAR missingness. At the same time, the standard variant (MI-R) yielded coverage rates close to the nominal level across conditions. Applying a small-sample correction to the degrees of freedom led to increased coverage beyond the nominal level and wider confidence intervals. The fully Bayesian approach showed small to negligible bias across conditions, but resulted in the widest intervals among all methods and a tendency toward overcoverage in the smallest sample size.
+The methods showed different performance profiles for the level-2 effect. LD resulted in increased bias, while other performance measures were generally similar to CD results. MI produced substantial downward bias in the estimation of the level-2 effect under conditions of low ICC and MAR missingness. At the same time, the standard variant (MI-R) yielded coverage rates close to the nominal level across conditions. Applying a small-sample correction to the degrees of freedom led to increased coverage beyond the nominal level and wider confidence intervals. The fully Bayesian approach showed small to negligible bias across conditions, but resulted in the widest intervals among all methods and a tendency toward overcoverage in the smallest sample size.

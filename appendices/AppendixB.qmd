@@ -22,7 +22,7 @@ results15_00 %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Simulation results (N2 = 15, $\\gamma_{01}$ = 0.0)",
+    caption = "Simulation results ($N_2$ = 15, $\\gamma_{01}$ = 0)",
     col.names = c("Parameter", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -35,18 +35,18 @@ results15_00 %>%
     "ICC = 0.1" = 2, "ICC = 0.3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
-    footnote(
+  footnote(
     general = paste(
-    "Bias = average deviation from the true parameter; ",
-    "Cov = empirical coverage probability; ",
-    "SD = empirical standard deviation; ",
-    "CIW = mean confidence/credible interval width. ",
-    "MCAR = missing completely at random; MAR = missing at random. ",
-    "CD = complete data; LD = listwise deletion; ",
-    "MI-R = multiple imputation with Rubin's rules; ",
-    "MI-a = multiple imputation with adjusted degrees of freedom; ",
-    "Bayes = fully Bayesian estimation."
-  ),
+      "Bias = average deviation from the true parameter; ",
+      "Cov = empirical coverage rate; ",
+      "SD = empirical standard deviation; ",
+      "CIW = mean confidence/credible interval width. ",
+      "MCAR = missing completely at random; MAR = missing at random. ",
+      "CD = complete data; LD = listwise deletion; ",
+      "MI-R = multiple imputation using Rubin's degrees-of-freedom approximation; ",
+      "MI-a = multiple imputation using small-sample-adjusted degrees of freedom; ",
+      "Bayes = fully Bayesian estimation."
+    ),
     threeparttable = TRUE
   ) %>%
   column_spec(c(5, 9, 13, 17), border_right = TRUE) %>%
@@ -65,7 +65,7 @@ results15_04 %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Simulation results (N2 = 15, $\\gamma_{01}$ = 0.4)",
+    caption = "Simulation results ($N_2$ = 15, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -74,8 +74,8 @@ results15_04 %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
   footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
@@ -95,7 +95,7 @@ results30_00 %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Simulation results (N2 = 30, $\\gamma_{01}$ = 0.0)",
+    caption = "Simulation results ($N_2$ = 30, $\\gamma_{01}$ = 0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -104,8 +104,8 @@ results30_00 %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
   footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
@@ -125,7 +125,7 @@ results30_04 %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Simulation results (N2 = 30, $\\gamma_{01}$ = 0.4)",
+    caption = "Simulation results ($N_2$ = 30, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -134,8 +134,8 @@ results30_04 %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
   footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
@@ -155,7 +155,7 @@ results60_00 %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Simulation results (N2 = 60, $\\gamma_{01}$ = 0.0)",
+    caption = "Simulation results ($N_2$ = 60, $\\gamma_{01}$ = 0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -164,8 +164,8 @@ results60_00 %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
   footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
@@ -185,7 +185,7 @@ results60_04 %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "Simulation results (N2 = 60, $\\gamma_{01}$ = 0.4)",
+    caption = "Simulation results ($N_2$ = 60, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -194,8 +194,8 @@ results60_04 %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
   footnote(general = "Abbreviations as listed in Table C.1", threeparttable = TRUE) %>%
@@ -217,7 +217,7 @@ results15_00_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "MCSEs of performance measures (N2 = 15, $\\gamma_{01}$ = 0.0)",
+    caption = "MCSEs of performance measures ($N_2$ = 15, $\\gamma_{01}$ = 0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -226,8 +226,8 @@ results15_00_m %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
     footnote(
@@ -255,7 +255,7 @@ results15_04_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "MCSEs of performance measures (N2 = 15, $\\gamma_{01}$ = 0.4)",
+    caption = "MCSEs of performance measures ($N_2$ = 15, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -264,8 +264,8 @@ results15_04_m %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
     footnote(
@@ -293,7 +293,7 @@ results30_00_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "MCSEs of performance measures (N2 = 30, $\\gamma_{01}$ = 0.0)",
+    caption = "MCSEs of performance measures ($N_2$ = 30, $\\gamma_{01}$ = 0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -302,8 +302,8 @@ results30_00_m %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
     footnote(
@@ -329,7 +329,7 @@ results30_04_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "MCSEs of performance measures (N2 = 30, $\\gamma_{01}$ = 0.4)",
+    caption = "MCSEs of performance measures ($N_2$ = 30, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -338,8 +338,8 @@ results30_04_m %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
     footnote(
@@ -365,7 +365,7 @@ results60_00_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "MCSEs of performance measures (N2 = 60, $\\gamma_{01}$ = 0.0)",
+    caption = "MCSEs of performance measures ($N_2$ = 60, $\\gamma_{01}$ = 0)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -374,8 +374,8 @@ results60_00_m %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
     footnote(
@@ -401,7 +401,7 @@ results60_04_m %>%
     escape = FALSE,
     booktabs = TRUE,
     digits = 3,
-    caption = "MCSEs of performance measures (N2 = 60, $\\gamma_{01}$ = 0.4)",
+    caption = "MCSEs of performance measures ($N_2$ = 60, $\\gamma_{01}$ = 0.4)",
     col.names = c("", rep(c("Bias", "Cov", "SD", "CIW"), times = 5))
   ) %>%
   add_header_above(c(
@@ -410,8 +410,8 @@ results60_04_m %>%
   )) %>%
   pack_rows(index = c("MCAR" = 4, "MAR" = 4), latex_align = "c") %>%
   pack_rows(index = c(
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2,
-    "ICC = 0.1" = 2, "ICC = 0.3" = 2
+    "ICC = .1" = 2, "ICC = .3" = 2,
+    "ICC = .1" = 2, "ICC = .3" = 2
   )) %>%
   kable_styling(full_width = FALSE, position = "center", latex_options = "scale_down") %>%
     footnote(

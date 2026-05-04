@@ -1,6 +1,6 @@
 # Convergence analysis for MI and fully Bayesian MCMC {#sec-convergence}
 
-Convergence behaviour was tested in one run of the most challenging condition ($N_2=15, \gamma_{01}=.4, \beta=.3, ICC=.1$).
+Convergence behavior was tested in one run of the most challenging condition ($N_2=15, \gamma_{01}=0.4, \beta=.3, ICC=.1$).
 
 ## Diagnostics of multiple imputation
 
@@ -30,7 +30,7 @@ Trace and autocorrelation plot in an exemplary simulation run for the level-2 va
 
 ## Diagnostics of fully Bayesian analysis
 
-$\hat{R}$ values were close to 1, except for the level-2 variance of $X$ ($\hat{R}=1.05$) and the regression coefficient of the group mean of $X$ on $W$ ($\hat{R}=1.03$). Diagnostic plots of these parameters and the additionally critical parameter $\tau_{y0}^2$ are shown in @fig-diagbayes. Trace plots showed no drifting. Autocorrelation decreased rapidly for most parameters, although some exhibited persistent but low autocorrelation across lags. This pattern suggests slightly reduced mixing efficiency rather than substantial convergence problems [@johnson, p. 149–152].
+$\hat{R}$ values were close to 1, except for the level-2 variance of $X$ ($\hat{R}=1.05$) and the regression coefficient of the group mean of $X$ on $W$ ($\hat{R}=1.03$). Diagnostic plots of these parameters and the additionally critical parameter $\tau_{y0}^2$ are shown in @fig-diagbayes. Trace plots showed no drifting. Autocorrelation decreased rapidly for most parameters, although some exhibited persistent but low autocorrelation across lags. This pattern suggests slightly reduced mixing efficiency rather than substantial convergence problems [@johnson, pp. 149–152].
 
 ```{r, echo=FALSE, message=FALSE}
 #| label: fig-diagbayes

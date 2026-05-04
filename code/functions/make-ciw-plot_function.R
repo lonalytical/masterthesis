@@ -27,8 +27,8 @@ plot_ci_width <- function(results) {
       y = "CI Width (± 2×MCSE)",
       fill = "Method"
     ) +
-    facet_grid(~N2, labeller = labeller(
-      N2 = \(x) paste0("N2 = ", x))) +
+    facet_grid(~N2, labeller = 
+                 label_bquote(cols = N[2] == .(N2))) +
     theme(axis.text.x = element_blank(),
           axis.ticks.x = element_blank(),
           axis.title.x = element_blank())+

@@ -28,19 +28,23 @@ sd_plot <- ggplot(df, aes(x = gamma01, y = empSE, group = method,
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 width = 0.2, 
                 position = position_dodge(width = 0.8)) +
-  facet_grid(ICC ~ N2, labeller = labeller(
-               ICC = function(x) paste0("ICC = ", x),
-                N2  = function(x) paste0("N2 = ", x))) +
+  facet_grid(
+    ICC ~ N2,
+    labeller = label_bquote(
+      rows = ICC == .(ICC),
+      cols = N[2] == .(N2)
+    )
+  ) +
   theme_minimal() +
   scale_x_discrete() +
   labs(
-    x = "Effect Size",
-    y = "Empirical SD",
+    x = "Effect size",
+    y = "Empirical SD (± 2×MCSE)",
     fill = "Method"
   ) +
   theme_grey()+
   scale_fill_discrete(
     name = "Estimation method",
-    labels = c("Complete data", "Listwise deletion", "Multiple Imputation", "Bayesian")
+    labels = c("Complete data", "Listwise deletion", "Multiple imputation", "Bayesian")
   )
 sd_plot

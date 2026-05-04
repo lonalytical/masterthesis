@@ -90,8 +90,7 @@ Var(\bar{X}_j)
 \end{aligned}
 $$ {#eq-varxbar}
 
-where $n$ denotes the group size (cluster size), assumed to be constant across groups.\\
-The covariance $Cov(W_j, \bar{X}_j)$ is therefore:
+where $n$ denotes the cluster size, assumed to be constant across groups. The covariance $Cov(W_j, \bar{X}_j)$ is therefore:
 
 $$
 \begin{aligned}
@@ -128,27 +127,27 @@ Var(\text{fixed})
 + \gamma_{01} \bar{X}_{.j} 
 + \gamma_{02} W_j \bigr)
 $$
-The terms $(X_{ij} - \bar{X}_{.j})$ and $\bar{X}_{.j}$ are uncorrelated. 
-$W_j$ is correlated with $\bar{X}_{.j}$ but not with $X_{ij}$ (see Equation @eq-W), and $Var(W_j)$ is set to 1, which yields:
+The terms $(X_{ij} - \bar{X}_{j})$ and $\bar{X}_{j}$ are uncorrelated. 
+$W_j$ is correlated with $\bar{X}_{j}$ but not with $X_{ij}$ (see Equation @eq-W), and $Var(W_j)$ is set to 1, which yields:
 $$
 Var(\text{fixed})
-= \gamma_{10}^2 \cdot Var(X_{ij} - \bar{X}_{.j})
-+ \gamma_{01}^2 \cdot Var(\bar{X}_{.j})
+= \gamma_{10}^2 \cdot Var(X_{ij} - \bar{X}_{j})
++ \gamma_{01}^2 \cdot Var(\bar{X}_{j})
 + \gamma_{02}^2
-+ 2\gamma_{01}\gamma_{02} Cov(\bar{X}_{.j}, W_j)
++ 2\gamma_{01}\gamma_{02} Cov(\bar{X}_{j}, W_j)
 $$
 Because $\gamma_{02}$ is set to zero in the present design, this term can be simplified to:
 $$
 Var(\text{fixed})
-= \gamma_{10}^2 \cdot Var(X_{ij} - \bar{X}_{.j})
-+ \gamma_{01}^2 \cdot Var(\bar{X}_{.j})
+= \gamma_{10}^2 \cdot Var(X_{ij} - \bar{X}_{j})
++ \gamma_{01}^2 \cdot Var(\bar{X}_{j})
 $$ {#eq-varfix}
-The variance of $(X_{ij} - \bar{X}_{.j})$ can be derived as follows:
+The variance of $(X_{ij} - \bar{X}_{j})$ can be derived as follows:
 $$
-\mathrm{Var}(X_{ij} - \bar{X}_{.j})
-= \mathrm{Var}(X_{ij}) + \mathrm{Var}(\bar{X}_{.j}) - 2 \cdot \mathrm{Cov}(X_{ij}, \bar{X}_{.j})
+\mathrm{Var}(X_{ij} - \bar{X}_{j})
+= \mathrm{Var}(X_{ij}) + \mathrm{Var}(\bar{X}_{j}) - 2 \cdot \mathrm{Cov}(X_{ij}, \bar{X}_{j})
 $$
-$\mathrm{Cov}(X_{ij}, \bar{X}_{.j})$ can be expressed as
+$\mathrm{Cov}(X_{ij}, \bar{X}_{j})$ can be expressed as
 
 $$
 \begin{aligned}
@@ -161,7 +160,7 @@ Using the decomposition of $X_{ij}$ introduced in Section @sec-dgm, $X_{ij} = u_
 
 $$
 \begin{aligned}
-\mathrm{Cov}(X_{ij}, \bar{X}_{.j})
+\mathrm{Cov}(X_{ij}, \bar{X}_{j})
 &= \mathrm{Cov}\left(u_{Xj} + e_{Xij}, \frac{1}{n} \sum_{i'=1}^{n} (u_{Xj} + e_{Xi'j}) \right) \\
 &= \mathrm{Cov}\left(u_{Xj} + e_{Xij},\ u_{Xj} + \frac{1}{n} \sum_{i'=1}^{n} e_{Xi'j} \right) \\
 &= \mathrm{Cov}(u_{Xj}, u_{Xj})
@@ -177,19 +176,19 @@ As $\mathrm{Cov}(e_{Xij}, e_{Xi'j}) = \mathrm{Var}(e_{Xij})$ if $i=i'$ and zero 
 Overall, the covariance now simplifies to
 $$
 \begin{aligned}
-\mathrm{Cov}(X_{ij}, \bar{X}_{.j})
+\mathrm{Cov}(X_{ij}, \bar{X}_{j})
 &= \mathrm{Var}(u_{Xj}) + \frac{1}{n}\mathrm{Var}(e_{Xij})\\
 &= \tau_x^2 + \frac{\sigma_X^2}{n}\\
 &= \mathrm{Var}(\bar{X_j})
 \end{aligned}
 $$
-Returning to $\mathrm{Var}(X_{ij} - \bar{X}_{.j})$, this simplifies to:
+Returning to $\mathrm{Var}(X_{ij} - \bar{X}_{j})$, this simplifies to:
 $$
 \begin{aligned}
-\mathrm{Var}(X_{ij} - \bar{X}_{.j})
-&= \mathrm{Var}(X_{ij}) + \mathrm{Var}(\bar{X}_{.j}) - 2 \cdot \mathrm{Cov}(X_{ij}, \bar{X}_{.j})\\
-&= \mathrm{Var}(X_{ij}) + \mathrm{Var}(\bar{X}_{.j}) - 2 \cdot \mathrm{Var}(\bar{X}_{.j})\\
-&= \mathrm{Var}(X_{ij}) - \mathrm{Var}(\bar{X}_{.j})\\
+\mathrm{Var}(X_{ij} - \bar{X}_{j})
+&= \mathrm{Var}(X_{ij}) + \mathrm{Var}(\bar{X}_{j}) - 2 \cdot \mathrm{Cov}(X_{ij}, \bar{X}_{j})\\
+&= \mathrm{Var}(X_{ij}) + \mathrm{Var}(\bar{X}_{j}) - 2 \cdot \mathrm{Var}(\bar{X}_{j})\\
+&= \mathrm{Var}(X_{ij}) - \mathrm{Var}(\bar{X}_{j})\\
 &= (\tau_x^2 + \sigma_X^2) -(\tau_x^2 + \frac{\sigma_X^2}{n})\\
 &= \sigma_X^2 -\frac{\sigma_X^2}{n}
 \end{aligned}
