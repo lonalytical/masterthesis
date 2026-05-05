@@ -17,41 +17,37 @@ $$
 Y_{ij} =\gamma_{10} (X_{ij} - \bar{X}_j) +\gamma_{01} \bar{X}_j + \gamma_{02} W_j + u_{0j} + e_{ij} 
 \end{aligned}
 $$ {#eq-dgm}
-Here, $\gamma_{10}$ represents the within-group effect of $X$, $\gamma_{01}$ the between-group effect of $X$ and $\gamma_{02}$ the effect of $W$ on $Y$. The random effects at the group and individual level were generated as
+Here, $\gamma_{10}$ represents the within-group effect of individual deviations in $X$, $\gamma_{01}$ the between-group effect of the group mean of $X$, and $\gamma_{02}$ the effect of $W$ on $Y$. The random effects at the group and individual level were generated as
 $$
-u_{0j} \sim N(0,\psi^2), \qquad e_{ij} \sim N(0,\sigma^2),
+u_{0j} \sim \mathcal{N}(0,\psi^2), \qquad e_{ij} \sim \mathcal{N}(0,\sigma^2),
 $$
-<<<<<<< HEAD
-=======
-
->>>>>>> 426490d9852bda455816d1156db985fba4fd2f76
 and were assumed to be independent. The variance components $\psi^2$ and $\sigma^2$ were chosen such that $Y_{ij}$ had a population variance of 1 and a prespecified residual intraclass correlation coefficient, as described in @sec-appA. The level-1 predictor $X_{ij}$ was simulated from independent between- and within-group components:
 $$ 
 X_{ij} = u_{Xj} + e_{Xij},
 $$
 with
 $$
-u_{X_j}\sim N(0,{\tau_x}^2), \qquad e_{X_{ij}}\sim N(0,{\sigma_x}^2). 
+u_{X_j}\sim \mathcal{N}(0,{\tau_x}^2), \qquad e_{X_{ij}}\sim \mathcal{N}(0,{\sigma_x}^2). 
 $$
-The variances ${\tau_x}^2$ and $\sigma_x^2$ were chosen to achieve a prespecified intraclass coefficient for $X$ (see @sec-factors), with ${\tau_x}^2 = ICC_x$ and ${\sigma_x}^2 = 1 - ICC_x$. This parameterization ensured that $X_{ij}$ had a population mean of 0 and variance of 1. The resulting predictor was decomposed into the person-level deviation from the group mean, $(X_{ij} - \bar{X}_j)$, and the manifest group mean, $\bar{X}_j$, both of which entered the data-generating model. 
+The variances ${\tau_x}^2$ and $\sigma_x^2$ were chosen to achieve a prespecified intraclass coefficient for $X$, with ${\tau_x}^2 = ICC_x$ and ${\sigma_x}^2 = 1 - ICC_x$. This parameterization ensured that $X_{ij}$ had a population mean of 0 and variance of 1. The resulting predictor was decomposed into the person-level deviation from the group mean, $(X_{ij} - \bar{X}_j)$, and the manifest group mean, $\bar{X}_j$, both of which entered the data-generating model. 
 \noindent The level-2 predictor $W_j$ was generated using the following linear model:
 $$ 
-W_j=a\bar{X}_j + e_{Wj} \qquad 
-e_{Wj}\sim N(0,{\sigma_w}^2)
+W_j=a\bar{X}_j + e_{Wj}, \qquad 
+e_{Wj}\sim \mathcal{N}(0,{\sigma_w}^2).
 $$
 Since $\bar{X}_j$ and $e_{Wj}$ both have expectation 0, $W_j$ also has population mean 0. The parameters $a$ and $\sigma_w^2$ were chosen to obtain population variance 1 and a prespecified population correlation between $W_j$ and $\bar{X}_j$, denoted by $\rho_{\bar{X}W}$.^[The parameters were set to $\sigma_w^2 = 1 - \rho_{\bar{X}W}^2$ and $a = \rho_{\bar{X}W}/\sqrt{\tau_x^2 + \sigma_x^2/n}$, which yields $Var(W_j) = 1$ and $Cor(W_j,\bar{X}_j) = \rho_{\bar{X}W}$; see @sec-appA for the derivation.]
 
 ### Missing data generation
 
-After simulation of the complete dataset, values of $X$ were deleted to induce missingness. A 'missingness tendency' $r_{ij}$ was simulated for each $X_{ij}$-value according to 
+After simulation of the complete data set, values of $X$ were deleted to induce missingness. A 'missingness tendency' $r_{ij}$ was simulated for each $X_{ij}$-value according to 
 $$ 
 \begin{aligned}
-r_{ij}=\alpha+\beta W_j+e_{ij}, \qquad e_{ij}\sim N(0,1-\beta^2)
+r_{ij}=\alpha+\beta W_j+e_{Rij}, \qquad e_{Rij}\sim \mathcal{N}(0,1-\beta^2)
 \end{aligned}
 $$ 
 The resulting $r_{ij}$-values are normally distributed. Observations with $r_{ij} > 0$ were set to missing.
-The intercept $\alpha$ controls the overall proportion of missing values in $X$,
-whereas the slope $\beta$ determines the strength of the
+The intercept $\alpha$ controls the overall proportion of missing values in $X$. Because $r_{ij}$ has variance 1 by construction, setting $\alpha = \Phi^{-1}(.30)$ yields $P(r_{ij} > 0) = .30$ and therefore an expected missingness rate of 30%.
+The slope $\beta$ determines the strength of the
 MAR mechanism.
 When $\beta = 0$, missingness is MCAR. With increasing $\beta$, the missingness mechanism
 becomes more dependent on the $W_j$-values; with $\beta = 1$, missingness
@@ -61,13 +57,13 @@ would be completely deterministic. For the present simulation, $\beta = .3$ was 
 
 ```{r, results='asis', echo=FALSE, message=FALSE}
 #| label: tbl-sim-settings
-#| tbl-cap: "Simulation conditions for the Data-Generating Model and the Generation of Missing Values"
+#| tbl-cap: "Simulation conditions for the data-generating model and the generation of missing values"
 library(dplyr)
 library(knitr)
 library(kableExtra)
 tab.cond <- data.frame(
   Parameter = c(
-    "$n$", "$N_2$", "ICC of $X$ and $Y$", "Correlation of $\\bar{X}$ and $W$",
+    "$n$", "$N_2$", "$ICC_X$ and $ICC_{Y|X,W}$ ", "Correlation of $\\bar{X}$ and $W$",
     "Effect of $(X_{ij}-\\bar{X}_{j})$", "Effect of $\\bar{X}_{j}$", "Effect of $W_j$", "Pattern", "Mechanism", "Proportion"
   ),
   
@@ -100,14 +96,11 @@ kable(tab.cond,
   pack_rows(index = c("Data conditions" = 4, "Model parameters" = 3, "Missing values" = 3)
 )
 ```
-<<<<<<< HEAD
-A summary of simulation conditions is provided in @tbl-sim-settings. The number of level-2 units was manipulated across conditions ($N_2 = 15, 30, 60$), while the number of level-1 observations was kept constant ($n = 10$). 
-=======
-The number of level-2 units was manipulated across conditions ($N_2 = 15, 30, 60$), while the number of level-1 observations was kept constant ($n = 10$). 
->>>>>>> 426490d9852bda455816d1156db985fba4fd2f76
-The between-group effect of $\bar{X}_{j}$ was varied ($\gamma_{01} = 0, 0.4$), whereas the within-group effect of $(X_{ij}-\bar{X}_{j})$ was held constant at $0.2$ and the effect of $W_{j}$ was set to zero. This results in conditions with either a negative or a positive context effect (i.e., $\gamma_{01} - \gamma_{10}$) of $X$ in the population model.
-The ICC of $X$ and the residual ICC of $Y$ were varied ($\rho_X = \rho_{Y|X} = .1, .3$). Missing data were generated on $X$ with a varying missingness mechanism (MCAR or MAR with a strength of $\beta = .3$), with a constant missingness rate of $30\%$.
-The factors were combined fully factorially, creating $3 \times 2 \times 2 \times 2 = 24$ conditions.  
+
+A summary of simulation conditions is provided in @tbl-sim-settings. The number of level-2 units was manipulated across conditions ($N_2 = 15, 30, 60$), while the number of level-1 observations was kept constant ($n = 10$). The between-group effect of $\bar{X}_{j}$ was varied ($\gamma_{01} = 0, 0.4$), whereas the within-group effect of $(X_{ij}-\bar{X}_{j})$ was held constant at $0.2$ and the effect of $W_{j}$ was set to zero. This results in conditions with either a negative or a positive context effect (i.e., $\gamma_{01} - \gamma_{10}$) of $X$ in the population model.
+The ICC of $X$ and the residual ICC of $Y$ were varied ($ICC_X = ICC_{Y|X} = .1, .3$). Missing data were generated on $X$ with a varying missingness mechanism (MCAR or MAR with a strength of $\beta = .3$), with a constant missingness rate of $30\%$.
+The factors were combined fully factorially, creating $3 \times 2 \times 2 \times 2 = 24$ conditions.
+
 Taken together, the simulation design targets conditions that are particularly challenging for multilevel estimation (small level-2 sample sizes and low ICCs), while also covering less challenging scenarios for comparison. The between-group effect of $\bar{X}_{j}$ is varied to evaluate method performance under zero versus a non-zero effect.
 
 ## Estimands of the focal analysis model
@@ -117,7 +110,7 @@ $$
 Y_{ij} =\gamma_{10} (X_{ij} - \bar{X}_j) +\gamma_{01} \bar{X}_j + u_{0j} + e_{ij} 
 \end{aligned}
 $$ {#eq-fam}
-The primary target was the level-2-effect, $\gamma_{01}$. Additionally, the level-1-effect $\gamma_{10}$ was evaluated.
+The primary target was the level-2 effect, $\gamma_{01}$. Additionally, the level-1 effect $\gamma_{10}$ was evaluated.
 
 ## Methods of missing data handling
 Four methods were compared, alongside the benchmark analysis of complete data (CD).

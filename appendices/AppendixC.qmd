@@ -21,7 +21,7 @@ $$
 
 ## Sensitivity analysis with weakly informative priors in `jomo`
 
-In this analysis, for the conditions when multiple imputation produced the highest bias, i.e. when $ICC = .1$ and $\gamma_{01} = 0.4$, alternative inverse Wishart priors were specified for the level-2 covariance matrix. This was done by specifying a plausible prior guess for the level-2 covariance matrix. In the simulation study, this guess was based on the true parameter values; in empirical applications, it could be derived from previous research. This guess for the covariance matrix corresponds to the two standardized level-1 variables $X$ and $Y$ (ICC = .1) and the standardized level-2 variable $W$:
+In this analysis, for the conditions when multiple imputation produced the highest bias, i.e. when $ICC = .1$ and $\gamma_{01} = 0.4$, alternative inverse-Wishart priors were specified for the level-2 covariance matrix. This was done by specifying a plausible prior guess for the level-2 covariance matrix. In the simulation study, this guess was based on the true parameter values; in empirical applications, it could be derived from previous research. This guess for the covariance matrix corresponds to the two standardized level-1 variables $X$ and $Y$ (ICC = .1) and the standardized level-2 variable $W$:
 $$
 \tau_{\text{guess}} =
 \begin{bmatrix}
@@ -40,7 +40,7 @@ $$
 $$
 Only the scale matrix was modified, while the degrees of freedom were kept at their default value. Thus, the prior remained weakly informative, but the scale matrix reflected more plausible level-2 variance values. The level-1 covariance matrix was kept at the default specification.
 
-Bias was substantially reduced across all investigated conditions, with reductions ranging from approximately 35% to over 60% and increasing with larger number of groups (see @tbl-jomo). Coverage rates remained stable, while empirical standard deviations showed a small increase under the alternative prior specification.
+Bias was substantially reduced across all investigated conditions, with reductions ranging from approximately 35% to over 60% and increasing with a larger number of groups (see @tbl-jomo). Coverage rates remained stable, while empirical standard deviations showed a small increase under the alternative prior specification.
 
 ```{r, results='asis', echo=FALSE, message=FALSE}
 #| label: tbl-jomo

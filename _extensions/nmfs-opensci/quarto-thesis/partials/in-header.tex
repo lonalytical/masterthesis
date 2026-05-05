@@ -7,9 +7,30 @@
 
 %\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{figexplanation}{
+  colback=black!3,
+  colframe=black!25,
+  boxrule=0.4pt,
+  arc=1mm,
+  left=6pt,
+  right=6pt,
+  top=6pt,
+  bottom=6pt,
+  width=\textwidth,
+  before skip=6pt,
+  after skip=6pt,
+  fontupper=\small
+}
+\usepackage[hang,flushmargin]{footmisc}
 \setlength{\parindent}{2em}   % Einrückung
 \setlength{\parskip}{0pt}
 
+\newcommand{\minihead}[1]{%
+  \par\vspace{0.55em}%
+  \noindent\textbf{#1.}\hspace{0.2em}%
+}
 %----------------------------------------------------------------------------------------
 %	MARGINS
 %----------------------------------------------------------------------------------------
