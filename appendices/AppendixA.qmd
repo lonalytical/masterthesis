@@ -202,13 +202,33 @@ Var(\text{fixed})
 $$
 
 The variances of the random components can thus be calculated like this:
+ 
 $$ 
 \begin{aligned}
-\psi^2 = ICC_{Y|X,W} \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2}{n})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n}) } ) 
+\psi^2 
+= ICC_{Y|X,W} \cdot 
+\left(
+1 -
+\left[
+\gamma_{10}^2\left(\sigma_X^2 - \frac{\sigma_X^2}{n}\right)
++
+\gamma_{01}^2\left(\tau_x^2 + \frac{\sigma_X^2}{n}\right)
+\right]
+\right)
 \end{aligned}
 $$
+
 $$
 \begin{aligned}
-\sigma^2 = (1 - ICC_{Y|X,W}) \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2 }{n})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n}) } )
+\sigma^2 
+= (1 - ICC_{Y|X,W}) \cdot
+\left(
+1 -
+\left[
+\gamma_{10}^2\left(\sigma_X^2 - \frac{\sigma_X^2}{n}\right)
++
+\gamma_{01}^2\left(\tau_x^2 + \frac{\sigma_X^2}{n}\right)
+\right]
+\right)
 \end{aligned}
-$$ 
+$$
