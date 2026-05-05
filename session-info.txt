@@ -1,0 +1,21 @@
+R session information:
+
+─ Session info ─────────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.2 (2025-10-31 ucrt)
+ os       Windows 11 x64 (build 26100)
+ system   x86_64, mingw32
+ ui       RStudio
+ language (EN)
+ collate  German_Germany.utf8
+ ctype    German_Germany.utf8
+ tz       Europe/Berlin
+ date     2026-05-05
+ rstudio  2026.04.0+526 Globemaster Allium (desktop)
+ quarto   1.8.27
+
+────────────────────────────────────────────────────────────────────────────────
+
+renv status:
+
+No issues found -- the project is in a consistent state.

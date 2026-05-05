@@ -5,14 +5,12 @@
 The data-generating model for $W_j$ is:
 
 $$W_j=\ a\cdot\ {\bar{X}}_j\ +e_{Wj}, \qquad e_{Wj}\ \ \sim\ N\left(0,\ {\sigma_w}^2\right)$$ {#eq-W}
-
 The variance of $W_j$ is therefore:
 
 $$
 Var(W_j) = Var(a \cdot \bar{X}_j + e_{Wj}) 
 = a^2 \cdot Var(\bar{X}_j) + Var(e_{Wj})
 $$ {#eq-varw}
-
 Substituting the formula for slope calculation $a=\ \frac{Cov(W_j,{\ \bar{X}}_j)\ }{Var({\bar{X}}_j)}$ into @eq-varw yields:
 $$
 \begin{aligned}
@@ -23,7 +21,6 @@ Var(W_j)
 + Var(e_{Wj})
 \end{aligned}
 $$
-
 This term can be simplified using 
 $Cov(A,B) = Corr(A,B)\cdot SD(A)\cdot SD(B)$:
 
@@ -38,7 +35,6 @@ Var(W_j)
 &= Corr(W_j, \bar{X}_j)^2 \cdot Var(W_j) + Var(e_{Wj})
 \end{aligned}
 $$
-
 Thus,
 
 $$
@@ -50,7 +46,6 @@ Var(e_{Wj})
 &= Var(W_j)\left(1 - Corr(W_j, \bar{X}_j)^2\right)
 \end{aligned}
 $$
-
 Since $Var(W_j)=1$:
 
 $$
@@ -68,7 +63,6 @@ $$
 $$
 a = \frac{Cov(W_j, \bar{X}_j)}{Var(\bar{X}_j)}
 $$
-
 The variance of $\bar{X}_j$ can be derived as follows:
 
 $$
@@ -89,7 +83,6 @@ Var(\bar{X}_j)
 &= \tau_x^2 + \frac{\sigma_X^2}{n}
 \end{aligned}
 $$ {#eq-varxbar}
-
 where $n$ denotes the cluster size, assumed to be constant across groups. The covariance $Cov(W_j, \bar{X}_j)$ is therefore:
 
 $$
@@ -105,7 +98,6 @@ $$
 
 Individual and group residual variances of $Y$ $(Var\left(u_{0j}\right) = \psi^2$ and $Var(e_{ij}) = \sigma^2$) are derived to match a prespecified residual ICC of $Y$:
 $$ICC_{Y|X,W}=\ \frac{\psi^2}{\psi^2+\ \sigma^2\ }$$
-
 Because $Var(Y)=1$ and the random components are uncorrelated with the predictors,
 $$
 \psi^2 + \sigma^2 = Var(\text{Residual}) = 1 - Var(\text{fixed})
@@ -119,7 +111,6 @@ $$
 $$
 Var(e_{ij}) = (1 - ICC_{Y|X,W}) \cdot \bigl(1 - Var(\text{fixed})\bigr)
 $$
-
 $Var(\text{fixed})$ can be calculated as:
 $$
 Var(\text{fixed}) 
@@ -169,11 +160,10 @@ $$
 + \mathrm{Cov}\left(e_{Xij}, \frac{1}{n} \sum_{i'=1}^{n} e_{Xi'j}\right)
 \end{aligned}
 $$
-
 Because of uncorrelatedness between $u_{Xj}$ and $e_{Xij}$, the second and third term are zero; furthermore, $\mathrm{Cov}\left(e_{Xij}, \frac{1}{n} \sum_{i'=1}^{n} e_{Xi'j}\right)  = \frac{1}{n} \sum_{i'=1}^{n} \mathrm{Cov}(e_{Xij}, e_{Xi'j})$.  
 As $\mathrm{Cov}(e_{Xij}, e_{Xi'j}) = \mathrm{Var}(e_{Xij})$ if $i=i'$ and zero otherwise, $\frac{1}{n} \sum_{i'=1}^{n} \mathrm{Cov}(e_{Xij}, e_{Xi'j}) = \frac{1}{n}\mathrm{Var}(e_{Xij})$.
 
-Overall, the covariance now simplifies to
+\noindent Overall, the covariance now simplifies to
 $$
 \begin{aligned}
 \mathrm{Cov}(X_{ij}, \bar{X}_{j})
@@ -193,22 +183,40 @@ $$
 &= \sigma_X^2 -\frac{\sigma_X^2}{n}
 \end{aligned}
 $$
-
 Inserting the derived terms into @eq-varfix$, Var(\text{fixed})$ can be therefore calculated as
 $$
 Var(\text{fixed})
 = \gamma_{10}^2 \left(\sigma_X^2 - \frac{\sigma_X^2}{n}\right)
 + \gamma_{01}^2 \left(\tau_x^2 + \frac{\sigma_X^2}{n}\right).
 $$
-
 The variances of the random components can thus be calculated like this:
+ 
 $$ 
 \begin{aligned}
-\psi^2 = ICC_{Y|X,W} \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2}{n})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n}) } ) 
+\psi^2 
+= ICC_{Y|X,W} \cdot 
+\left(
+1 -
+\left[
+\gamma_{10}^2\left(\sigma_X^2 - \frac{\sigma_X^2}{n}\right)
++
+\gamma_{01}^2\left(\tau_x^2 + \frac{\sigma_X^2}{n}\right)
+\right]
+\right)
 \end{aligned}
 $$
+
 $$
 \begin{aligned}
-\sigma^2 = (1 - ICC_{Y|X,W}) \cdot (1-{{\gamma_{10}}^2(\sigma_X^2- \frac{\sigma_X^2 }{n})+{\gamma_{01}}^2(\tau_x^2+\frac{\sigma_X^2 }{n}) } )
+\sigma^2 
+= (1 - ICC_{Y|X,W}) \cdot
+\left(
+1 -
+\left[
+\gamma_{10}^2\left(\sigma_X^2 - \frac{\sigma_X^2}{n}\right)
++
+\gamma_{01}^2\left(\tau_x^2 + \frac{\sigma_X^2}{n}\right)
+\right]
+\right)
 \end{aligned}
-$$ 
+$$
