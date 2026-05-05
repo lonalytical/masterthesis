@@ -21,6 +21,10 @@ Here, $\gamma_{10}$ represents the within-group effect of $X$, $\gamma_{01}$ the
 $$
 u_{0j} \sim N(0,\psi^2), \qquad e_{ij} \sim N(0,\sigma^2),
 $$
+<<<<<<< HEAD
+=======
+
+>>>>>>> 426490d9852bda455816d1156db985fba4fd2f76
 and were assumed to be independent. The variance components $\psi^2$ and $\sigma^2$ were chosen such that $Y_{ij}$ had a population variance of 1 and a prespecified residual intraclass correlation coefficient, as described in @sec-appA. The level-1 predictor $X_{ij}$ was simulated from independent between- and within-group components:
 $$ 
 X_{ij} = u_{Xj} + e_{Xij},
@@ -96,7 +100,11 @@ kable(tab.cond,
   pack_rows(index = c("Data conditions" = 4, "Model parameters" = 3, "Missing values" = 3)
 )
 ```
+<<<<<<< HEAD
 A summary of simulation conditions is provided in @tbl-sim-settings. The number of level-2 units was manipulated across conditions ($N_2 = 15, 30, 60$), while the number of level-1 observations was kept constant ($n = 10$). 
+=======
+The number of level-2 units was manipulated across conditions ($N_2 = 15, 30, 60$), while the number of level-1 observations was kept constant ($n = 10$). 
+>>>>>>> 426490d9852bda455816d1156db985fba4fd2f76
 The between-group effect of $\bar{X}_{j}$ was varied ($\gamma_{01} = 0, 0.4$), whereas the within-group effect of $(X_{ij}-\bar{X}_{j})$ was held constant at $0.2$ and the effect of $W_{j}$ was set to zero. This results in conditions with either a negative or a positive context effect (i.e., $\gamma_{01} - \gamma_{10}$) of $X$ in the population model.
 The ICC of $X$ and the residual ICC of $Y$ were varied ($\rho_X = \rho_{Y|X} = .1, .3$). Missing data were generated on $X$ with a varying missingness mechanism (MCAR or MAR with a strength of $\beta = .3$), with a constant missingness rate of $30\%$.
 The factors were combined fully factorially, creating $3 \times 2 \times 2 \times 2 = 24$ conditions.  
